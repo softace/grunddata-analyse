@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"ejerlejlighed": {
+			"type": "integer",
+			"description": "EAID_0E5C322B_0AA8_4005_B17E_F0397230EE7D.EAID_DAEA052B_1881_496a_B35B_A7BE3B6B7586"
+		},
+		"bygningPaaFremmedGrundList": {
+			"type": "array",
+			"description": "EAID_0E5C322B_0AA8_4005_B17E_F0397230EE7D",
+			"items": {
+				"type": "integer",
+				"description": "EAID_DAEA052B_1881_496a_B35B_A7BE3B6B7586"
+			}
+		},
+		"jordstykkeList": {
+			"type": "array",
+			"description": "EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1",
+			"items": {
+				"type": "object",
+				"properties": {
+					"jordstykkeLokalId": {
+						"description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": "string"
+					},
+					"samletFastEjendom": {
+						"description": "EAID_dst4D3E5E_84EF_4d87_85F6_8B46883C79F9",
+						"type": "integer"
+					}
+				},
+				"required": [
+					"jordstykkeLokalId"
+				]
+			}
+		}
+	},
+	"required": [
+		"bygningPaaFremmedGrundList",
+		"jordstykkeList"
+	]
+}

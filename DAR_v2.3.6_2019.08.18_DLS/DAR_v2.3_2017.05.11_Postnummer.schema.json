@@ -1,0 +1,124 @@
+{
+  "type": "array",
+  "items": {
+    "description": "EAID_449B3570_F0F7_494e_9756_D49E60644CD0",
+    "type": "object",
+    "properties": {
+      "datafordelerOpdateringstid": {
+        "title": "datafordelerOpdateringstid",
+        "type": "string",
+        "description": "UpdateTimestamp()",
+        "format": "date-time"
+      },
+      "forretningshændelse": {
+        "description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "forretningsområde": {
+        "description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "forretningsproces": {
+        "description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "id_lokalId": {
+        "description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "id_namespace": {
+        "description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "navn": {
+        "description": "EAID_9E7FA46D_52D9_4615_B24C_599BB28D1923",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "postnr": {
+        "description": "EAID_8F8BACBF_E985_4dc1_BCF4_27F5C3FD0BB1",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "postnummerinddeling": {
+        "description": "EAID_E5F5DDF9_3CF4_4304_B02D_E67AB0CDD619",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "registreringFra": {
+        "description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "registreringsaktør": {
+        "description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "registreringTil": {
+        "description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "status": {
+        "description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "virkningFra": {
+        "description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "virkningsaktør": {
+        "description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "virkningTil": {
+        "description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      }
+    }
+  }
+}

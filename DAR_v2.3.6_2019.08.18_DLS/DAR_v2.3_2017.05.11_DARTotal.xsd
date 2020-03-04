@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:dar="http://data.gov.dk/schemas/dar" elementFormDefault="qualified" targetNamespace="http://data.gov.dk/schemas/dar" version="1.0">
+  <element name="DARTotal">
+		<complexType>
+			<sequence>
+				<element name="AdresseList">
+					<complexType>
+						<sequence>
+							<element name="Adresse" type="dar:AdresseType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_6043F4D9_C4CA_44d0_BE88_027166A8B008</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="AdressepunktList">
+					<complexType>
+						<sequence>
+							<element name="Adressepunkt" type="dar:AdressepunktType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_00A7AF01_C512_4a85_ADB5_98FB15541948</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="HusnummerList">
+					<complexType>
+						<sequence>
+							<element name="Husnummer" type="dar:HusnummerType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_D0A626FC_CCAE_4209_B2F6_AC919B74A528</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="NavngivenVejList">
+					<complexType>
+						<sequence>
+							<element name="NavngivenVej" type="dar:NavngivenVejType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_0CB629B5_8D1F_486c_A319_717EDF879B82</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="NavngivenVejKommunedelList">
+					<complexType>
+						<sequence>
+							<element name="NavngivenVejKommunedel" type="dar:NavngivenVejKommunedelType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_34D070E5_DD89_4984_8054_16BA70936EA0</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="NavngivenVejPostnummerList">
+					<complexType>
+						<sequence>
+							<element name="NavngivenVejPostnummer" type="dar:NavngivenVejPostnummerType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_EA75B9ED_59CD_4d67_A340_A1CB578CC1B7</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="NavngivenVejSupplerendeBynavnList">
+					<complexType>
+						<sequence>
+							<element name="NavngivenVejSupplerendeBynavn" type="dar:NavngivenVejSupplerendeBynavnType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_5F14BDC8_7D97_433b_B28D_F8A56A1B9F13</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="PostnummerList">
+					<complexType>
+						<sequence>
+							<element name="Postnummer" type="dar:PostnummerType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_449B3570_F0F7_494e_9756_D49E60644CD0</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="SupplerendeBynavnList">
+					<complexType>
+						<sequence>
+							<element name="SupplerendeBynavn" type="dar:SupplerendeBynavnType" minOccurs="0" maxOccurs="unbounded" nillable="true">
+								<annotation>
+									<appinfo>EAID_9D39B21D_E73C_4f1b_9C6C_B75412DAAD77</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+  <complexType name="AdresseType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="adressebetegnelse" type="string">
+        <annotation>
+          <appinfo>EAID_BB398854_F92E_4372_A20A_D7136BB5CD9C</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="dørbetegnelse" type="string">
+        <annotation>
+          <appinfo>EAID_16B39B2F_0D4D_45ca_8164_8E1D78D202FC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="dørpunkt" type="string">
+        <annotation>
+          <appinfo>EAID_2E77B0C3_49AF_47b0_AD4E_DD653B99FD0B</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="etagebetegnelse" type="string">
+        <annotation>
+          <appinfo>EAID_805BB835_641D_49d5_93E6_80C8E3FFD91C</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="bygning" type="string">
+        <annotation>
+          <appinfo>EAID_dst4A2C09_8035_4ca8_8AA0_CBAAB89AF135</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="husnummer" type="string">
+        <annotation>
+          <appinfo>EAID_src6919CB_1734_44ef_BE5B_C115B637B2CD</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="AdressepunktType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="oprindelse_kilde" type="dar:KildeTilGeometriType">
+        <annotation>
+          <appinfo>EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_FD77FC95_714B_4779_B7FA_F9BBAB41758D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="oprindelse_nøjagtighedsklasse" type="dar:NøjagtighedsklasseType">
+        <annotation>
+          <appinfo>EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_B8A27494_DF27_4aa9_B1F4_EBD68D2479A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="oprindelse_registrering" type="dateTime">
+        <annotation>
+          <appinfo>EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_10DCC555_0BE9_4991_AD8C_DEA595CB08A0</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="oprindelse_tekniskStandard" type="dar:TekniskStandardType">
+        <annotation>
+          <appinfo>EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_181528AD_2DA3_4e9d_BF38_81916A924D2A</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="position" type="string">
+        <annotation>
+          <appinfo>EAID_4B062EDE_CE8C_414b_AB85_B5A1FD72AA78</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="ForretningshændelseType">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="ForretningsområdeType">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="ForretningsprocesType">
+    <restriction base="string"/>
+  </simpleType>
+  <complexType name="HusnummerType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="adgangsadressebetegnelse" type="string">
+        <annotation>
+          <appinfo>EAID_EDCC14FC_63ED_4ebe_8B52_3E406831A148</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="adgangspunkt" type="string">
+        <annotation>
+          <appinfo>EAID_E3A37E0C_D0D8_4c30_BBD5_2F26F7A24591</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="husnummerretning" type="string">
+        <annotation>
+          <appinfo>EAID_1A906922_EFAC_4182_AA8C_08332D52C6EE</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="husnummertekst" type="string">
+        <annotation>
+          <appinfo>EAID_83A4C230_5C5A_4ffb_B136_0315DD9F8DBE</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejpunkt" type="string">
+        <annotation>
+          <appinfo>EAID_F6BAEBD6_0306_4641_9DEA_C1441D986AFB</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="jordstykke" type="string">
+        <annotation>
+          <appinfo>EAID_dst052F4B_D60C_4ccd_BAE5_6BCED78FE40C</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="placeretPåForeløbigtJordstykke" type="string">
+        <annotation>
+          <appinfo>EAID_dstC82C82_CC9D_4d7d_9B8A_8F4A1ADFB5AE</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="geoDanmarkBygning" type="string">
+        <annotation>
+          <appinfo>EAID_dst3C28C5_D640_4bc0_9014_FDC7CBF30581</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="adgangTilBygning" type="string">
+        <annotation>
+          <appinfo>EAID_dst3E4349_6115_4191_AF4F_243CCE561C41</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="adgangTilTekniskAnlæg" type="string">
+        <annotation>
+          <appinfo>EAID_dst79A4C1_23B2_4c0c_85CC_60C6E2EA5AE0</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejmidte" type="string">
+        <annotation>
+          <appinfo>EAID_dstC9842D_CF82_4dc5_8114_3FF7AEF90C17</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="afstemningsområde" type="string">
+        <annotation>
+          <appinfo>EAID_dstB6088D_EE9E_451c_8070_088AA4520FA6</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="kommuneinddeling" type="string">
+        <annotation>
+          <appinfo>EAID_dst714AB4_FE21_446f_BEE5_7AE65691A45B</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="menighedsrådsafstemningsområde" type="string">
+        <annotation>
+          <appinfo>EAID_dst08DF20_7055_4542_8D3D_F8FCCD9A7125</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="sogneinddeling" type="string">
+        <annotation>
+          <appinfo>EAID_dst0864F0_E380_4aa6_A644_25974107FC47</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="supplerendeBynavn" type="string">
+        <annotation>
+          <appinfo>EAID_dstF5C960_23DB_454c_A8A8_41B231DF61C7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navngivenVej" type="string">
+        <annotation>
+          <appinfo>EAID_dst74C4B5_0F0F_4a51_B317_BA74938B605F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="postnummer" type="string">
+        <annotation>
+          <appinfo>EAID_dst3F5BA7_EB6C_47a2_AC4B_90C72D4F3585</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="KildeTilGeometriType">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="KommunekodeType">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="LivscyklusType">
+    <restriction base="string"/>
+  </simpleType>
+  <complexType name="NavngivenVejType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="administreresAfKommune" type="dar:KommunekodeType">
+        <annotation>
+          <appinfo>EAID_31D3BE04_2F70_4092_8381_5517A5543634</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="beskrivelse" type="string">
+        <annotation>
+          <appinfo>EAID_C132D872_7F07_4ebf_BC6B_37049F2E5EB8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="udtaltVejnavn" type="string">
+        <annotation>
+          <appinfo>EAID_788F8478_A747_412d_9DE6_FEE0DB4C1BFA</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejadresseringsnavn" type="string">
+        <annotation>
+          <appinfo>EAID_9621DD9D_50E3_4426_AB5A_A5E43DED4B05</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavn" type="string">
+        <annotation>
+          <appinfo>EAID_CA00150C_5B5C_4c32_AE72_A7EE5AEDE015</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_oprindelse_kilde" type="dar:KildeTilGeometriType">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_FD77FC95_714B_4779_B7FA_F9BBAB41758D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse" type="dar:NøjagtighedsklasseType">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_B8A27494_DF27_4aa9_B1F4_EBD68D2479A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_oprindelse_registrering" type="dateTime">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_10DCC555_0BE9_4991_AD8C_DEA595CB08A0</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_oprindelse_tekniskStandard" type="dar:TekniskStandardType">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_181528AD_2DA3_4e9d_BF38_81916A924D2A</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_vejnavnelinje" type="string">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_93C24B4D_0641_4073_B260_1EC7F2024CF4</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_vejnavneområde" type="string">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_1C496CD9_4541_4574_974D_B641F186077F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejnavnebeliggenhed_vejtilslutningspunkter" type="string">
+        <annotation>
+          <appinfo>EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_C3E042F2_A66E_40f4_92A1_7C7024A30D16</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="NavngivenVejKommunedelType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="kommune" type="dar:KommunekodeType">
+        <annotation>
+          <appinfo>EAID_0A04B5E9_9F12_49cb_B2AF_AFEE0315AE2B</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="vejkode" type="string">
+        <annotation>
+          <appinfo>EAID_852A683F_3E30_4009_A003_B3C8F6F76930</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navngivenVej" type="string">
+        <annotation>
+          <appinfo>EAID_dstE87A3E_ECA3_4f38_A586_117287E4754A</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="NavngivenVejPostnummerType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navngivenVej" type="string">
+        <annotation>
+          <appinfo>EAID_1B3CAEB0_80FA_486f_ABD1_818B332C905C</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="postnummer" type="string">
+        <annotation>
+          <appinfo>EAID_AD2844E3_7F05_4d8d_967E_44BA3D12C4B4</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="NavngivenVejSupplerendeBynavnType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navngivenVej" type="string">
+        <annotation>
+          <appinfo>EAID_7CF789EC_31C0_4af3_B75B_77674A26DECD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="supplerendeBynavn" type="string">
+        <annotation>
+          <appinfo>EAID_21C0B8C7_8B67_406c_BDC1_21ADBA284867</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="NøjagtighedsklasseType">
+    <restriction base="string"/>
+  </simpleType>
+  <complexType name="PostnummerType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navn" type="string">
+        <annotation>
+          <appinfo>EAID_9E7FA46D_52D9_4615_B24C_599BB28D1923</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="postnr" type="string">
+        <annotation>
+          <appinfo>EAID_8F8BACBF_E985_4dc1_BCF4_27F5C3FD0BB1</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="postnummerinddeling" type="string">
+        <annotation>
+          <appinfo>EAID_E5F5DDF9_3CF4_4304_B02D_E67AB0CDD619</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SupplerendeBynavnType">
+    <sequence>
+      <element minOccurs="0" nillable="true" name="forretningshændelse" type="dar:ForretningshændelseType">
+        <annotation>
+          <appinfo>EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsområde" type="dar:ForretningsområdeType">
+        <annotation>
+          <appinfo>EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="forretningsproces" type="dar:ForretningsprocesType">
+        <annotation>
+          <appinfo>EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringsaktør" type="string">
+        <annotation>
+          <appinfo>EAID_9F724D2B_7763_4997_8C85_580610BABC1F</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="registreringTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="status" type="dar:LivscyklusType">
+        <annotation>
+          <appinfo>EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningsaktør" type="dar:VirkningsaktørType">
+        <annotation>
+          <appinfo>EAID_8E60197F_D857_47c6_8611_75B63D0940FD</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="virkningTil" type="dateTime">
+        <annotation>
+          <appinfo>EAID_3058C5FD_9824_48ba_B62C_C24587BF6537</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="navn" type="string">
+        <annotation>
+          <appinfo>EAID_8359992A_59C4_48c4_981D_7A42F20CA168</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" nillable="true" name="supplerendeBynavn" type="string">
+        <annotation>
+          <appinfo>EAID_C6722E9B_EF6C_425d_9373_A933C01A6A64</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="TekniskStandardType">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="VirkningsaktørType">
+    <restriction base="string"/>
+  </simpleType>
+</schema>

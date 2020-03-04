@@ -1,0 +1,9 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "array",
+	"description": "EAID_0E5C322B_0AA8_4005_B17E_F0397230EE7D",
+	"items": {
+		"type": "integer",
+		"description": "EAID_DAEA052B_1881_496a_B35B_A7BE3B6B7586"
+	}
+}

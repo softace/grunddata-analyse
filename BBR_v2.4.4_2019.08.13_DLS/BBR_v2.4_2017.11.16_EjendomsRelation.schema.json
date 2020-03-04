@@ -1,0 +1,183 @@
+{
+  "type": "array",
+  "items": {
+    "description": "EAID_0E5C322B_0AA8_4005_B17E_F0397230EE7D",
+    "type": "object",
+    "properties": {
+      "datafordelerOpdateringstid": {
+        "title": "datafordelerOpdateringstid",
+        "type": "string",
+        "description": "UpdateTimestamp()",
+        "format": "date-time"
+      },
+      "bfeNummer": {
+        "description": "EAID_DAEA052B_1881_496a_B35B_A7BE3B6B7586",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "bygningPåFremmedGrund": {
+        "description": "EAID_dst21CE45_7C49_4653_B220_8583C4941A98",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ejendommensEjerforholdskode": {
+        "description": "EAID_8B9A4700_4212_4dd6_95A3_A8FA2192AF4E",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ejendomsnummer": {
+        "description": "EAID_252012AE_E95C_4c9d_AB56_C5C763AC47DE",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "ejendomstype": {
+        "description": "EAID_9858CAD1_2FAA_4312_98DE_081D40EBC659",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ejerlejlighed": {
+        "description": "EAID_dst549CF9_6E0F_428e_876D_664717D7B27A",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ejerlejlighedsnummer": {
+        "description": "EAID_4B7C4E42_30D8_42cf_BF15_306AA4EA7F22",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "forretningshændelse": {
+        "description": "EAID_50066AF4_06D9_4f3a_BAC2_5F83ABF0E335",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "forretningsområde": {
+        "description": "EAID_C91552B7_18C0_4e28_8B06_F60332A8776B",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "forretningsproces": {
+        "description": "EAID_E4132152_7923_4533_8529_5E8D8C937656",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "id_lokalId": {
+        "description": "EAID_F8196C58_7115_48a6_9A1D_B49BC0F6289A.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "id_namespace": {
+        "description": "EAID_F8196C58_7115_48a6_9A1D_B49BC0F6289A.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "kommunekode": {
+        "description": "EAID_C95C717A_752C_4b17_B647_850738975CAC",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "registreringFra": {
+        "description": "EAID_7A7F26D9_D5AE_4158_A7FF_3E6EF0B228D8",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "registreringsaktør": {
+        "description": "EAID_B3CCBA6B_52B2_4ddc_A751_ABEA39D6EE6B",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "registreringTil": {
+        "description": "EAID_E718B937_950A_4ea1_BFA0_2AE9DB8C43AD",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "samletFastEjendom": {
+        "description": "EAID_dstC65956_C726_418b_B8B5_F61903D9D8F8",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "status": {
+        "description": "EAID_6FAA8A1A_5BCF_4950_B220_F4AFCA7F35E3",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "tinglystAreal": {
+        "description": "EAID_528134C9_8903_404d_968E_E13E09172A7B",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "virkningFra": {
+        "description": "EAID_A351A366_2F30_4c3f_B086_7FAA59339C5D",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "virkningsaktør": {
+        "description": "EAID_59A458B1_5844_4fe3_95B1_C38AD3AAFAF4",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "virkningTil": {
+        "description": "EAID_47628A51_6589_4f1e_A19F_E9943A136AEC",
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "vurderingsejendomsnummer": {
+        "description": "EAID_AEEAF515_0D26_4059_8DEC_DA61BD2A4EBD",
+        "type": [
+          "integer",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id_lokalId"
+    ]
+  }
+}

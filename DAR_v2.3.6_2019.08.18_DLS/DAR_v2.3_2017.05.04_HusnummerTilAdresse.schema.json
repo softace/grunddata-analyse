@@ -1,0 +1,9 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "array",
+	"description": "EAID_6043F4D9_C4CA_44d0_BE88_027166A8B008",
+	"items": {
+		"type": "string",
+		"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5"
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"gældendeJordstykke": {
+			"type": "object",
+			"description": "EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1",
+			"properties": {
+				"jordstykkeLokalId": {
+					"type": "string",
+					"description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5"
+				},
+				"samletFastEjendom": {
+					"type": "integer",
+					"description": "EAID_dst4D3E5E_84EF_4d87_85F6_8B46883C79F9"
+				}
+			}
+		},
+		"foreløbigJordstykke": {
+			"type": "object",
+			"description": "EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1",
+			"properties": {
+				"jordstykkeLokalId": {
+					"type": "string",
+					"description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5"
+				},
+				"samletFastEjendom": {
+					"type": "integer",
+					"description": "EAID_dst4D3E5E_84EF_4d87_85F6_8B46883C79F9"
+				}
+			}
+		}
+	}
+}
