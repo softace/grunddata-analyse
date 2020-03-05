@@ -3,11 +3,16 @@
 xmlns:xmi="http://www.omg.org/spec/XMI/20110701">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/">
-	<xsl:for-each select="/xmi:XMI/xmi:Extension/elements/element[@xmi:type='uml:Class']">
+		<xsl:for-each select="/xmi:XMI/xmi:Extension/elements/element[@xmi:type='uml:Class']">
 	CREATE TABLE <xsl:value-of select="@name"/> (
-<!--	<xsl:value-of select="/xmi:XMI/xmi:Extension/elements/element[2]/attributes/attribute[4]/@name"/>
--->
+
+
+	<xsl:for-each select="attributes/attribute">
+			  <xsl:value-of select="properties/@type"/>(<xsl:value-of select="properties/@length"/>)   <xsl:value-of select="@name"/>, -- <xsl:value-of select="tags/tag[@name='definition']/@value"/>
+----
+			  <xsl:copy-of select="."/> 
+		  </xsl:for-each>
 	);
-	</xsl:for-each>
+		</xsl:for-each>
 	</xsl:template>
 </xsl:stylesheet>
