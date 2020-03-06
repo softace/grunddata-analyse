@@ -1,6 +1,5 @@
-import json
+import ijson
 from zipfile import ZipFile
-
 from pprint import pprint
 
 def main(data_package):
@@ -9,7 +8,19 @@ def main(data_package):
     package_name = data_package[:-4]
     print(f'Loading data fro {package_name}')
     with ZipFile(data_package, 'r') as myzip:
-        myzip
+
+        for info in myzip.infolist():
+            print(info.filename)
+        json_data_name = next(x for x in myzip.namelist() if not 'Metadata' in x)
+        with myzip.open(json_data_name) as file:
+            entities = ijson.items(file, 'AdresseList')
+            for e in entities:
+                for adresse in e:
+                    print(adresse['adressebetegnelse'])
+
+
+
+
     # ...
 
 if __name__ == '__main__':
