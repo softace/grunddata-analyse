@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 
 # read JSON into data structure
-with open("DAR_v2.3.6_2019.08.19_DARTotal.schema.json") as file:
+with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json") as file:
     jsonschema = json.load(file)
 
 # print DDL
@@ -18,5 +18,6 @@ for (table_name, table_content) in jsonschema['properties'].items():
 #        pprint(att_content['type'])
     print("PRIMARY KEY(id_lokalId (ASC)")
     print(");")
+    print("")
 
 #json.dump(jsonschema)
