@@ -16,7 +16,8 @@ for (table_name, table_content) in jsonschema['properties'].items():
 #        print(f"  {att_name: <20} {att_content['type'][0]: <10} {att_content['type'][1]},")
         print(f"  {att_name: <20} {'TEXT': <10},")
 #        pprint(att_content['type'])
-    print("PRIMARY KEY(id_lokalId (ASC)")
+    print("")
+    print("  PRIMARY KEY(id_lokalId (ASC)")
     print(");")
     print("")
 
