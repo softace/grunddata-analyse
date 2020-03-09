@@ -15,18 +15,25 @@ def populate(connection, listName, list):
         try:
             connection.execute(SQL, values)
             rows += 1
+            if rows % 100000 == 0:
+                connection.commit()
         except Exception as e:
             print(SQL)
             raise e
+    connection.commit()
     print(f'populating {listName} done with {rows} rows.')
 
 
-def main(data_package):
+def main(data_package: 'file path to the zip datapackage',\
+         db_name: 'Database file' = 'dar.db',\
+         create: ("Create the database", 'option', 'c') = False,
+         force: ("Force the DB creation") = False):
+    "Loads a DAR data file into database"
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
     print(f'Loading data from {package_name}')
-    conn = sqlite3.connect('example.db')
+    conn = sqlite3.connect(db_name)
     with ZipFile(data_package, 'r') as myzip:
 
         for info in myzip.infolist():
@@ -35,7 +42,6 @@ def main(data_package):
         with myzip.open(json_data_name) as file:
             for (listName, list) in ijson.kvitems(file, ''):
                 populate(conn, listName, list)
-                conn.commit()
     conn.close()
 
 if __name__ == '__main__':

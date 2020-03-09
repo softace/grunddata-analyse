@@ -8,7 +8,7 @@ from pprint import pprint
 with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json") as file:
     jsonschema = json.load(file)
 
-conn = sqlite3.connect('example.db')
+conn = sqlite3.connect('dar.db')
 
 # print DDL
 for (table_name, table_content) in jsonschema['properties'].items():
