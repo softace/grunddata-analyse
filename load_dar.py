@@ -3,38 +3,55 @@ from zipfile import ZipFile
 from pprint import pprint
 
 
+# noinspection PyPep8Naming
 def readAdresseList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readAdressepunktList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readHusnummerList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readNavngivenVejList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readNavngivenVejKommunedelList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readNavngivenVejPostnummerList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readNavngivenVejSupplerendeBynavnList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readPostnummerList(list):
     for elem in list:
         pprint(elem)
 
+
+# noinspection PyPep8Naming
 def readSupplerendeBynavnList(list):
     for elem in list:
         pprint(elem)
