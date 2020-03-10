@@ -8,6 +8,7 @@ import sqlite3
 import contextlib
 #from zipstream import ZipFile
 
+
 def populate(connection, listName, list):
     print(f'populating {listName}')
     rows = 0
@@ -50,7 +51,7 @@ def main(data_package: 'file path to the zip datapackage',
          create: ("Create the database", 'flag', 'c'),
          force: ("Force the DB creation", 'flag', 'f'),
          db_name: 'Database file' = 'dar.db'):
-    "Loads a DAR data file into database"
+    """Loads a DAR data file into database"""
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
