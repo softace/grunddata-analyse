@@ -1,9 +1,11 @@
 #!/usr/bin/env/python
+import os
 import ijson
+import json
 from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
-
+import contextlib
 
 def populate(connection, listName, list):
     print(f'populating {listName}')
@@ -24,20 +26,42 @@ def populate(connection, listName, list):
     print(f'populating {listName} done with {rows} rows.')
 
 
-def main(data_package: 'file path to the zip datapackage',\
-         db_name: 'Database file' = 'dar.db',\
-         create: ("Create the database", 'option', 'c') = False,
-         force: ("Force the DB creation") = False):
+def initialise_dar(db_name):
+    print("Initialising DB")
+    with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json") as file:
+        jsonschema = json.load(file)
+    conn = sqlite3.connect(db_name)
+    for (table_name, table_content) in jsonschema['properties'].items():
+        assert (table_content['type'] == 'array')
+        SQL = "CREATE TABLE " + table_name + "(\n"
+        for (att_name, att_content) in table_content['items']['properties'].items():
+            SQL += f"  {att_name: <20} {'TEXT': <10},\n"
+        SQL += "\n"
+        SQL += "  PRIMARY KEY(id_lokalId, registreringFra, virkningFra)\n"
+        SQL += ");\n"
+        conn.execute(SQL)
+    conn.commit()
+    conn.close()
+
+def main(data_package: 'file path to the zip datapackage',
+         create: ("Create the database", 'flag', 'c'),
+         force: ("Force the DB creation", 'flag', 'f'),
+         db_name: 'Database file' = 'dar.db'):
     "Loads a DAR data file into database"
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
     print(f'Loading data from {package_name}')
+    if create:
+        if force:
+            with contextlib.suppress(FileNotFoundError):
+                os.remove(db_name)
+        initialise_dar(db_name)
+
     conn = sqlite3.connect(db_name)
     with ZipFile(data_package, 'r') as myzip:
-
-        for info in myzip.infolist():
-            print(info.filename)
+        #for info in myzip.infolist():
+        #    print(info.filename)
         json_data_name = next(x for x in myzip.namelist() if not 'Metadata' in x)
         with myzip.open(json_data_name) as file:
             for (listName, list) in ijson.kvitems(file, ''):
