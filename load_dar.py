@@ -6,6 +6,7 @@ from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
 import contextlib
+#from zipstream import ZipFile
 
 def populate(connection, listName, list):
     print(f'populating {listName}')
@@ -27,13 +28,14 @@ def populate(connection, listName, list):
 
 
 def initialise_dar(db_name):
-    print("Initialising DB")
-    with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json") as file:
+    with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json", 'rb') as file:
         jsonschema = json.load(file)
     conn = sqlite3.connect(db_name)
+    conn.execute("PRAGMA encoding = 'UTF-8';")
+    conn.commit()
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_content['type'] == 'array')
-        SQL = "CREATE TABLE " + table_name + "(\n"
+        SQL = f"CREATE TABLE {table_name} (\n"
         for (att_name, att_content) in table_content['items']['properties'].items():
             SQL += f"  {att_name: <20} {'TEXT': <10},\n"
         SQL += "\n"
@@ -42,6 +44,7 @@ def initialise_dar(db_name):
         conn.execute(SQL)
     conn.commit()
     conn.close()
+
 
 def main(data_package: 'file path to the zip datapackage',
          create: ("Create the database", 'flag', 'c'),
@@ -55,7 +58,9 @@ def main(data_package: 'file path to the zip datapackage',
     if create:
         if force:
             with contextlib.suppress(FileNotFoundError):
+                print("Deleting DB")
                 os.remove(db_name)
+        print("Creating DB")
         initialise_dar(db_name)
 
     conn = sqlite3.connect(db_name)
@@ -67,6 +72,7 @@ def main(data_package: 'file path to the zip datapackage',
             for (listName, list) in ijson.kvitems(file, ''):
                 populate(conn, listName, list)
     conn.close()
+
 
 if __name__ == '__main__':
     import plac; plac.call(main)
