@@ -9,23 +9,16 @@ import contextlib
 #from zipstream import ZipFile
 
 
-def populate(connection, listName, list):
-    print(f'populating {listName}')
-    rows = 0
-    for elem in list:
-        columns = elem.keys()
-        values = ['NULL' if (x is None) else f"'{x}'" for x in elem.values()]
-        SQL = f" INSERT into {listName}({', '.join(columns)}) VALUES({', '.join(['?' for x in range(len(values))])});"
-        try:
-            connection.execute(SQL, values)
-            rows += 1
-            if rows % 100000 == 0:
-                connection.commit()
-        except Exception as e:
-            print(SQL)
-            raise e
-    connection.commit()
-    print(f'populating {listName} done with {rows} rows.')
+def insert_row(connection, listName, row):
+    columns = row.keys()
+    values = ['NULL' if (x is None) else f"'{x}'" for x in row.values()]
+    SQL = f" INSERT into {listName} ({', '.join(columns)}) VALUES({', '.join(['?' for x in range(len(values))])});"
+    try:
+        connection.execute(SQL, values)
+    except Exception as e:
+        print(SQL)
+        raise e
+    return
 
 
 def initialise_dar(db_name):
@@ -70,8 +63,32 @@ def main(data_package: 'file path to the zip datapackage',
         #    print(info.filename)
         json_data_name = next(x for x in myzip.namelist() if not 'Metadata' in x)
         with myzip.open(json_data_name) as file:
-            for (listName, list) in ijson.kvitems(file, ''):
-                populate(conn, listName, list)
+            parser = ijson.parse(file)
+            db_table_name = None
+            db_row = None
+            db_column = None
+            rows = 0
+            for prefix, event, value in parser:
+                if event == 'map_key':
+                    if '.' in prefix:
+                        db_column = value
+                    else:
+                        db_table_name = value
+                if event == 'end_array':
+                    print(f"{rows} rows inserted into {db_table_name}")
+                    rows = 0
+                    db_table_name = None
+                if '.' in prefix and event == 'start_map':
+                    db_row = {}
+                if '.' in prefix and event == 'end_map':
+                    insert_row(conn, db_table_name, db_row)
+                    db_row = None
+                    rows += 1
+                    if rows % 100000 == 0:
+                        print(f"{rows} rows inserted into {db_table_name}")
+                if event == 'string':
+                    db_row[db_column] = value
+                    db_column = None
     conn.close()
 
 
