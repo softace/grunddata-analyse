@@ -6,12 +6,14 @@ from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
 import contextlib
+import time
 #from zipstream import ZipFile
+step_rows = 1000000
 
 
 def insert_row(connection, listName, row):
     columns = row.keys()
-    values = ['NULL' if (x is None) else f"'{x}'" for x in row.values()]
+    values = ['NULL' if (x is None) else x for x in row.values()]
     SQL = f" INSERT into {listName} ({', '.join(columns)}) VALUES({', '.join(['?' for x in range(len(values))])});"
     try:
         connection.execute(SQL, values)
@@ -68,12 +70,15 @@ def main(data_package: 'file path to the zip datapackage',
             db_row = None
             db_column = None
             rows = 0
+            start_time = time.time()
+            step_time = time.time()
             for prefix, event, value in parser:
                 if event == 'map_key':
                     if '.' in prefix:
                         db_column = value
                     else:
                         db_table_name = value
+                        print(f"Inserting into {db_table_name}")
                 if event == 'end_array':
                     print(f"{rows} rows inserted into {db_table_name}")
                     rows = 0
@@ -84,11 +89,14 @@ def main(data_package: 'file path to the zip datapackage',
                     insert_row(conn, db_table_name, db_row)
                     db_row = None
                     rows += 1
-                    if rows % 100000 == 0:
-                        print(f"{rows} rows inserted into {db_table_name}")
+                    if rows % step_rows == 0:
+                        prev_step_time = step_time
+                        step_time = time.time()
+                        print(f"{rows} rows inserted into {db_table_name}. {step_rows//(step_time - prev_step_time)} rows/sec")
                 if event == 'string':
                     db_row[db_column] = value
                     db_column = None
+    conn.commit()
     conn.close()
 
 
