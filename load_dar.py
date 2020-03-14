@@ -24,12 +24,14 @@ def insert_row(cursor, listName, row):
             cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
             return 1
     else:
-        print(table_names[listName]['V'])
-        pprint([row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
-        cursor.execute(table_names[listName]['V'], [row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
+        cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
         violations = cursor.fetchall()
         if len(violations) > 0:
-            raise ValueError(f"Der findes allerede en forekomst i registreringstid ({row['registreringFra']}; {row['registreringTil']}) og virkningstid({row['virkningFra']}, {row['virkningTil']})")
+            columns = ['id_lokalId', 'registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']
+            raise ValueError(f"Der findes allerede en forekomst i overlappende registreringstid eller virkningstid\n"\
+                             f"Ny overtrædende: registreringstid({row['registreringFra']}; {row['registreringTil']}) virkningstid({row['virkningFra']}, {row['virkningTil']})\n" + \
+                             "\n".join([f"Eksisterende     registreringstid({vio['registreringFra']}; {vio['registreringTil']}) virkningstid({vio['virkningFra']}, {vio['virkningTil']})" for vio in [dict(zip(columns, v)) for v in violations]])\
+                             )
         cursor.execute(table_names[listName]['I'], list(row.values()))
         return 0
 
@@ -46,7 +48,8 @@ def prepare_table(table_name, columns):
                                    "AND id_lokalId = ? " \
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
-    table_names[table_name]['V'] = f"select *, ? _RegistreringFra, ? _RegistreringTil, ? _VirkningFra, ? _VirkningTil from {table_name} where true " \
+    table_names[table_name]['V'] = f"select id_lokalId, registreringFra, registreringTil, virkningFra, virkningTil, ? _id_lokalId, ? _RegistreringFra, ? _RegistreringTil, ? _VirkningFra, ? _VirkningTil from {table_name} where true " \
+                                   "AND id_lokalId = _id_lokalId " \
                                    "AND ( registreringFra <= _RegistreringFra AND (_RegistreringFra <  registreringTil OR  registreringTil is NULL) "\
                                    "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
                                    "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
