@@ -8,12 +8,11 @@ import sqlite3
 import contextlib
 import time
 #from zipstream import ZipFile
-STEP_ROWS = 10000
+STEP_ROWS = 1000000
 
 table_names = {}
 
 def insert_row(cursor, listName, row):
-    values = [x if x else 'NULL' for x in row.values()]
     if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra, virkningFra) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['virkningTil']: #This is an update
@@ -22,14 +21,16 @@ def insert_row(cursor, listName, row):
         if len(rows) > 1:
             raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}), fandt {len(rows)} forekomster")
         else:
-            cursor.execute(table_names[listName]['U'], values + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
+            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
             return 1
     else:
+        print(table_names[listName]['V'])
+        pprint([row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
         cursor.execute(table_names[listName]['V'], [row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
         violations = cursor.fetchall()
         if len(violations) > 0:
             raise ValueError(f"Der findes allerede en forekomst i registreringstid ({row['registreringFra']}; {row['registreringTil']}) og virkningstid({row['virkningFra']}, {row['virkningTil']})")
-        cursor.execute(table_names[listName]['I'], values)
+        cursor.execute(table_names[listName]['I'], list(row.values()))
         return 0
 
 
@@ -45,11 +46,11 @@ def prepare_table(table_name, columns):
                                    "AND id_lokalId = ? " \
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
-    table_names[table_name]['V'] = f"select * from {table_name} where true " \
-                                   "AND registreringFra >= ? " \
-                                   "AND (? < registreringTil or registreringTil is NULL) " \
-                                   "AND virkningFra >= ? " \
-                                   "AND ? < virkningTil or virkningTil is NULL"
+    table_names[table_name]['V'] = f"select *, ? _RegistreringFra, ? _RegistreringTil, ? _VirkningFra, ? _VirkningTil from {table_name} where true " \
+                                   "AND ( registreringFra <= _RegistreringFra AND (_RegistreringFra <  registreringTil OR  registreringTil is NULL) "\
+                                   "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
+                                   "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
+                                   "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningFra OR _VirkningFra is NULL)) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(columns)})"\
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
@@ -57,7 +58,6 @@ def prepare_table(table_name, columns):
 def initialise_dar(db_name, create=False):
     with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json", 'rb') as file:
         jsonschema = json.load(file)
-    columns = []
     conn = None
     if create:
         conn = sqlite3.connect(db_name)
@@ -65,6 +65,7 @@ def initialise_dar(db_name, create=False):
         conn.commit()
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_content['type'] == 'array')
+        columns = []
         SQL = f"CREATE TABLE {table_name} (\n"
         for (att_name, att_content) in table_content['items']['properties'].items():
             columns.append(att_name)
