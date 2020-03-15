@@ -7,12 +7,23 @@ from pprint import pprint
 import sqlite3
 import contextlib
 import time
+import datetime
+from datetime import timezone
+import dateutil.parser
 #from zipstream import ZipFile
 STEP_ROWS = 1000000
 
 table_names = {}
 
 def insert_row(cursor, listName, row):
+    row['registreringFra_ORG'] = row['registreringFra']
+    row['registreringTil_ORG'] = row['registreringTil']
+    row['virkningFra_ORG'] = row['virkningFra']
+    row['virkningTil_ORG'] = row['virkningTil']
+    row['registreringFra'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(timezone.utc).isoformat()
+    row['registreringTil'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(timezone.utc).isoformat() if row['registreringTil'] else None
+    row['virkningFra'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(timezone.utc).isoformat()
+    row['virkningTil'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(timezone.utc).isoformat() if row['virkningTil'] else None
     if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra, virkningFra) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil'] and row['registreringTil'] < row['registreringFra']:
@@ -28,7 +39,7 @@ def insert_row(cursor, listName, row):
         if len(rows) > 1:
             raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}), fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
+            cursor.execute(table_names[listName]['U'], list(dict(sorted(row.items())).values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
             return 1
         # else this is just a normal insert
     cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
@@ -43,8 +54,13 @@ def insert_row(cursor, listName, row):
             vio = dict(zip(columns, v))
             cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra, conflicting_virkningFra, violating_registreringFra, violating_virkningFra) "\
                            " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra'], row['virkningFra'], vio['registreringFra'], vio['virkningFra']))
-    cursor.execute(table_names[listName]['I'], list(row.values()))
-    return 0
+    try:
+        cursor.execute(table_names[listName]['I'], list(dict(sorted(row.items())).values()))
+        return 0
+    except sqlite3.IntegrityError as e:
+        print(f"F   ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
+        raise e
+
 
 
 def prepare_table(table_name, columns):
@@ -55,7 +71,7 @@ def prepare_table(table_name, columns):
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
     table_names[table_name]['U'] = f"update {table_name} set " + \
-                                   ", ".join([f" {c} = ? " for c in columns]) + " where true "\
+                                   ", ".join([f" {c} = ? " for c in sorted(columns)]) + " where true "\
                                    "AND id_lokalId = ? " \
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
@@ -65,7 +81,7 @@ def prepare_table(table_name, columns):
                                    "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
                                    "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
                                    "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningTil OR _VirkningTil is NULL)) "
-    table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(columns)})"\
+    table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(sorted(columns))})"\
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
 
@@ -82,6 +98,9 @@ def initialise_dar(db_name, create=False):
         columns = []
         SQL = f"CREATE TABLE {table_name} (\n"
         for (att_name, att_content) in table_content['items']['properties'].items():
+            if att_name in ['registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']:
+                SQL += f"  {att_name+'_ORG': <20} {'TEXT': <10},\n"
+                columns.append(att_name+'_ORG')
             columns.append(att_name)
             SQL += f"  {att_name: <20} {'TEXT': <10},\n"
         SQL += "\n"
