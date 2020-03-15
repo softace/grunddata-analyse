@@ -16,50 +16,42 @@ STEP_ROWS = 1000000
 table_names = {}
 
 def insert_row(cursor, listName, row):
-    row['registreringFra_ORG'] = row['registreringFra']
-    row['registreringTil_ORG'] = row['registreringTil']
-    row['virkningFra_ORG'] = row['virkningFra']
-    row['virkningTil_ORG'] = row['virkningTil']
-    row['registreringFra'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(timezone.utc).isoformat()
-    row['registreringTil'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(timezone.utc).isoformat() if row['registreringTil'] else None
-    row['virkningFra'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(timezone.utc).isoformat()
-    row['virkningTil'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(timezone.utc).isoformat() if row['virkningTil'] else None
-    if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
-        raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra, virkningFra) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
-    if row['registreringTil'] and row['registreringTil'] < row['registreringFra']:
-        raise ValueError(f"For ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})")
-    if row['virkningTil'] and row['virkningTil'] < row['virkningFra']:
-        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra']}, {row['virkningFra']}): Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
+    row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(timezone.utc).isoformat()
+    row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(timezone.utc).isoformat() if row['registreringTil'] else None
+    row['virkningFra_UTC'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(timezone.utc).isoformat()
+    row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(timezone.utc).isoformat() if row['virkningTil'] else None
+    if row['id_lokalId'] is None or row['registreringFra_UTC'] is None or row['virkningFra_UTC'] is None:
+        raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra_UTC, virkningFra_UTC) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+    if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
+        raise ValueError(f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})")
+    if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
+        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}): Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
-    if row['registreringTil']: #This is an update
-        cursor.execute(table_names[listName]['F'], [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
+    if row['registreringTil_UTC']: #This is an update
+        cursor.execute(table_names[listName]['F'], [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
         rows = cursor.fetchall()
         if len(rows) > 1:
-            raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}), fandt {len(rows)} forekomster")
+            raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}), fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
+            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
             return 1
         # else this is just a normal insert
-    cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
+    cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra_UTC'], row['registreringTil_UTC'], row['virkningFra_UTC'], row['virkningTil_UTC']])
     violations = cursor.fetchall()
     if len(violations) > 0:
-        columns = ['id_lokalId', 'registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']
-        # error_msg = f"Der findes allerede en forekomst for id_lokalId='{row['id_lokalId']}' i overlappende registreringstid og virkningstid\n"\
-        #             f"  Ny overtrædende: registreringstid({row['registreringFra']}; {row['registreringTil']}) virkningstid({row['virkningFra']}, {row['virkningTil']})\n" + \
-        #             "\n".join([f"  Eksisterende     registreringstid({vio['registreringFra']}; {vio['registreringTil']}) virkningstid({vio['virkningFra']}, {vio['virkningTil']})" for vio in [dict(zip(columns, v)) for v in violations]])
-        # print(error_msg)
+        columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
         for v in violations:
             vio = dict(zip(columns, v))
-            cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra, conflicting_virkningFra, violating_registreringFra, violating_virkningFra) "\
-                           " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra'], row['virkningFra'], vio['registreringFra'], vio['virkningFra']))
+            cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra_UTC, conflicting_virkningFra_UTC, violating_registreringFra_UTC, violating_virkningFra_UTC) "\
+                           " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     try:
         cursor.execute(table_names[listName]['I'], list(row.values()))
-#        print(f"NEW ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
+#        print(f"NEW ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         return 0
     except sqlite3.IntegrityError as e:
-        print(f"F   ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
+        print(f"F   ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         pprint(row)
         raise e
 
@@ -68,22 +60,22 @@ def insert_row(cursor, listName, row):
 def prepare_table(table_name, columns):
     table_names[table_name] = {}
     table_names[table_name]['row'] = dict(zip(columns,[None for i in range(len(columns))]))
-    table_names[table_name]['F'] = "select id_lokalId, registreringFra, virkningFra " \
+    table_names[table_name]['F'] = "select id_lokalId, registreringFra_UTC, virkningFra_UTC " \
                                    f"from {table_name} where true " \
                                    "AND id_lokalId = ? " \
-                                   "AND registreringFra = ? " \
-                                   "AND virkningFra = ?"
+                                   "AND registreringFra_UTC = ? " \
+                                   "AND virkningFra_UTC = ?"
     table_names[table_name]['U'] = f"update {table_name} set " + \
                                    ", ".join([f" {c} = ? " for c in columns]) + " where true "\
                                    "AND id_lokalId = ? " \
-                                   "AND registreringFra = ? " \
-                                   "AND virkningFra = ?"
-    table_names[table_name]['V'] = f"select id_lokalId, registreringFra, registreringTil, virkningFra, virkningTil, ? _id_lokalId, ? _RegistreringFra, ? _RegistreringTil, ? _VirkningFra, ? _VirkningTil from {table_name} where true " \
+                                   "AND registreringFra_UTC = ? " \
+                                   "AND virkningFra_UTC = ?"
+    table_names[table_name]['V'] = f"select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC, ? _id_lokalId, ? _RegistreringFra_UTC, ? _RegistreringTil_UTC, ? _VirkningFra_UTC, ? _VirkningTil_UTC from {table_name} where true " \
                                    "AND id_lokalId = _id_lokalId " \
-                                   "AND ( registreringFra <= _RegistreringFra AND (_RegistreringFra <  registreringTil OR  registreringTil is NULL) "\
-                                   "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
-                                   "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
-                                   "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningTil OR _VirkningTil is NULL)) "
+                                   "AND ( registreringFra_UTC <= _RegistreringFra_UTC AND (_RegistreringFra_UTC <  registreringTil_UTC OR  registreringTil_UTC is NULL) "\
+                                   "  OR _RegistreringFra_UTC <=  registreringFra_UTC AND ( registreringFra_UTC < _RegistreringTil_UTC OR _RegistreringTil_UTC is NULL)) "\
+                                   "AND ( virkningFra_UTC <= _VirkningFra_UTC AND (_VirkningFra_UTC <  virkningTil_UTC OR  virkningTil_UTC is NULL) "\
+                                   "  OR _VirkningFra_UTC <=  virkningFra_UTC AND ( virkningFra_UTC < _VirkningTil_UTC OR _VirkningTil_UTC is NULL)) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(columns)})"\
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
@@ -101,13 +93,13 @@ def initialise_dar(db_name, create=False):
         columns = []
         SQL = f"CREATE TABLE {table_name} (\n"
         for (att_name, att_content) in table_content['items']['properties'].items():
-            if att_name in ['registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']:
-                SQL += f"  {att_name+'_ORG': <20} {'TEXT': <10},\n"
-                columns.append(att_name+'_ORG')
             columns.append(att_name)
             SQL += f"  {att_name: <20} {'TEXT': <10},\n"
+            if att_name in ['registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']:
+                SQL += f"  {att_name + '_UTC': <20} {'TEXT': <10},\n"
+                columns.append(att_name + '_UTC')
         SQL += "\n"
-        SQL += "  PRIMARY KEY(id_lokalId, registreringFra, virkningFra)\n"
+        SQL += "  PRIMARY KEY(id_lokalId, registreringFra_UTC, virkningFra_UTC)\n"
         SQL += ");\n"
         prepare_table(table_name, columns)
         if create:
@@ -117,10 +109,10 @@ def initialise_dar(db_name, create=False):
               "  number INTEGER PRIMARY KEY AUTOINCREMENT, "\
               "  table_name TEXT, "\
               "  id_lokalId TEXT, "\
-              "  conflicting_registreringFra TEXT, "\
-              "  conflicting_virkningFra TEXT, "\
-              "  violating_registreringFra TEXT, "\
-              "  violating_virkningFra TEXT"\
+              "  conflicting_registreringFra_UTC TEXT, "\
+              "  conflicting_virkningFra_UTC TEXT, "\
+              "  violating_registreringFra_UTC TEXT, "\
+              "  violating_virkningFra_UTC TEXT"\
               ")"
         conn.execute(SQL)
         conn.commit()
