@@ -39,7 +39,7 @@ def insert_row(cursor, listName, row):
         if len(rows) > 1:
             raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}), fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[listName]['U'], list(dict(sorted(row.items())).values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
+            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
             return 1
         # else this is just a normal insert
     cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
@@ -55,23 +55,26 @@ def insert_row(cursor, listName, row):
             cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra, conflicting_virkningFra, violating_registreringFra, violating_virkningFra) "\
                            " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra'], row['virkningFra'], vio['registreringFra'], vio['virkningFra']))
     try:
-        cursor.execute(table_names[listName]['I'], list(dict(sorted(row.items())).values()))
+        cursor.execute(table_names[listName]['I'], list(row.values()))
+#        print(f"NEW ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
         return 0
     except sqlite3.IntegrityError as e:
         print(f"F   ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
+        pprint(row)
         raise e
 
 
 
 def prepare_table(table_name, columns):
     table_names[table_name] = {}
+    table_names[table_name]['row'] = dict(zip(columns,[None for i in range(len(columns))]))
     table_names[table_name]['F'] = "select id_lokalId, registreringFra, virkningFra " \
                                    f"from {table_name} where true " \
                                    "AND id_lokalId = ? " \
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
     table_names[table_name]['U'] = f"update {table_name} set " + \
-                                   ", ".join([f" {c} = ? " for c in sorted(columns)]) + " where true "\
+                                   ", ".join([f" {c} = ? " for c in columns]) + " where true "\
                                    "AND id_lokalId = ? " \
                                    "AND registreringFra = ? " \
                                    "AND virkningFra = ?"
@@ -81,7 +84,7 @@ def prepare_table(table_name, columns):
                                    "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
                                    "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
                                    "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningTil OR _VirkningTil is NULL)) "
-    table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(sorted(columns))})"\
+    table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(columns)})"\
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
 
@@ -174,7 +177,7 @@ def main(data_package: 'file path to the zip datapackage',
                     data_errors = 0
                     db_table_name = None
                 if '.' in prefix and event == 'start_map':
-                    db_row = {}
+                    db_row = dict(table_names[db_table_name]['row'])
                 if '.' in prefix and event == 'end_map':
                     ret = insert_row(cursor, db_table_name, db_row)
                     db_row = None
