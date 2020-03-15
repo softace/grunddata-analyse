@@ -15,25 +15,36 @@ table_names = {}
 def insert_row(cursor, listName, row):
     if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra, virkningFra) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
-    if row['virkningTil']: #This is an update
+    if row['registreringTil'] and row['registreringTil'] < row['registreringFra']:
+        raise ValueError(f"For ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})")
+    if row['virkningTil'] and row['virkningTil'] < row['virkningFra']:
+        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra']}, {row['virkningFra']}): Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
+        print(err_msg)
+        return -1
+        # raise ValueError(err_msg)
+    if row['registreringTil']: #This is an update
         cursor.execute(table_names[listName]['F'], [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
         rows = cursor.fetchall()
         if len(rows) > 1:
             raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}), fandt {len(rows)} forekomster")
-        else:
+        elif len(rows) == 1:
             cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra'], row['virkningFra']])
             return 1
-    else:
-        cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
-        violations = cursor.fetchall()
-        if len(violations) > 0:
-            columns = ['id_lokalId', 'registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']
-            raise ValueError(f"Der findes allerede en forekomst i overlappende registreringstid eller virkningstid\n"\
-                             f"Ny overtrædende: registreringstid({row['registreringFra']}; {row['registreringTil']}) virkningstid({row['virkningFra']}, {row['virkningTil']})\n" + \
-                             "\n".join([f"Eksisterende     registreringstid({vio['registreringFra']}; {vio['registreringTil']}) virkningstid({vio['virkningFra']}, {vio['virkningTil']})" for vio in [dict(zip(columns, v)) for v in violations]])\
-                             )
-        cursor.execute(table_names[listName]['I'], list(row.values()))
-        return 0
+        # else this is just a normal insert
+    cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra'], row['registreringTil'], row['virkningFra'], row['virkningTil']])
+    violations = cursor.fetchall()
+    if len(violations) > 0:
+        columns = ['id_lokalId', 'registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']
+        # error_msg = f"Der findes allerede en forekomst for id_lokalId='{row['id_lokalId']}' i overlappende registreringstid og virkningstid\n"\
+        #             f"  Ny overtrædende: registreringstid({row['registreringFra']}; {row['registreringTil']}) virkningstid({row['virkningFra']}, {row['virkningTil']})\n" + \
+        #             "\n".join([f"  Eksisterende     registreringstid({vio['registreringFra']}; {vio['registreringTil']}) virkningstid({vio['virkningFra']}, {vio['virkningTil']})" for vio in [dict(zip(columns, v)) for v in violations]])
+        # print(error_msg)
+        for v in violations:
+            vio = dict(zip(columns, v))
+            cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra, conflicting_virkningFra, violating_registreringFra, violating_virkningFra) "\
+                           " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra'], row['virkningFra'], vio['registreringFra'], vio['virkningFra']))
+    cursor.execute(table_names[listName]['I'], list(row.values()))
+    return 0
 
 
 def prepare_table(table_name, columns):
@@ -53,7 +64,7 @@ def prepare_table(table_name, columns):
                                    "AND ( registreringFra <= _RegistreringFra AND (_RegistreringFra <  registreringTil OR  registreringTil is NULL) "\
                                    "  OR _RegistreringFra <=  registreringFra AND ( registreringFra < _RegistreringTil OR _RegistreringTil is NULL)) "\
                                    "AND ( virkningFra <= _VirkningFra AND (_VirkningFra <  virkningTil OR  virkningTil is NULL) "\
-                                   "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningFra OR _VirkningFra is NULL)) "
+                                   "  OR _VirkningFra <=  virkningFra AND ( virkningFra < _VirkningTil OR _VirkningTil is NULL)) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(columns)})"\
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
@@ -80,6 +91,16 @@ def initialise_dar(db_name, create=False):
         if create:
             conn.execute(SQL)
     if create:
+        SQL = "CREATE TABLE violation_log ("\
+              "  number INTEGER PRIMARY KEY AUTOINCREMENT, "\
+              "  table_name TEXT, "\
+              "  id_lokalId TEXT, "\
+              "  conflicting_registreringFra TEXT, "\
+              "  conflicting_virkningFra TEXT, "\
+              "  violating_registreringFra TEXT, "\
+              "  violating_virkningFra TEXT"\
+              ")"
+        conn.execute(SQL)
         conn.commit()
         conn.close()
 
@@ -115,6 +136,7 @@ def main(data_package: 'file path to the zip datapackage',
             db_column = None
             row_inserts = 0
             row_updates = 0
+            data_errors = 0
             start_time = time.time()
             step_time = time.time()
             for prefix, event, value in parser:
@@ -125,10 +147,12 @@ def main(data_package: 'file path to the zip datapackage',
                         db_table_name = value
                         print(f"Inserting into {db_table_name}")
                 if event == 'end_array':
-                    print(f"{row_inserts} rows inserted into {db_table_name}")
-                    print(f"{row_updates} rows updated  in   {db_table_name}")
+                    print(f"{row_inserts:>10} rows inserted into  {db_table_name}")
+                    print(f"{row_updates:>10} rows updated in     {db_table_name}")
+                    print(f"{data_errors:>10} data errors in      {db_table_name}")
                     row_inserts = 0
                     row_updates = 0
+                    data_errors = 0
                     db_table_name = None
                 if '.' in prefix and event == 'start_map':
                     db_row = {}
@@ -137,8 +161,10 @@ def main(data_package: 'file path to the zip datapackage',
                     db_row = None
                     if ret == 0:
                         row_inserts += 1
-                    else:
+                    elif ret == 1:
                         row_updates += 1
+                    else:
+                        data_errors += 1
                     if (row_inserts + row_updates) % STEP_ROWS == 0:
                         prev_step_time = step_time
                         step_time = time.time()
