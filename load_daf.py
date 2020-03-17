@@ -7,13 +7,12 @@ from pprint import pprint
 import sqlite3
 import contextlib
 import time
-import datetime
 from datetime import timezone
 import dateutil.parser
-#from zipstream import ZipFile
 STEP_ROWS = 1000000
 
 table_names = {}
+
 
 def insert_row(cursor, listName, row):
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(timezone.utc).isoformat()
@@ -23,7 +22,10 @@ def insert_row(cursor, listName, row):
     if row['id_lokalId'] is None or row['registreringFra_UTC'] is None or row['virkningFra_UTC'] is None:
         raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra_UTC, virkningFra_UTC) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
-        raise ValueError(f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})")
+        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})"
+        print(err_msg)
+        return -1
+        # raise ValueError(err_msg)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
         err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}): Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
         print(err_msg)
@@ -56,7 +58,6 @@ def insert_row(cursor, listName, row):
         raise e
 
 
-
 def prepare_table(table_name, columns):
     table_names[table_name] = {}
     table_names[table_name]['row'] = dict(zip(columns,[None for i in range(len(columns))]))
@@ -80,9 +81,7 @@ def prepare_table(table_name, columns):
                                    f" VALUES({', '.join(['?' for x in range(len(columns))])});"
 
 
-def initialise_dar(db_name, create=False):
-    with open("DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json", 'rb') as file:
-        jsonschema = json.load(file)
+def initialise_db(db_name, jsonschema, create=False):
     conn = None
     if create:
         conn = sqlite3.connect(db_name)
@@ -119,12 +118,15 @@ def initialise_dar(db_name, create=False):
         conn.close()
 
 
-
-def main(data_package: 'file path to the zip datapackage',
-         create: ("Create the database", 'flag', 'c'),
+def main(create: ("Create the database", 'flag', 'c'),
          force: ("Force the DB creation", 'flag', 'f'),
-         db_name: 'Database file' = 'dar.db'):
-    """Loads a DAR data file into database"""
+         registry: ("DAF register: dar, bbr", 'option', 'r'),
+         data_package: 'file path to the zip datapackage',
+         db_name: 'Database file, defaults to <registry>.db' = None):
+    """Loads a DAF data file into database"""
+
+    if not db_name:
+        db_name = registry + ".db"
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
@@ -135,7 +137,15 @@ def main(data_package: 'file path to the zip datapackage',
                 print("Deleting DB")
                 os.remove(db_name)
         print("Creating DB")
-    initialise_dar(db_name, create)
+
+    if registry == 'dar':
+        json_schema_file_name = "DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
+    elif registry == 'bbr':
+        json_schema_file_name = 'BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
+    else:
+        raise ValueError(f"Ukendt register '{registry}'.")
+    with open(json_schema_file_name, 'rb') as file:
+        initialise_db(db_name, json.load(file), create)
 
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
