@@ -52,7 +52,7 @@ def insert_row(cursor, listName, row):
         cursor.execute(table_names[listName]['I'], list(row.values()))
 #        print(f"NEW ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         return 0
-    except sqlite3.IntegrityError as e:
+    except sqlite3.Error as e:
         print(f"F   ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         pprint(row)
         raise e
