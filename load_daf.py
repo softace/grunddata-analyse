@@ -92,10 +92,29 @@ def initialise_db(db_name, jsonschema, create=False):
         columns = []
         SQL = f"CREATE TABLE {table_name} (\n"
         for (att_name, att_content) in table_content['items']['properties'].items():
+            type_spec = ''
+            if att_content['type'][0] == 'string':
+                if 'format' in att_content:
+                    if att_content['format'] == 'date-time':
+                        type_spec += ' TEXT'  # TODO: improve
+                    else:
+                        raise NotImplementedError(f"Unknown attribute format '{att_content['format']}' on attribute {att_name}.")
+                else:
+                    type_spec += ' TEXT'
+            elif att_content['type'][0] == 'integer':
+                type_spec += 'INT'
+            elif att_content['type'][0] == 'number':
+                type_spec += 'REAL'
+            else:
+                raise NotImplementedError(f"Unknown attribute type '{att_content['type'][0]}' on attribute {att_name}.")
+            if att_content['type'][1] == 'null':
+                type_spec += ' NULL'
+            else:
+                raise NotImplementedError(f"Unknown attribute nullification '{att_content['type'][1]}' on attribute {att_name}.")
             columns.append(att_name)
-            SQL += f"  {att_name: <20} {'TEXT': <10},\n"
+            SQL += f"  {att_name: <20} {type_spec: <10}, -- {att_content['description']}\n"
             if att_name in ['registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']:
-                SQL += f"  {att_name + '_UTC': <20} {'TEXT': <10},\n"
+                SQL += f"  {att_name + '_UTC': <20} {type_spec: <10},  -- TZ neutral\n"
                 columns.append(att_name + '_UTC')
         SQL += "\n"
         SQL += "  PRIMARY KEY(id_lokalId, registreringFra_UTC, virkningFra_UTC)\n"
