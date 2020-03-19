@@ -1,4 +1,5 @@
 #!/usr/bin/env/python
+import decimal
 import os
 import ijson
 import json
@@ -9,9 +10,18 @@ import contextlib
 import time
 from datetime import timezone
 import dateutil.parser
-STEP_ROWS = 1000000
 
+
+STEP_ROWS = 1000000
 table_names = {}
+
+
+def decimal2text(d):
+    return str(d)
+
+
+def text2decimal(s):
+    return decimal.Decimal(s.decode('ascii'))
 
 
 def insert_row(cursor, listName, row):
@@ -82,9 +92,13 @@ def prepare_table(table_name, columns):
 
 
 def initialise_db(db_name, jsonschema, create=False):
+    sqlite3.register_adapter(decimal.Decimal, decimal2text)
+    sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
+
     conn = None
     if create:
-        conn = sqlite3.connect(db_name)
+        # The detect_type is not relevant here in the creation phase, I believe.
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
         conn.commit()
     for (table_name, table_content) in jsonschema['properties'].items():
@@ -104,7 +118,7 @@ def initialise_db(db_name, jsonschema, create=False):
             elif att_content['type'][0] == 'integer':
                 type_spec += 'INT'
             elif att_content['type'][0] == 'number':
-                type_spec += 'REAL'
+                type_spec += 'NUMERIC'  # This will trigger the converter
             else:
                 raise NotImplementedError(f"Unknown attribute type '{att_content['type'][0]}' on attribute {att_name}.")
             if att_content['type'][1] == 'null':
@@ -166,7 +180,7 @@ def main(create: ("Create the database", 'flag', 'c'),
     with open(json_schema_file_name, 'rb') as file:
         initialise_db(db_name, json.load(file), create)
 
-    conn = sqlite3.connect(db_name)
+    conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
     cursor = conn.cursor()
     with ZipFile(data_package, 'r') as myzip:
         #for info in myzip.infolist():
