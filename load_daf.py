@@ -5,6 +5,7 @@ import json
 from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
+import psycopg2
 import time
 from datetime import timezone
 import dateutil.parser
@@ -46,7 +47,7 @@ def insert_row(cursor, list_name, row):
         # raise ValueError(err_msg)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
         err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}):"\
-                  " Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
+                  f" Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
@@ -84,7 +85,7 @@ def insert_row(cursor, list_name, row):
     except sqlite3.Error as e:
         print(
             f"FAIL ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> "
-            "({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+            f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         pprint(row)
         raise e
 
@@ -143,6 +144,34 @@ def sqlite3_create_table(table):
     return SQL
 
 
+def psql_create_table(table):
+    SQL = f"CREATE TABLE {table['name']} (\n"
+    for (column) in table['columns']:
+        # table_content['items']['properties'].items()
+        type_spec = ''
+        TYPE_MAPPING = {
+            'string': 'text',
+            'datetime': 'timestamp(6) with time zone',
+            'integer': 'integer',
+            'number': 'double precision'  # This will ensure affinity and trigger the converter
+        }
+        if column['type'] not in TYPE_MAPPING:
+            raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
+        type_spec += TYPE_MAPPING[column['type']]
+        if 'nullspec' in column:
+            if column['nullspec'] == 'null':
+                type_spec += ' null'
+            else:
+                raise NotImplementedError(
+                    f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
+        comment = f"  --  {column['description']}" if 'description' in column else ''
+        SQL += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
+    SQL += "\n"
+    SQL += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
+    SQL += ");\n"
+    return SQL
+
+
 def jsonschema2table(table_name, table_content):
     table = {'name': table_name,
              'columns': [],
@@ -189,11 +218,15 @@ def initialise_db(dbo, create, force, jsonschema):
     if dbo['backend'] == SQLITE:
         sqlite3.register_adapter(decimal.Decimal, decimal2text)
         sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
-        conn = sqlite3.connect(dbo['name'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
         conn.commit()
     elif dbo['backend'] == POSTGRESQL:
-        conn = None
+        conn = psycopg2.connect(host=dbo['host'],
+                                port=dbo['port'],
+                                user=dbo['user'],
+                                password=dbo['password'],
+                                dbname=dbo['database'])
     else:
         raise NotImplementedError(
             f"Unknown database backend '{dbo['backend']}'.")
@@ -233,7 +266,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
          db_backend: ("DB backend. Supported is 'sqlite', 'psql'", 'option', 'b'),
          db_host: ("Database host", 'option', 'H'),
          db_port: ("Database port", 'option', 'p'),
-         db_name: ('Database name, defaults to <registry>', 'option', 'd'),
+         db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
          registry: ("DAF register: dar, bbr", 'option', 'r'),
@@ -244,7 +277,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
         'backend': db_backend,
         'host': db_host,
         'port': db_port,
-        'name': db_name if db_name else registry,
+        'database': db_name if db_name else 'DAF',
         'user': db_user,
         'password': db_password
     }
