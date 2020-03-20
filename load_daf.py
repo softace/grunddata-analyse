@@ -1,18 +1,16 @@
 #!/usr/bin/env/python
 import decimal
-import os
 import ijson
 import json
 from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
-import contextlib
 import time
 from datetime import timezone
 import dateutil.parser
 
 SQLITE = 'sqlite'
-POSTGRESQL = 'pg'
+POSTGRESQL = 'psql'
 STEP_ROWS = 1000000
 table_names = {}
 
@@ -25,46 +23,68 @@ def text2decimal(s):
     return decimal.Decimal(s.decode('ascii'))
 
 
-def insert_row(cursor, listName, row):
-    row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(timezone.utc).isoformat()
-    row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(timezone.utc).isoformat() if row['registreringTil'] else None
-    row['virkningFra_UTC'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(timezone.utc).isoformat()
-    row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(timezone.utc).isoformat() if row['virkningTil'] else None
+def insert_row(cursor, list_name, row):
+    row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
+        timezone.utc).isoformat()
+    row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
+        timezone.utc).isoformat() if row['registreringTil'] else None
+    row['virkningFra_UTC'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(
+        timezone.utc).isoformat()
+    row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(
+        timezone.utc).isoformat() if row[
+        'virkningTil'] else None
     if row['id_lokalId'] is None or row['registreringFra_UTC'] is None or row['virkningFra_UTC'] is None:
-        raise ValueError(f"Forventet primær nøgle (id_lokalId, registreringFra_UTC, virkningFra_UTC) har egentlig værdier, men fandt ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+        raise ValueError(
+            "Forventet primær nøgle (id_lokalId, registreringFra_UTC, virkningFra_UTC)"
+            f" har egentlig værdier, men fandt "
+            f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}): Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})"
+        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}):"\
+                  " Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}): Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
+        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}):"\
+                  " Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
-    if row['registreringTil_UTC']: #This is an update
-        cursor.execute(table_names[listName]['F'], [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
+    if row['registreringTil_UTC']:  # This is an update
+        cursor.execute(table_names[list_name]['F'],
+                       [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
         rows = cursor.fetchall()
         if len(rows) > 1:
-            raise ValueError(f"Forventet at opdatere een forekomst for ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}), fandt {len(rows)} forekomster")
+            raise ValueError(
+                "Forventet at opdatere een forekomst for "
+                f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}),"
+                f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[listName]['U'], list(row.values()) + [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
+            cursor.execute(table_names[list_name]['U'],
+                           list(row.values()) + [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
             return 1
         # else this is just a normal insert
-    cursor.execute(table_names[listName]['V'], [row['id_lokalId'], row['registreringFra_UTC'], row['registreringTil_UTC'], row['virkningFra_UTC'], row['virkningTil_UTC']])
+    cursor.execute(table_names[list_name]['V'],
+                   [row['id_lokalId'], row['registreringFra_UTC'], row['registreringTil_UTC'], row['virkningFra_UTC'],
+                    row['virkningTil_UTC']])
     violations = cursor.fetchall()
     if len(violations) > 0:
         columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
         for v in violations:
             vio = dict(zip(columns, v))
-            cursor.execute("insert into violation_log (table_name, id_lokalId, conflicting_registreringFra_UTC, conflicting_virkningFra_UTC, violating_registreringFra_UTC, violating_virkningFra_UTC) "\
-                           " VALUES(?, ?,  ?, ?,  ?, ?)", (listName, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], vio['registreringFra_UTC'], vio['virkningFra_UTC']))
+            cursor.execute("insert into violation_log (table_name, id_lokalId,"
+                           " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
+                           " violating_registreringFra_UTC, violating_virkningFra_UTC) "
+                           " VALUES(?, ?,  ?, ?,  ?, ?)",
+                           (list_name, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'],
+                            vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     try:
-        cursor.execute(table_names[listName]['I'], list(row.values()))
-#        print(f"NEW ({row['id_lokalId']}, {row['registreringFra_ORG']}, {row['virkningFra_ORG']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+        cursor.execute(table_names[list_name]['I'], list(row.values()))
         return 0
     except sqlite3.Error as e:
-        print(f"F   ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+        print(
+            f"FAIL ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> "
+            "({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
         pprint(row)
         raise e
 
@@ -81,15 +101,16 @@ def prepare_table(table):
                                    "AND virkningFra_UTC = ?"
     table_names[table_name]['U'] = f"update {table_name} set " + \
                                    ", ".join([f" {c} = ? " for c in column_names]) + " where true " \
-                                   "AND id_lokalId = ? " \
-                                   "AND registreringFra_UTC = ? " \
-                                   "AND virkningFra_UTC = ?"
-    table_names[table_name]['V'] = f"select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC, ? _id_lokalId, ? _RegistreringFra_UTC, ? _RegistreringTil_UTC, ? _VirkningFra_UTC, ? _VirkningTil_UTC from {table_name} where true " \
-                                   "AND id_lokalId = _id_lokalId " \
-                                   "AND ( registreringFra_UTC <= _RegistreringFra_UTC AND (_RegistreringFra_UTC <  registreringTil_UTC OR  registreringTil_UTC is NULL) "\
-                                   "  OR _RegistreringFra_UTC <=  registreringFra_UTC AND ( registreringFra_UTC < _RegistreringTil_UTC OR _RegistreringTil_UTC is NULL)) "\
-                                   "AND ( virkningFra_UTC <= _VirkningFra_UTC AND (_VirkningFra_UTC <  virkningTil_UTC OR  virkningTil_UTC is NULL) "\
-                                   "  OR _VirkningFra_UTC <=  virkningFra_UTC AND ( virkningFra_UTC < _VirkningTil_UTC OR _VirkningTil_UTC is NULL)) "
+                                                                                     "AND id_lokalId = ? " \
+                                                                                     "AND registreringFra_UTC = ? " \
+                                                                                     "AND virkningFra_UTC = ?"
+    table_names[table_name]['V'] = \
+        f"select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC, ? _id_lokalId, ? _RegistreringFra_UTC, ? _RegistreringTil_UTC, ? _VirkningFra_UTC, ? _VirkningTil_UTC from {table_name} where true " \
+        "AND id_lokalId = _id_lokalId " \
+        "AND ( registreringFra_UTC <= _RegistreringFra_UTC AND (_RegistreringFra_UTC <  registreringTil_UTC OR  registreringTil_UTC is NULL) " \
+        "  OR _RegistreringFra_UTC <=  registreringFra_UTC AND ( registreringFra_UTC < _RegistreringTil_UTC OR _RegistreringTil_UTC is NULL)) " \
+        "AND ( virkningFra_UTC <= _VirkningFra_UTC AND (_VirkningFra_UTC <  virkningTil_UTC OR  virkningTil_UTC is NULL) " \
+        "  OR _VirkningFra_UTC <=  virkningFra_UTC AND ( virkningFra_UTC < _VirkningTil_UTC OR _VirkningTil_UTC is NULL)) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(column_names)})" \
                                    f" VALUES({', '.join(['?' for x in range(len(column_names))])});"
 
@@ -209,7 +230,7 @@ def initialise_db(dbo, create, force, jsonschema):
 
 def main(create: ("Create the tables before inserting", 'flag', 'C'),
          force: ("Force creation of tables (DROP) if they already exists", 'flag', 'F'),
-         db_backend: ("DB backend. Supported is 'sqlite', 'pg", 'option', 'b'),
+         db_backend: ("DB backend. Supported is 'sqlite', 'psql'", 'option', 'b'),
          db_host: ("Database host", 'option', 'H'),
          db_port: ("Database port", 'option', 'p'),
          db_name: ('Database name, defaults to <registry>', 'option', 'd'),
@@ -285,7 +306,9 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                     if (row_inserts + row_updates) % STEP_ROWS == 0:
                         prev_step_time = step_time
                         step_time = time.time()
-                        print(f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}. {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
+                        print(
+                            f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}."
+                            " {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
                 if event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
                     db_row[db_column] = value
                     db_column = None
@@ -294,4 +317,6 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
 
 
 if __name__ == '__main__':
-    import plac; plac.call(main)
+    import plac;
+
+    plac.call(main)
