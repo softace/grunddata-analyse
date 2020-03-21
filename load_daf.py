@@ -53,7 +53,8 @@ def insert_row(cursor, list_name, row):
         return -1
         # raise ValueError(err_msg)
     if row['registreringTil_UTC']:  # This is an update
-        cursor.execute(table_names[list_name]['F'], {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
+        cursor.execute(table_names[list_name]['F'],
+                       {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
         rows = cursor.fetchall()
         if len(rows) > 1:
             raise ValueError(
@@ -64,7 +65,8 @@ def insert_row(cursor, list_name, row):
             cursor.execute(table_names[list_name]['U'], row)
             return 1
         # else this is just a normal insert
-    violation_columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
+    violation_columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC',
+                         'virkningFra_UTC', 'virkningTil_UTC']
     cursor.execute(table_names[list_name]['V'], {k: row[k] for k in violation_columns})
     violations = cursor.fetchall()
     if len(violations) > 0:
@@ -91,7 +93,7 @@ def prepare_table(table):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     table_names[table_name] = {}
-    table_names[table_name]['row'] = dict(zip(column_names, [None for i in range(len(column_names))]))
+    table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     table_names[table_name]['F'] = "select id_lokalId, registreringFra_UTC, virkningFra_UTC " \
                                    f"from {table_name} where true " \
                                    "AND id_lokalId = %(id_lokalId)s " \
@@ -121,21 +123,22 @@ def prepare_table(table):
                                    " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ");"
 
 
+SQLITE_TYPE_MAPPING = {
+    'string': 'TEXT',
+    'datetime': 'TEXT',  # TODO: This could be improved
+    'integer': 'INT',
+    'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
+}
+
 
 def sqlite3_create_table(table):
-    SQL = f"CREATE TABLE {table['name']} (\n"
+    sql = f"CREATE TABLE {table['name']} (\n"
     for (column) in table['columns']:
         # table_content['items']['properties'].items()
         type_spec = ''
-        TYPE_MAPPING = {
-            'string': 'TEXT',
-            'datetime': 'TEXT',  # TODO: This could be improved
-            'integer': 'INT',
-            'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
-        }
-        if column['type'] not in TYPE_MAPPING:
+        if column['type'] not in SQLITE_TYPE_MAPPING:
             raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
-        type_spec += TYPE_MAPPING[column['type']]
+        type_spec += SQLITE_TYPE_MAPPING[column['type']]
         if 'nullspec' in column:
             if column['nullspec'] == 'null':
                 type_spec += ' NULL'
@@ -143,15 +146,15 @@ def sqlite3_create_table(table):
                 raise NotImplementedError(
                     f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
         comment = f"  --  {column['description']}" if 'description' in column else ''
-        SQL += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
-    SQL += "\n"
-    SQL += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
-    SQL += ");\n"
-    return SQL
+        sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
+    sql += "\n"
+    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
+    sql += ");\n"
+    return sql
 
 
 def psql_create_table(table):
-    SQL = f"CREATE TABLE {table['name']} (\n"
+    sql = f"CREATE TABLE {table['name']} (\n"
     for (column) in table['columns']:
         # table_content['items']['properties'].items()
         type_spec = ''
@@ -171,11 +174,11 @@ def psql_create_table(table):
                 raise NotImplementedError(
                     f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
         comment = f"  --  {column['description']}" if 'description' in column else ''
-        SQL += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
-    SQL += "\n"
-    SQL += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
-    SQL += ");\n"
-    return SQL
+        sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
+    sql += "\n"
+    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
+    sql += ");\n"
+    return sql
 
 
 def jsonschema2table(table_name, table_content):
@@ -187,16 +190,16 @@ def jsonschema2table(table_name, table_content):
         if att_content['type'][0] == 'string':
             if 'format' in att_content:
                 if att_content['format'] == 'date-time':
-                    type = 'datetime'
+                    column_type = 'datetime'
                 else:
                     raise NotImplementedError(
                         f"Unknown attribute format '{att_content['format']}' on attribute {att_name}.")
             else:
-                type = 'string'
+                column_type = 'string'
         elif att_content['type'][0] == 'integer':
-            type = 'integer'
+            column_type = 'integer'
         elif att_content['type'][0] == 'number':
-            type = 'number'  # This will trigger the converter
+            column_type = 'number'  # This will trigger the converter
         else:
             raise NotImplementedError(f"Unknown attribute type '{att_content['type'][0]}' on attribute {att_name}.")
         if att_content['type'][1] == 'null':
@@ -205,7 +208,7 @@ def jsonschema2table(table_name, table_content):
             raise NotImplementedError(
                 f"Unknown attribute nullification '{att_content['type'][1]}' on attribute {att_name}.")
         column = {'name': att_name,
-                  'type': type,
+                  'type': column_type,
                   'nullspec': nullspec,
                   'description': att_content['description'] if 'description' in att_content else None
                   }
@@ -277,7 +280,8 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
          db_password: ("Database password", 'option', 'X'),
          registry: ("DAF register: dar, bbr", 'option', 'r'),
          data_package: 'file path to the zip datapackage'):
-    """Loads a DAF data file into database"""
+    """Loads a DAF data file into database
+    """
 
     database_options = {
         'backend': db_backend,
@@ -305,7 +309,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
     with ZipFile(data_package, 'r') as myzip:
         # for info in myzip.infolist():
         #    print(info.filename)
-        json_data_name = next(x for x in myzip.namelist() if not 'Metadata' in x)
+        json_data_name = next(x for x in myzip.namelist() if 'Metadata' not in x)
         with myzip.open(json_data_name) as file:
             parser = ijson.parse(file)
             db_table_name = None
@@ -347,7 +351,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                         step_time = time.time()
                         print(
                             f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}."
-                            " {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
+                            f" {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
                 if event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
                     db_row[db_column] = value
                     db_column = None
@@ -356,6 +360,5 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
 
 
 if __name__ == '__main__':
-    import plac;
-
+    import plac
     plac.call(main)
