@@ -5,6 +5,7 @@ import json
 from zipfile import ZipFile
 from pprint import pprint
 import sqlite3
+import sqlite3paramstyle
 import psycopg2
 import time
 from datetime import timezone
@@ -93,31 +94,31 @@ def prepare_table(table):
     table_names[table_name]['row'] = dict(zip(column_names, [None for i in range(len(column_names))]))
     table_names[table_name]['F'] = "select id_lokalId, registreringFra_UTC, virkningFra_UTC " \
                                    f"from {table_name} where true " \
-                                   "AND id_lokalId = :id_lokalId " \
-                                   "AND registreringFra_UTC = :registreringFra_UTC " \
-                                   "AND virkningFra_UTC = :virkningFra_UTC"
+                                   "AND id_lokalId = %(id_lokalId)s " \
+                                   "AND registreringFra_UTC = %(registreringFra_UTC)s " \
+                                   "AND virkningFra_UTC = %(virkningFra_UTC)s"
     table_names[table_name]['U'] = f"update {table_name} set " + \
-                                   ", ".join([f"{c} = :{c} " for c in column_names]) + \
+                                   ", ".join([f"{c} = %({c})s " for c in column_names]) + \
                                    " where true " \
-                                   "AND id_lokalId = :id_lokalId " \
-                                   "AND registreringFra_UTC = :registreringFra_UTC " \
-                                   "AND virkningFra_UTC = :virkningFra_UTC"
+                                   "AND id_lokalId = %(id_lokalId)s " \
+                                   "AND registreringFra_UTC = %(registreringFra_UTC)s " \
+                                   "AND virkningFra_UTC = %(virkningFra_UTC)s"
     table_names[table_name]['V'] = \
         "select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC "\
         f"from {table_name} where true " \
-        "AND id_lokalId = :id_lokalId " \
-        "AND (     registreringFra_UTC <= :registreringFra_UTC"\
-        "    AND (:registreringFra_UTC <   registreringTil_UTC OR registreringTil_UTC is NULL) " \
-        "    OR   :registreringFra_UTC <=  registreringFra_UTC "\
-        "    AND ( registreringFra_UTC <  :registreringTil_UTC OR :registreringTil_UTC is NULL) " \
+        "AND id_lokalId = %(id_lokalId)s " \
+        "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"\
+        "    AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) " \
+        "    OR   %(registreringFra_UTC)s <=   registreringFra_UTC "\
+        "    AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " \
         "    )"\
-        "AND (     virkningFra_UTC <= :virkningFra_UTC "\
-        "    AND (:virkningFra_UTC <   virkningTil_UTC OR virkningTil_UTC is NULL) " \
-        "    OR   :virkningFra_UTC <=  virkningFra_UTC "\
-        "    AND ( virkningFra_UTC <  :virkningTil_UTC OR :virkningTil_UTC is NULL)"\
+        "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "\
+        "    AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " \
+        "    OR   %(virkningFra_UTC)s <=   virkningFra_UTC "\
+        "    AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"\
         "    ) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(column_names)})" \
-                                   " VALUES(" + ', '.join([':' + c for c in column_names]) + ");"
+                                   " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ");"
 
 
 
@@ -223,7 +224,7 @@ def initialise_db(dbo, create, force, jsonschema):
     if dbo['backend'] == SQLITE:
         sqlite3.register_adapter(decimal.Decimal, decimal2text)
         sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
-        conn = sqlite3.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3paramstyle.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
         conn.commit()
     elif dbo['backend'] == POSTGRESQL:
