@@ -52,8 +52,7 @@ def insert_row(cursor, list_name, row):
         return -1
         # raise ValueError(err_msg)
     if row['registreringTil_UTC']:  # This is an update
-        cursor.execute(table_names[list_name]['F'],
-                       [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
+        cursor.execute(table_names[list_name]['F'], {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
         rows = cursor.fetchall()
         if len(rows) > 1:
             raise ValueError(
@@ -61,13 +60,12 @@ def insert_row(cursor, list_name, row):
                 f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}),"
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[list_name]['U'],
-                           list(row.values()) + [row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC']])
+            cursor.execute(table_names[list_name]['U'], row)
             return 1
         # else this is just a normal insert
     cursor.execute(table_names[list_name]['V'],
-                   [row['id_lokalId'], row['registreringFra_UTC'], row['registreringTil_UTC'], row['virkningFra_UTC'],
-                    row['virkningTil_UTC']])
+                   {k: row[k] for k in
+                    ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']})
     violations = cursor.fetchall()
     if len(violations) > 0:
         columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
@@ -80,7 +78,7 @@ def insert_row(cursor, list_name, row):
                            (list_name, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'],
                             vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     try:
-        cursor.execute(table_names[list_name]['I'], list(row.values()))
+        cursor.execute(table_names[list_name]['I'], row)
         return 0
     except sqlite3.Error as e:
         print(
@@ -97,23 +95,32 @@ def prepare_table(table):
     table_names[table_name]['row'] = dict(zip(column_names, [None for i in range(len(column_names))]))
     table_names[table_name]['F'] = "select id_lokalId, registreringFra_UTC, virkningFra_UTC " \
                                    f"from {table_name} where true " \
-                                   "AND id_lokalId = ? " \
-                                   "AND registreringFra_UTC = ? " \
-                                   "AND virkningFra_UTC = ?"
+                                   "AND id_lokalId = :id_lokalId " \
+                                   "AND registreringFra_UTC = :registreringFra_UTC " \
+                                   "AND virkningFra_UTC = :virkningFra_UTC"
     table_names[table_name]['U'] = f"update {table_name} set " + \
-                                   ", ".join([f" {c} = ? " for c in column_names]) + " where true " \
-                                                                                     "AND id_lokalId = ? " \
-                                                                                     "AND registreringFra_UTC = ? " \
-                                                                                     "AND virkningFra_UTC = ?"
+                                   ", ".join([f"{c} = :{c} " for c in column_names]) + \
+                                   " where true " \
+                                   "AND id_lokalId = :id_lokalId " \
+                                   "AND registreringFra_UTC = :registreringFra_UTC " \
+                                   "AND virkningFra_UTC = :virkningFra_UTC"
     table_names[table_name]['V'] = \
-        f"select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC, ? _id_lokalId, ? _RegistreringFra_UTC, ? _RegistreringTil_UTC, ? _VirkningFra_UTC, ? _VirkningTil_UTC from {table_name} where true " \
-        "AND id_lokalId = _id_lokalId " \
-        "AND ( registreringFra_UTC <= _RegistreringFra_UTC AND (_RegistreringFra_UTC <  registreringTil_UTC OR  registreringTil_UTC is NULL) " \
-        "  OR _RegistreringFra_UTC <=  registreringFra_UTC AND ( registreringFra_UTC < _RegistreringTil_UTC OR _RegistreringTil_UTC is NULL)) " \
-        "AND ( virkningFra_UTC <= _VirkningFra_UTC AND (_VirkningFra_UTC <  virkningTil_UTC OR  virkningTil_UTC is NULL) " \
-        "  OR _VirkningFra_UTC <=  virkningFra_UTC AND ( virkningFra_UTC < _VirkningTil_UTC OR _VirkningTil_UTC is NULL)) "
+        "select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC "\
+        f"from {table_name} where true " \
+        "AND id_lokalId = :id_lokalId " \
+        "AND (     registreringFra_UTC <= :registreringFra_UTC"\
+        "    AND (:registreringFra_UTC <   registreringTil_UTC OR registreringTil_UTC is NULL) " \
+        "    OR   :registreringFra_UTC <=  registreringFra_UTC "\
+        "    AND ( registreringFra_UTC <  :registreringTil_UTC OR :registreringTil_UTC is NULL) " \
+        "    )"\
+        "AND (     virkningFra_UTC <= :virkningFra_UTC "\
+        "    AND (:virkningFra_UTC <   virkningTil_UTC OR virkningTil_UTC is NULL) " \
+        "    OR   :virkningFra_UTC <=  virkningFra_UTC "\
+        "    AND ( virkningFra_UTC <  :virkningTil_UTC OR :virkningTil_UTC is NULL)"\
+        "    ) "
     table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(column_names)})" \
-                                   f" VALUES({', '.join(['?' for x in range(len(column_names))])});"
+                                   " VALUES(" + ', '.join([':' + c for c in column_names]) + ");"
+
 
 
 def sqlite3_create_table(table):
