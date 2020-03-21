@@ -63,14 +63,12 @@ def insert_row(cursor, list_name, row):
             cursor.execute(table_names[list_name]['U'], row)
             return 1
         # else this is just a normal insert
-    cursor.execute(table_names[list_name]['V'],
-                   {k: row[k] for k in
-                    ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']})
+    violation_columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
+    cursor.execute(table_names[list_name]['V'], {k: row[k] for k in violation_columns})
     violations = cursor.fetchall()
     if len(violations) > 0:
-        columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
         for v in violations:
-            vio = dict(zip(columns, v))
+            vio = dict(zip(violation_columns, v))
             cursor.execute("insert into violation_log (table_name, id_lokalId,"
                            " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
                            " violating_registreringFra_UTC, violating_virkningFra_UTC) "
