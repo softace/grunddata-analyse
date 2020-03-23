@@ -26,7 +26,6 @@ def text2decimal(s):
 
 
 def insert_row(cursor, db_functions, row):
-    attribute_keys = row.keys()
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
         timezone.utc).isoformat()
     row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
@@ -34,8 +33,7 @@ def insert_row(cursor, db_functions, row):
     row['virkningFra_UTC'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(
         timezone.utc).isoformat()
     row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(
-        timezone.utc).isoformat() if row[
-        'virkningTil'] else None
+        timezone.utc).isoformat() if row['virkningTil'] else None
     if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(
             "Forventet primær nøgle (id_lokalId, registreringFra, virkningFra)"
@@ -89,7 +87,8 @@ def prepare_table(table):
     table_names[table_name] = {POSTGRESQL: {},
                                SQLITE: {}}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
-    # TODO: ensure timestamps are comparable
+
+    #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
         cursor.execute("select id_lokalId, registreringFra, virkningFra "
                        f"from {table_name} where true "
@@ -107,7 +106,7 @@ def prepare_table(table):
                        " where true "
                        "AND id_lokalId = %(id_lokalId)s "
                        "AND registreringFra = %(registreringFra)s "
-                       "AND virkningFra = %(virkningFra)s")
+                       "AND virkningFra = %(virkningFra)s", row)
     table_names[table_name][POSTGRESQL]['Update row'] = update_row_psql
     table_names[table_name][SQLITE]['Update row'] = update_row_psql
 
@@ -119,16 +118,16 @@ def prepare_table(table):
         cursor.execute("select id_lokalId, registreringFra, virkningFra "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
-                       "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"\
-                       "    AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) " \
-                       "    OR   %(registreringFra_UTC)s <=   registreringFra_UTC "\
-                       "    AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " \
-                       "    )"\
-                       "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "\
-                       "    AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " \
-                       "    OR   %(virkningFra_UTC)s <=   virkningFra_UTC "\
-                       "    AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"\
-                       "    ) ", {k: row[k] for k in violation_columns})
+                       "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"
+                       "  AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) "
+                       "  OR   %(registreringFra_UTC)s <=   registreringFra_UTC "
+                       "  AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " 
+                       "  )"
+                       "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "
+                       "  AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " 
+                       "  OR   %(virkningFra_UTC)s <=   virkningFra_UTC "
+                       "  AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"
+                       "  ) ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
     # FIXME: use ranges
@@ -178,17 +177,19 @@ SQLITE_TYPE_MAPPING = {
 def sqlite3_create_table(table):
     sql = f"CREATE TABLE {table['name']} (\n"
     extra_columns = []
+    indexes = []
     for column in table['extra_columns']:
         if column['type'] == 'tsrange':
             print(column['name'])
             assert column['name'][-7:] == 'Tid_UTC'
             for ex in ['Fra', 'Til']:
-                extra_columns += [{'name': column['name'].replace('Tid', ex),
-                                  'type': 'datetime',
-                                  'nullspec': 'null', #  column['nullspec'],
-                                  'description': f"Expansion of '{column['name']}. {column['description']}"
-                                 }]
-                print(repr(extra_columns[-1]))
+                col_name = column['name'].replace('Tid', ex)
+                extra_columns += [{'name': col_name,
+                                   'type': 'datetime',
+                                   'nullspec': 'null',  # column['nullspec'],
+                                   'description': f"Expansion of '{column['name']}. {column['description']}"
+                                   }]
+                indexes += [f"CREATE INDEX {table['name']}_{col_name}_idx ON {table['name']} ({col_name});"]
         else:
             extra_columns.append(column)
     table['extra_columns'] = extra_columns
@@ -209,9 +210,10 @@ def sqlite3_create_table(table):
         comment = f"  --  {column['description']}" if 'description' in column else ''
         sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
     sql += "\n"
+    table['primary_keys'] = [ (x + '_UTC') if x[-3:] == 'Fra' else x for x in table['primary_keys']]
     sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
     sql += ");\n"
-    return sql
+    return [sql] + indexes
 
 
 PSQL_TYPE_MAPPING = {
@@ -233,7 +235,8 @@ def psql_create_table(table):
             raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
         type_spec += PSQL_TYPE_MAPPING[column['type']]
         if type_spec == 'tsrange':
-            indexes += [f"CREATE INDEX {table['name']}_{column['name']}_idx ON {table['name']} USING GIST ({column['name']});"]
+            indexes += [f"CREATE INDEX {table['name']}_{column['name']}_idx "
+                        f"ON {table['name']} USING GIST ({column['name']});"]
         if 'nullspec' in column:
             if column['nullspec'] == 'null':
                 type_spec += ' null'
@@ -247,7 +250,7 @@ def psql_create_table(table):
     sql += "\n"
     sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
     sql += ");\n"
-    return sql
+    return [sql] + indexes
 
 
 def jsonschema2table(table_name, table_content):
@@ -281,16 +284,15 @@ def jsonschema2table(table_name, table_content):
                   'nullspec': nullspec,
                   'description': att_content['description'] if 'description' in att_content else None
                   }
-        table['columns'].append(column)
+        table['columns'] += [column]
     #  Create bitemporal colums
     table['extra_columns'] = []
     for tid in ['registrering', 'virkning']:
-        table['extra_columns'].append({
-            'name': f'{tid}Tid_UTC',
-            'type': 'tsrange',
-            'description': f'({tid}Fra, {tid}Til) i UTC',
-            'nullspec': 'notnull'
-        })
+        table['extra_columns'] += [{'name': f'{tid}Tid_UTC',
+                                    'type': 'tsrange',
+                                    'description': f'({tid}Fra, {tid}Til) i UTC',
+                                    'nullspec': 'notnull'
+                                    }]
     table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
     return table
 
@@ -322,7 +324,9 @@ def initialise_db(dbo, create, force, jsonschema):
             if force:
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
                 print(f"Table {table['name']} droped.")
-            cur.execute(sql_create_table(table))
+            for sql in sql_create_table(table):
+                print(sql)
+                cur.execute(sql)
             print(f"Table {table['name']} created.")
         prepare_table(table)
     table = {
@@ -343,7 +347,8 @@ def initialise_db(dbo, create, force, jsonschema):
         if force:
             cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
             print(f"Table {table['name']} droped.")
-        cur.execute(sql_create_table(table))
+        for sql in sql_create_table(table):
+            cur.execute(sql)
         print(f"Table {table['name']} created.")
     conn.commit()
     print(f"Database {dbo['database']} initialised.")
