@@ -26,6 +26,7 @@ def text2decimal(s):
 
 
 def insert_row(cursor, list_name, row):
+    attribute_keys = row.keys()
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
         timezone.utc).isoformat()
     row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
@@ -35,56 +36,48 @@ def insert_row(cursor, list_name, row):
     row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(
         timezone.utc).isoformat() if row[
         'virkningTil'] else None
-    if row['id_lokalId'] is None or row['registreringFra_UTC'] is None or row['virkningFra_UTC'] is None:
+    if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(
-            "Forventet primær nøgle (id_lokalId, registreringFra_UTC, virkningFra_UTC)"
+            "Forventet primær nøgle (id_lokalId, registreringFra, virkningFra)"
             f" har egentlig værdier, men fandt "
-            f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}):"\
-                  " Registreringsinterval er forkert ({row['registreringFra']}, {row['registreringTil']})"
+        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}):"\
+                  f" Registreringsinterval er negativ ({row['registreringFra']}, {row['registreringTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra_UTC']}, {row['virkningFra_UTC']}):"\
-                  f" Virkningsinterval er forkert ({row['virkningFra']}, {row['virkningTil']})"
+        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra']}, {row['virkningFra']}):"\
+                  f" Virkningsinterval er negativ ({row['virkningFra']}, {row['virkningTil']})"
         print(err_msg)
         return -1
         # raise ValueError(err_msg)
-    if row['registreringTil_UTC']:  # This is an update
-        cursor.execute(table_names[list_name]['F'],
-                       {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
+    if row['registreringTil']:  # This might be an update
+        table_names[list_name]['Find row'](cursor, row)
         rows = cursor.fetchall()
-        if len(rows) > 1:
+        if len(rows) > 1:  # Integrity error
             raise ValueError(
                 "Forventet at opdatere een forekomst for "
-                f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']}),"
+                f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            cursor.execute(table_names[list_name]['U'], row)
+            table_names[list_name]['Update row'](cursor, row)
             return 1
         # else this is just a normal insert
-    violation_columns = ['id_lokalId', 'registreringFra_UTC', 'registreringTil_UTC',
-                         'virkningFra_UTC', 'virkningTil_UTC']
-    cursor.execute(table_names[list_name]['V'], {k: row[k] for k in violation_columns})
+    table_names[list_name]['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
+        violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            vio = dict(zip(violation_columns, v))
-            cursor.execute("insert into violation_log (table_name, id_lokalId,"
-                           " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
-                           " violating_registreringFra_UTC, violating_virkningFra_UTC) "
-                           " VALUES(?, ?,  ?, ?,  ?, ?)",
-                           (list_name, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'],
-                            vio['registreringFra_UTC'], vio['virkningFra_UTC']))
+            table_names[list_name]['Log overlap'](cursor, row, dict(zip(violation_columns, v)))
     try:
-        cursor.execute(table_names[list_name]['I'], row)
+        table_names[list_name]['Insert row'](cursor, row)
         return 0
     except sqlite3.Error as e:
         print(
             f"FAIL ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> "
-            f"({row['id_lokalId']}, {row['registreringFra_UTC']}, {row['virkningFra_UTC']})")
+            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
         pprint(row)
         raise e
 
@@ -92,41 +85,59 @@ def insert_row(cursor, list_name, row):
 def prepare_table(table):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
+    extra_column_names = [c['name'] for c in table['extra_columns']]
     table_names[table_name] = {}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
-    table_names[table_name]['F'] = "select id_lokalId, registreringFra_UTC, virkningFra_UTC " \
-                                   f"from {table_name} where true " \
-                                   "AND id_lokalId = %(id_lokalId)s " \
-                                   "AND registreringFra_UTC = %(registreringFra_UTC)s " \
-                                   "AND virkningFra_UTC = %(virkningFra_UTC)s"
-    table_names[table_name]['U'] = f"update {table_name} set " + \
-                                   ", ".join([f"{c} = %({c})s " for c in column_names]) + \
-                                   " where true " \
-                                   "AND id_lokalId = %(id_lokalId)s " \
-                                   "AND registreringFra_UTC = %(registreringFra_UTC)s " \
-                                   "AND virkningFra_UTC = %(virkningFra_UTC)s"
-    table_names[table_name]['V'] = \
-        "select id_lokalId, registreringFra_UTC, registreringTil_UTC, virkningFra_UTC, virkningTil_UTC "\
-        f"from {table_name} where true " \
-        "AND id_lokalId = %(id_lokalId)s " \
-        "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"\
-        "    AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) " \
-        "    OR   %(registreringFra_UTC)s <=   registreringFra_UTC "\
-        "    AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " \
-        "    )"\
-        "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "\
-        "    AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " \
-        "    OR   %(virkningFra_UTC)s <=   virkningFra_UTC "\
-        "    AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"\
-        "    ) "
-    table_names[table_name]['I'] = f" INSERT into {table_name} ({', '.join(column_names)})" \
-                                   " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ");"
+    # TODO: ensure timestamps are comparable
+    table_names[table_name]['Find row'] = lambda cursor, row: \
+        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+                       f"from {table_name} where true "
+                       "AND id_lokalId = %(id_lokalId)s "
+                       "AND registreringFra = %(registreringFra)s "
+                       "AND virkningFra = %(virkningFra)s",  # TODO: ensure timestamps are comparable
+                       {k: row[k] for k in ['id_lokalId', 'registreringFra', 'virkningFra']})
+
+    # FIXME: update ranges
+    table_names[table_name]['Update row'] = lambda cursor, row: \
+        cursor.execute(f"update {table_name} set " +
+                       ", ".join([f"{c} = %({c})s " for c in column_names]) +
+                       " where true "
+                       "AND id_lokalId = %(id_lokalId)s "
+                       "AND registreringFra = %(registreringFra)s "
+                       "AND virkningFra = %(virkningFra)s")
+    # FIXME: use ranges
+    violation_columns = ['id_lokalId',
+                         'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
+    table_names[table_name]['Find overlaps'] = lambda cursor, row: \
+        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+                       f"from {table_name} where true "
+                       "AND id_lokalId = %(id_lokalId)s "
+                       "AND registreringTid_UTC && tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)')"
+                       "AND virkningTid_UTC     && tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')",
+                       {k: row[k] for k in violation_columns})
+    table_names[table_name]['Log overlap'] = lambda cursor, row, vio: \
+        cursor.execute("insert into violation_log (table_name, id_lokalId,"
+                       " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
+                       " violating_registreringFra_UTC, violating_virkningFra_UTC) "
+                       " VALUES(?, ?,  ?, ?,  ?, ?)",
+                       (table_name, row['id_lokalId'], row['registreringFra'], row['virkningFra'],
+                        vio['registreringFra'], vio['virkningFra']))
+
+    # FIXME: insert ranges
+    def insert_row_func(cursor, row):
+        cursor.execute(f" INSERT into {table_name} ({', '.join(column_names + extra_column_names)})"
+                       " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ', '
+                       "        tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)'), " +
+                       "        tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')" +
+                       ");", row)
+    table_names[table_name]['Insert row'] = lambda cursor, row: insert_row_func(cursor, row)
 
 
 SQLITE_TYPE_MAPPING = {
     'string': 'TEXT',
-    'datetime': 'TEXT',  # TODO: This could be improved
+    'datetimetz': 'TEXT',  # TODO: This could be improved
     'integer': 'INT',
+    'tsrange': 'tsrange',
     'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
 }
 
@@ -142,6 +153,8 @@ def sqlite3_create_table(table):
         if 'nullspec' in column:
             if column['nullspec'] == 'null':
                 type_spec += ' NULL'
+            elif column['nullspec'] == 'notnull':
+                type_spec += ' NOT NULL'
             else:
                 raise NotImplementedError(
                     f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
@@ -153,23 +166,31 @@ def sqlite3_create_table(table):
     return sql
 
 
+PSQL_TYPE_MAPPING = {
+    'string': 'text',
+    'datetimetz': 'timestamp(6) with time zone',
+    'integer': 'integer',
+    'tsrange': 'tsrange',
+    'number': 'double precision'  # This will ensure affinity and trigger the converter
+}
+
+
 def psql_create_table(table):
     sql = f"CREATE TABLE {table['name']} (\n"
-    for (column) in table['columns']:
+    indexes = []
+    for (column) in table['columns'] + table['extra_columns']:
         # table_content['items']['properties'].items()
         type_spec = ''
-        TYPE_MAPPING = {
-            'string': 'text',
-            'datetime': 'timestamp(6) with time zone',
-            'integer': 'integer',
-            'number': 'double precision'  # This will ensure affinity and trigger the converter
-        }
-        if column['type'] not in TYPE_MAPPING:
+        if column['type'] not in PSQL_TYPE_MAPPING:
             raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
-        type_spec += TYPE_MAPPING[column['type']]
+        type_spec += PSQL_TYPE_MAPPING[column['type']]
+        if type_spec == 'tsrange':
+            indexes += [f"CREATE INDEX {table['name']}_{column['name']}_idx ON {table['name']} USING GIST ({column['name']});"]
         if 'nullspec' in column:
             if column['nullspec'] == 'null':
                 type_spec += ' null'
+            elif column['nullspec'] == 'notnull':
+                type_spec += ' not null'
             else:
                 raise NotImplementedError(
                     f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
@@ -190,7 +211,7 @@ def jsonschema2table(table_name, table_content):
         if att_content['type'][0] == 'string':
             if 'format' in att_content:
                 if att_content['format'] == 'date-time':
-                    column_type = 'datetime'
+                    column_type = 'datetimetz'
                 else:
                     raise NotImplementedError(
                         f"Unknown attribute format '{att_content['format']}' on attribute {att_name}.")
@@ -213,13 +234,16 @@ def jsonschema2table(table_name, table_content):
                   'description': att_content['description'] if 'description' in att_content else None
                   }
         table['columns'].append(column)
-        if att_name in ['registreringFra', 'registreringTil', 'virkningFra', 'virkningTil']:
-            table['columns'].append({'name': att_name + '_UTC',
-                                     'type': 'datetime',
-                                     'nullspec': 'null',
-                                     'description': 'TZ neutral'
-                                     })
-    table['primary_keys'] = ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']
+    #  Create bitemporal colums
+    table['extra_columns'] = []
+    for tid in ['registrering', 'virkning']:
+        table['extra_columns'].append({
+            'name': f'{tid}Tid_UTC',
+            'type': 'tsrange',
+            'description': f'({tid}Fra, {tid}Til) i UTC',
+            'nullspec': 'notnull'
+        })
+    table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
     return table
 
 
@@ -230,12 +254,14 @@ def initialise_db(dbo, create, force, jsonschema):
         conn = sqlite3paramstyle.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
         conn.commit()
+        sql_create_table = sqlite3_create_table
     elif dbo['backend'] == POSTGRESQL:
         conn = psycopg2.connect(host=dbo['host'],
                                 port=dbo['port'],
                                 user=dbo['user'],
                                 password=dbo['password'],
                                 dbname=dbo['database'])
+        sql_create_table = psql_create_table
     else:
         raise NotImplementedError(
             f"Unknown database backend '{dbo['backend']}'.")
@@ -248,7 +274,9 @@ def initialise_db(dbo, create, force, jsonschema):
         if create:
             if force:
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-            cur.execute(sqlite3_create_table(table))
+                print(f"Table {table['name']} droped.")
+            cur.execute(sql_create_table(table))
+            print(f"Table {table['name']} created.")
     table = {
         'name': 'violation_log',
         'columns': [{'name': 'number', 'type': 'integer'},
@@ -259,14 +287,18 @@ def initialise_db(dbo, create, force, jsonschema):
                     {'name': 'violating_registreringFra_UTC', 'type': 'string'},
                     {'name': 'violating_virkningFra_UTC', 'type': 'string'},
                     ],
+        'extra_columns': [],
         'primary_keys': ['number'],
     }
     #  Consider prepare_table(table)
     if create:
         if force:
             cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-        cur.execute(sqlite3_create_table(table))
+            print(f"Table {table['name']} droped.")
+        cur.execute(sql_create_table(table))
+        print(f"Table {table['name']} created.")
     conn.commit()
+    print(f"Database {dbo['database']} initialised.")
     return conn
 
 
