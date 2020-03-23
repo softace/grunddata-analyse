@@ -25,7 +25,7 @@ def text2decimal(s):
     return decimal.Decimal(s.decode('ascii'))
 
 
-def insert_row(cursor, list_name, row):
+def insert_row(cursor, db_functions, row):
     attribute_keys = row.keys()
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
         timezone.utc).isoformat()
@@ -54,7 +54,7 @@ def insert_row(cursor, list_name, row):
         return -1
         # raise ValueError(err_msg)
     if row['registreringTil']:  # This might be an update
-        table_names[list_name]['Find row'](cursor, row)
+        db_functions['Find row'](cursor, row)
         rows = cursor.fetchall()
         if len(rows) > 1:  # Integrity error
             raise ValueError(
@@ -62,17 +62,17 @@ def insert_row(cursor, list_name, row):
                 f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            table_names[list_name]['Update row'](cursor, row)
+            db_functions['Update row'](cursor, row)
             return 1
         # else this is just a normal insert
-    table_names[list_name]['Find overlaps'](cursor, row)
+    db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            table_names[list_name]['Log overlap'](cursor, row, dict(zip(violation_columns, v)))
+            db_functions['Log overlap'](cursor, row, dict(zip(violation_columns, v)))
     try:
-        table_names[list_name]['Insert row'](cursor, row)
+        db_functions['Insert row'](cursor, row)
         return 0
     except sqlite3.Error as e:
         print(
@@ -86,65 +86,113 @@ def prepare_table(table):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
-    table_names[table_name] = {}
+    table_names[table_name] = {POSTGRESQL: {},
+                               SQLITE: {}}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     # TODO: ensure timestamps are comparable
-    table_names[table_name]['Find row'] = lambda cursor, row: \
+    def find_row_psql(cursor, row):
         cursor.execute("select id_lokalId, registreringFra, virkningFra "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
                        "AND registreringFra = %(registreringFra)s "
                        "AND virkningFra = %(virkningFra)s",  # TODO: ensure timestamps are comparable
                        {k: row[k] for k in ['id_lokalId', 'registreringFra', 'virkningFra']})
+    table_names[table_name][POSTGRESQL]['Find row'] = find_row_psql
+    table_names[table_name][SQLITE]['Find row'] = find_row_psql
 
     # FIXME: update ranges
-    table_names[table_name]['Update row'] = lambda cursor, row: \
+    def update_row_psql(cursor, row):
         cursor.execute(f"update {table_name} set " +
                        ", ".join([f"{c} = %({c})s " for c in column_names]) +
                        " where true "
                        "AND id_lokalId = %(id_lokalId)s "
                        "AND registreringFra = %(registreringFra)s "
                        "AND virkningFra = %(virkningFra)s")
-    # FIXME: use ranges
+    table_names[table_name][POSTGRESQL]['Update row'] = update_row_psql
+    table_names[table_name][SQLITE]['Update row'] = update_row_psql
+
     violation_columns = ['id_lokalId',
                          'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
-    table_names[table_name]['Find overlaps'] = lambda cursor, row: \
+
+    # FIXME: use ranges
+    def find_overlaps_sqlite(cursor, row):
+        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+                       f"from {table_name} where true "
+                       "AND id_lokalId = %(id_lokalId)s "
+                       "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"\
+                       "    AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) " \
+                       "    OR   %(registreringFra_UTC)s <=   registreringFra_UTC "\
+                       "    AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " \
+                       "    )"\
+                       "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "\
+                       "    AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " \
+                       "    OR   %(virkningFra_UTC)s <=   virkningFra_UTC "\
+                       "    AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"\
+                       "    ) ", {k: row[k] for k in violation_columns})
+    table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
+
+    # FIXME: use ranges
+    def find_overlaps_psql(cursor, row):
         cursor.execute("select id_lokalId, registreringFra, virkningFra "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
                        "AND registreringTid_UTC && tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)')"
                        "AND virkningTid_UTC     && tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')",
                        {k: row[k] for k in violation_columns})
-    table_names[table_name]['Log overlap'] = lambda cursor, row, vio: \
+    table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
+
+    def log_overlap(cursor, row, vio):
         cursor.execute("insert into violation_log (table_name, id_lokalId,"
                        " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
                        " violating_registreringFra_UTC, violating_virkningFra_UTC) "
                        " VALUES(?, ?,  ?, ?,  ?, ?)",
                        (table_name, row['id_lokalId'], row['registreringFra'], row['virkningFra'],
                         vio['registreringFra'], vio['virkningFra']))
+    table_names[table_name][POSTGRESQL]['Log overlap'] = log_overlap
+    table_names[table_name][SQLITE]['Log overlap'] = log_overlap
 
-    # FIXME: insert ranges
-    def insert_row_func(cursor, row):
+    def insert_row_sqlite(cursor, row):
+        cursor.execute(f" INSERT into {table_name} ({', '.join(column_names + extra_column_names)})"
+                       " VALUES(" + ', '.join([f"%({c})s" for c in column_names + extra_column_names]) + ");", row)
+    table_names[table_name][SQLITE]['Insert row'] = insert_row_sqlite
+
+    def insert_row_psql(cursor, row):
         cursor.execute(f" INSERT into {table_name} ({', '.join(column_names + extra_column_names)})"
                        " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ', '
                        "        tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)'), " +
                        "        tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')" +
                        ");", row)
-    table_names[table_name]['Insert row'] = lambda cursor, row: insert_row_func(cursor, row)
+    table_names[table_name][POSTGRESQL]['Insert row'] = insert_row_psql
 
 
 SQLITE_TYPE_MAPPING = {
     'string': 'TEXT',
     'datetimetz': 'TEXT',  # TODO: This could be improved
+    'datetime': 'TEXT',  # TODO: This could be improved
     'integer': 'INT',
-    'tsrange': 'tsrange',
+    'tsrange': None,
     'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
 }
 
 
 def sqlite3_create_table(table):
     sql = f"CREATE TABLE {table['name']} (\n"
-    for (column) in table['columns']:
+    extra_columns = []
+    for column in table['extra_columns']:
+        if column['type'] == 'tsrange':
+            print(column['name'])
+            assert column['name'][-7:] == 'Tid_UTC'
+            for ex in ['Fra', 'Til']:
+                extra_columns += [{'name': column['name'].replace('Tid', ex),
+                                  'type': 'datetime',
+                                  'nullspec': 'null', #  column['nullspec'],
+                                  'description': f"Expansion of '{column['name']}. {column['description']}"
+                                 }]
+                print(repr(extra_columns[-1]))
+        else:
+            extra_columns.append(column)
+    table['extra_columns'] = extra_columns
+    for column in table['columns'] + table['extra_columns']:
         # table_content['items']['properties'].items()
         type_spec = ''
         if column['type'] not in SQLITE_TYPE_MAPPING:
@@ -270,13 +318,13 @@ def initialise_db(dbo, create, force, jsonschema):
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_content['type'] == 'array')
         table = jsonschema2table(table_name, table_content)
-        prepare_table(table)
         if create:
             if force:
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
                 print(f"Table {table['name']} droped.")
             cur.execute(sql_create_table(table))
             print(f"Table {table['name']} created.")
+        prepare_table(table)
     table = {
         'name': 'violation_log',
         'columns': [{'name': 'number', 'type': 'integer'},
@@ -370,7 +418,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                 if '.' in prefix and event == 'start_map':
                     db_row = dict(table_names[db_table_name]['row'])
                 if '.' in prefix and event == 'end_map':
-                    ret = insert_row(cursor, db_table_name, db_row)
+                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']], db_row)
                     db_row = None
                     if ret == 0:
                         row_inserts += 1
