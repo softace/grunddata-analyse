@@ -325,7 +325,7 @@ def initialise_db(dbo, create, force, jsonschema):
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
                 print(f"Table {table['name']} droped.")
             for sql in sql_create_table(table):
-                print(sql)
+#                print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
         prepare_table(table)
