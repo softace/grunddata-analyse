@@ -44,15 +44,11 @@ def insert_row(cursor, db_functions, row):
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
         err_msg = f"For ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}):"\
                   f" Registreringsinterval er negativ ({row['registreringFra']}, {row['registreringTil']})"
-        print(err_msg)
-        return -1
-        # raise ValueError(err_msg)
+        db_functions['Log overlap'](cursor, row, err_msg, None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
         err_msg = f"For ({row['id_lokalId']}, {row['virkningFra']}, {row['virkningFra']}):"\
                   f" Virkningsinterval er negativ ({row['virkningFra']}, {row['virkningTil']})"
-        print(err_msg)
-        return -1
-        # raise ValueError(err_msg)
+        db_functions['Log overlap'](cursor, row, err_msg, None)
     if row['registreringTil']:  # This might be an update
         db_functions['Find row'](cursor, row)
         rows = cursor.fetchall()
@@ -63,17 +59,17 @@ def insert_row(cursor, db_functions, row):
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
             db_functions['Update row'](cursor, row)
-            return 1
+            return 0
         # else this is just a normal insert
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            db_functions['Log overlap'](cursor, row, dict(zip(violation_columns, v)))
+            db_functions['Log overlap'](cursor, row, "samtidig virkende objekter", dict(zip(violation_columns, v)))
     try:
         db_functions['Insert row'](cursor, row)
-        return 0
+        return 1
     except sqlite3.Error as e:
         print(
             f"FAIL ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> "
@@ -143,13 +139,15 @@ def prepare_table(table):
                        {k: row[k] for k in violation_columns})
     table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
 
-    def log_overlap(cursor, row, vio):
+    def log_overlap(cursor, row, message, vio):
+        if vio == None:
+            vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
         cursor.execute("insert into violation_log (table_name, id_lokalId,"
-                       " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC,"
-                       " violating_registreringFra_UTC, violating_virkningFra_UTC) "
-                       " VALUES(?, ?,  ?, ?,  ?, ?)",
-                       (table_name, row['id_lokalId'], row['registreringFra'], row['virkningFra'],
-                        vio['registreringFra'], vio['virkningFra']))
+                       " registreringFra_UTC, virkningFra_UTC, violation_text,"
+                       " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
+                       " VALUES(?, ?,  ?, ?,  ?, ?, ?)",
+                       (table_name, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], message,
+                        vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     table_names[table_name][POSTGRESQL]['Log overlap'] = log_overlap
     table_names[table_name][SQLITE]['Log overlap'] = log_overlap
 
@@ -340,16 +338,17 @@ def initialise_db(dbo, create, force, jsonschema):
     tables = []
     tables.append({
         'name': 'violation_log',
-        'columns': [{'name': 'number', 'type': 'integer'},
-                    {'name': 'table_name', 'type': 'string'},
-                    {'name': 'id_lokalId', 'type': 'string'},
-                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string'},
-                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string'},
-                    {'name': 'violating_registreringFra_UTC', 'type': 'string'},
-                    {'name': 'violating_virkningFra_UTC', 'type': 'string'},
+        'columns': [{'name': 'id', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'id_lokalId', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'registreringFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'virkningFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'violation_text', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullspec': 'null'},
+                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullspec': 'null'},
                     ],
         'extra_columns': [],
-        'primary_keys': ['number'],
+        'primary_keys': ['id'],
     })
     #  Consider prepare_table(tables[-1])
     tables.append({
@@ -500,11 +499,11 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                     ret = insert_row(cursor, table_names[db_table_name][database_options['backend']], {**db_row, 'file_extract_id': file_extract_id})
                     db_row = None
                     if ret == 0:
-                        row_inserts += 1
-                    elif ret == 1:
                         row_updates += 1
+                    elif ret == 1:
+                        row_inserts += 1
                     else:
-                        data_errors += 1
+                        raise NotImplementedError
                     if (row_inserts + row_updates) % STEP_ROWS == 0:
                         prev_step_time = step_time
                         step_time = time.time()
