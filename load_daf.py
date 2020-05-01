@@ -114,18 +114,18 @@ def prepare_table(table):
 
     # FIXME: use ranges
     def find_overlaps_sqlite(cursor, row):
-        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+        cursor.execute("select id_lokalId, registreringFra_UTC, virkningFra_UTC "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
-                       "AND (      registreringFra_UTC   <= %(registreringFra_UTC)s"
-                       "  AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL) "
-                       "  OR   %(registreringFra_UTC)s <=   registreringFra_UTC "
-                       "  AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) " 
+                       "AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
+                       "      AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
+                       "  OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
+                       "      AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
                        "  )"
-                       "AND (      virkningFra_UTC   <= %(virkningFra_UTC)s "
-                       "  AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL) " 
-                       "  OR   %(virkningFra_UTC)s <=   virkningFra_UTC "
-                       "  AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL)"
+                       "AND ((       virkningFra_UTC   <= %(virkningFra_UTC)s "
+                       "      AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
+                       "  OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
+                       "      AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
                        "  ) ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
