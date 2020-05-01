@@ -42,13 +42,9 @@ def insert_row(cursor, db_functions, row):
             f" har egentlig værdier, men fandt "
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}):"\
-                  f" Registreringsinterval er negativ ({row['registreringFra']}, {row['registreringTil']})"
-        db_functions['Log overlap'](cursor, row, err_msg, None)
+        db_functions['Log overlap'](cursor, row, 'Registreringsinterval er negativ', None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
-        err_msg = f"For ({row['id_lokalId']}, {row['virkningFra']}, {row['virkningFra']}):"\
-                  f" Virkningsinterval er negativ ({row['virkningFra']}, {row['virkningTil']})"
-        db_functions['Log overlap'](cursor, row, err_msg, None)
+        db_functions['Log overlap'](cursor, row, 'Virkningsinterval er negativ', None)
     if row['registreringTil']:  # This might be an update
         db_functions['Find row'](cursor, row)
         rows = cursor.fetchall()
@@ -66,7 +62,7 @@ def insert_row(cursor, db_functions, row):
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            db_functions['Log overlap'](cursor, row, "samtidig virkende objekter", dict(zip(violation_columns, v)))
+            db_functions['Log overlap'](cursor, row, "Samtidig virkende objekt", dict(zip(violation_columns, v)))
     try:
         db_functions['Insert row'](cursor, row)
         return 1
