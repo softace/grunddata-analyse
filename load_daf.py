@@ -142,14 +142,14 @@ def prepare_table(table):
     def log_overlap(cursor, row, message, vio):
         if vio == None:
             vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
-        cursor.execute("insert into violation_log (table_name, id_lokalId,"
+        cursor.execute("insert into violation_log (table_name, file_extract_id, id_lokalId,"
                        " registreringFra_UTC, virkningFra_UTC, violation_text,"
                        " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
-                       " VALUES(?, ?,  ?, ?,  ?, ?, ?)",
-                       (table_name, row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], message,
+                       " VALUES(?, ?,  ?, ?, ?,  ?, ?, ?)",
+                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], message,
                         vio['registreringFra_UTC'], vio['virkningFra_UTC']))
-    table_names[table_name][POSTGRESQL]['Log overlap'] = log_overlap
     table_names[table_name][SQLITE]['Log overlap'] = log_overlap
+    #  table_names[table_name][POSTGRESQL]['Log overlap'] = log_overlap
 
     def insert_row_sqlite(cursor, row):
         return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
@@ -337,21 +337,6 @@ def initialise_db(dbo, create, force, jsonschema):
     cur = conn.cursor()
     tables = []
     tables.append({
-        'name': 'violation_log',
-        'columns': [{'name': 'id', 'type': 'integer', 'nullspec': 'notnull'},
-                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'id_lokalId', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'registreringFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'virkningFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'violation_text', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullspec': 'null'},
-                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullspec': 'null'},
-                    ],
-        'extra_columns': [],
-        'primary_keys': ['id'],
-    })
-    #  Consider prepare_table(tables[-1])
-    tables.append({
         'name': 'file_extract',
         'columns': [{'name': 'id', 'type': 'integer'},
                     {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
@@ -378,6 +363,23 @@ def initialise_db(dbo, create, force, jsonschema):
         'foreign_keys': [(['file_extract_id'], 'file_extract',['id'])],
     })
     prepare_table(tables[-1])
+    tables.append({
+        'name': 'violation_log',
+        'columns': [{'name': 'id', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'file_extract_id', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'id_lokalId', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'registreringFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'virkningFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'violation_text', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullspec': 'null'},
+                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullspec': 'null'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['id'],
+        'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
+    })
+    #  Consider prepare_table(tables[-1])
 
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_name[-4:] == 'List')
