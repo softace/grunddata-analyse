@@ -380,8 +380,9 @@ def initialise_db(dbo, create, force, jsonschema):
     prepare_table(tables[-1])
 
     for (table_name, table_content) in jsonschema['properties'].items():
+        assert (table_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
-        tables.append(jsonschema2table(table_name, table_content))
+        tables.append(jsonschema2table(table_name[:-4], table_content))
         prepare_table(tables[-1])
     for table in reversed(tables):
         if create:
@@ -483,7 +484,8 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                     if '.' in prefix:
                         db_column = value
                     else:
-                        db_table_name = value
+                        assert value[-4:] == 'List'
+                        db_table_name = value[:-4]
                         print(f"Inserting into {db_table_name}")
                 if event == 'end_array':
                     print(f"{row_inserts:>10} rows inserted into  {db_table_name}")
