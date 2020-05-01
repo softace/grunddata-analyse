@@ -1,5 +1,7 @@
 #!/usr/bin/env/python
+import datetime
 import decimal
+import os
 import ijson
 import json
 from zipfile import ZipFile
@@ -151,8 +153,8 @@ def prepare_table(table):
     table_names[table_name][SQLITE]['Log overlap'] = log_overlap
 
     def insert_row_sqlite(cursor, row):
-        cursor.execute(f" INSERT into {table_name} ({', '.join(column_names + extra_column_names)})"
-                       " VALUES(" + ', '.join([f"%({c})s" for c in column_names + extra_column_names]) + ");", row)
+        return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
+                       " VALUES(" + ', '.join([f"%({c})s" for c in row.keys()]) + ");", row)
     table_names[table_name][SQLITE]['Insert row'] = insert_row_sqlite
 
     def insert_row_psql(cursor, row):
@@ -211,8 +213,11 @@ def sqlite3_create_table(table):
         sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
     sql += "\n"
     table['primary_keys'] = [ (x + '_UTC') if x[-3:] == 'Fra' else x for x in table['primary_keys']]
-    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
-    sql += ");\n"
+    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")"
+    if 'foreign_keys' in table.keys():
+        for fk in table['foreign_keys']:
+            sql += f",\n  FOREIGN KEY({', '.join(fk[0])}) REFERENCES {fk[1]}({', '.join(fk[2])})"
+    sql += "\n);\n"
     return [sql] + indexes
 
 
@@ -248,8 +253,11 @@ def psql_create_table(table):
         comment = f"  --  {column['description']}" if 'description' in column else ''
         sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
     sql += "\n"
-    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")\n"
-    sql += ");\n"
+    sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")"
+    if 'foreign_keys' in table.keys():
+        for fk in table['foreign_keys']:
+            sql += f",\n  FOREIGN KEY({', '.join(fk[0])}) REFERENCES {fk[1]}({', '.join(fk[2])})"
+    sql += "\n);\n"
     return [sql] + indexes
 
 
@@ -293,7 +301,12 @@ def jsonschema2table(table_name, table_content):
                                     'description': f'({tid}Fra, {tid}Til) i UTC',
                                     'nullspec': 'notnull'
                                     }]
+    table['extra_columns'] += [{'name': 'file_extract_id',
+                                'type': 'integer',
+                                'nullspec': 'notnull'
+                                }]
     table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
+    table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id'])]
     return table
 
 
@@ -318,11 +331,7 @@ def initialise_db(dbo, create, force, jsonschema):
 
     cur = conn.cursor()
     tables = []
-    for (table_name, table_content) in jsonschema['properties'].items():
-        assert (table_content['type'] == 'array')
-        tables.append(jsonschema2table(table_name, table_content))
-        prepare_table(table)
-    table = {
+    tables.append({
         'name': 'violation_log',
         'columns': [{'name': 'number', 'type': 'integer'},
                     {'name': 'table_name', 'type': 'string'},
@@ -334,16 +343,47 @@ def initialise_db(dbo, create, force, jsonschema):
                     ],
         'extra_columns': [],
         'primary_keys': ['number'],
-    }
-    tables.append(table)
-    #  Consider prepare_table(table)
+    })
+    #  Consider prepare_table(tables[-1])
+    tables.append({
+        'name': 'file_extract',
+        'columns': [{'name': 'id', 'type': 'integer'},
+                    {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'metadata_file_name', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'job_begin', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'job_end', 'type': 'datetimetz', 'nullspec': 'null'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['id'],
+    })
+    prepare_table(tables[-1])
+    tables.append({
+        'name': 'metadata',
+        'columns': [{'name': 'id', 'type': 'integer'},
+                    {'name': 'file_extract_id', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'key', 'type': 'string'},
+                    {'name': 'value', 'type': 'string'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['id'],
+        'foreign_keys': [(['file_extract_id'], 'file_extract',['id'])],
+    })
+    prepare_table(tables[-1])
+
+    for (table_name, table_content) in jsonschema['properties'].items():
+        assert (table_content['type'] == 'array')
+        tables.append(jsonschema2table(table_name, table_content))
+        prepare_table(tables[-1])
     for table in tables:
         if create:
             if force:
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
                 print(f"Table {table['name']} droped.")
             for sql in sql_create_table(table):
-                #                print(sql)
+                print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
     conn.commit()
@@ -390,7 +430,38 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
     with ZipFile(data_package, 'r') as myzip:
         # for info in myzip.infolist():
         #    print(info.filename)
+        meta_data_name = next(x for x in myzip.namelist() if 'Metadata' in x)
         json_data_name = next(x for x in myzip.namelist() if 'Metadata' not in x)
+        zip2iso = lambda ts: datetime.datetime(*ts).isoformat()
+        file_extract = {
+            'zip_file_name': data_package,
+            'zip_file_timestamp': datetime.datetime.fromtimestamp(os.path.getmtime(data_package)).astimezone().isoformat(),
+            'metadata_file_name': meta_data_name,
+            'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
+            'data_file_timestamp': zip2iso(myzip.getinfo(json_data_name).date_time),
+            'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
+        }
+        file_extract_id = table_names['file_extract'][database_options['backend']]['Insert row'](cursor, file_extract).lastrowid
+        with myzip.open(meta_data_name) as file:
+            metadata = json.load(file)
+            def flatten_dict(d):
+                def items():
+                    for key, value in d.items():
+                        if isinstance(value, dict):
+                            for subkey, subvalue in flatten_dict(value).items():
+                                yield key + "." + subkey, subvalue
+                        elif isinstance(value, list):
+                                    for idx, item in enumerate(value):
+                                        for subkey, subvalue in flatten_dict(item).items():
+                                            yield key + f"[{idx}]." + subkey, subvalue
+                        else:
+                            yield key, value
+
+                return dict(items())
+
+            values = flatten_dict(metadata)
+            for key, value in values.items():
+                table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value, 'file_extract_id': file_extract_id})
         with myzip.open(json_data_name) as file:
             parser = ijson.parse(file)
             db_table_name = None
@@ -419,7 +490,7 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
                 if '.' in prefix and event == 'start_map':
                     db_row = dict(table_names[db_table_name]['row'])
                 if '.' in prefix and event == 'end_map':
-                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']], db_row)
+                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']], {**db_row, 'file_extract_id': file_extract_id})
                     db_row = None
                     if ret == 0:
                         row_inserts += 1
