@@ -103,6 +103,7 @@ def prepare_table(table):
 
     # FIXME: update ranges
     def update_row_psql(cursor, row):
+        row['update_file_extract_id'] = row.pop('file_extract_id')
         cursor.execute(f"update {table_name} set " +
                        ", ".join([f"{c} = %({c})s " for c in column_names]) +
                        " where true "
@@ -170,7 +171,7 @@ SQLITE_TYPE_MAPPING = {
     'string': 'TEXT',
     'datetimetz': 'TEXT',  # TODO: This could be improved
     'datetime': 'TEXT',  # TODO: This could be improved
-    'integer': 'INT',
+    'integer': 'INTEGER', #  This is important, so that integer primary key becomes rowid.
     'tsrange': None,
     'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
 }
@@ -304,9 +305,14 @@ def jsonschema2table(table_name, table_content):
     table['extra_columns'] += [{'name': 'file_extract_id',
                                 'type': 'integer',
                                 'nullspec': 'notnull'
+                                },
+                               {'name': 'update_file_extract_id',
+                                'type': 'integer',
+                                'nullspec': 'null'
                                 }]
     table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
-    table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id'])]
+    table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id']),
+                             (['update_file_extract_id'], 'file_extract', ['id'])]
     return table
 
 
@@ -316,6 +322,7 @@ def initialise_db(dbo, create, force, jsonschema):
         sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
         conn = sqlite3paramstyle.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
+        conn.execute("PRAGMA foreign_keys = ON;")
         conn.commit()
         sql_create_table = sqlite3_create_table
     elif dbo['backend'] == POSTGRESQL:
@@ -377,7 +384,7 @@ def initialise_db(dbo, create, force, jsonschema):
         assert (table_content['type'] == 'array')
         tables.append(jsonschema2table(table_name, table_content))
         prepare_table(tables[-1])
-    for table in tables:
+    for table in reversed(tables):
         if create:
             if force:
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
