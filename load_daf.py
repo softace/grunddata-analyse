@@ -177,7 +177,6 @@ def sqlite3_create_table(table):
     indexes = []
     for column in table['extra_columns']:
         if column['type'] == 'tsrange':
-            print(column['name'])
             assert column['name'][-7:] == 'Tid_UTC'
             for ex in ['Fra', 'Til']:
                 col_name = column['name'].replace('Tid', ex)
@@ -388,7 +387,7 @@ def initialise_db(dbo, create, force, jsonschema):
                 cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
                 print(f"Table {table['name']} droped.")
             for sql in sql_create_table(table):
-                print(sql)
+                # print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
     conn.commit()
