@@ -317,17 +317,10 @@ def initialise_db(dbo, create, force, jsonschema):
             f"Unknown database backend '{dbo['backend']}'.")
 
     cur = conn.cursor()
+    tables = []
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_content['type'] == 'array')
-        table = jsonschema2table(table_name, table_content)
-        if create:
-            if force:
-                cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-                print(f"Table {table['name']} droped.")
-            for sql in sql_create_table(table):
-#                print(sql)
-                cur.execute(sql)
-            print(f"Table {table['name']} created.")
+        tables.append(jsonschema2table(table_name, table_content))
         prepare_table(table)
     table = {
         'name': 'violation_log',
@@ -342,14 +335,17 @@ def initialise_db(dbo, create, force, jsonschema):
         'extra_columns': [],
         'primary_keys': ['number'],
     }
+    tables.append(table)
     #  Consider prepare_table(table)
-    if create:
-        if force:
-            cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-            print(f"Table {table['name']} droped.")
-        for sql in sql_create_table(table):
-            cur.execute(sql)
-        print(f"Table {table['name']} created.")
+    for table in tables:
+        if create:
+            if force:
+                cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
+                print(f"Table {table['name']} droped.")
+            for sql in sql_create_table(table):
+                #                print(sql)
+                cur.execute(sql)
+            print(f"Table {table['name']} created.")
     conn.commit()
     print(f"Database {dbo['database']} initialised.")
     return conn
