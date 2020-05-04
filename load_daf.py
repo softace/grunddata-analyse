@@ -42,9 +42,9 @@ def insert_row(cursor, db_functions, row):
             f" har egentlig værdier, men fandt "
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
-        db_functions['Log overlap'](cursor, row, 'Registreringsinterval er negativ', None)
+        db_functions['Log violation'](cursor, row, 'Registreringsinterval er negativ', f"{row['registreringTil']} < {row['registreringFra']}", None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
-        db_functions['Log overlap'](cursor, row, 'Virkningsinterval er negativ', None)
+        db_functions['Log violation'](cursor, row, 'Virkningsinterval er negativ', f"{row['virkningTil']} < {row['virkningFra']}", None)
     if row['registreringTil']:  # This might be an update
         db_functions['Find row'](cursor, row)
         rows = cursor.fetchall()
@@ -54,6 +54,27 @@ def insert_row(cursor, db_functions, row):
                 f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
+            if rows[0][[d[0] for d in cursor.description].index('registreringTil')]:
+                raise ValueError(
+                    "Forventet at opdatere registreringTil for "
+                    f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
+                    f" men den er allerede sat")
+            assert rows[0][-1] == None
+            assert sorted([x[0] for x in cursor.description]) == sorted([*row.keys(), 'update_file_extract_id'])
+            def invalid_update_columns(desc, existing, new_row):
+                result = []
+                for i, d in enumerate(desc):
+                    if d[0] in ['registreringTil', 'registreringTil_UTC', 'file_extract_id', 'update_file_extract_id']:
+                        continue
+                    if existing[i] != new_row[d[0]]:
+                        result.append((d[0], existing[i]))
+                return result
+            invalid_update_cols = invalid_update_columns(cursor.description, rows[0], row)
+            if invalid_update_cols:
+                db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier.',
+                                              f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
+                                              " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
+                                              None)
             db_functions['Update DAF row'](cursor, row)
             return 0
         # else this is just a normal insert
@@ -62,7 +83,7 @@ def insert_row(cursor, db_functions, row):
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            db_functions['Log overlap'](cursor, row, "Samtidig virkende objekt", dict(zip(violation_columns, v)))
+            db_functions['Log violation'](cursor, row, "Samtidig virkende objekt", 'Se bitemporalitet', dict(zip(violation_columns, v)))
     try:
         db_functions['Insert row'](cursor, row)
         return 1
@@ -84,23 +105,23 @@ def prepare_table(table):
 
     #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
-        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+        cursor.execute("select * "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
-                       "AND registreringFra = %(registreringFra)s "
-                       "AND virkningFra = %(virkningFra)s",  # TODO: ensure timestamps are comparable
-                       {k: row[k] for k in ['id_lokalId', 'registreringFra', 'virkningFra']})
+                       "AND registreringFra_UTC = %(registreringFra_UTC)s "
+                       "AND virkningFra_UTC = %(virkningFra_UTC)s",  # TODO: ensure timestamps are comparable
+                       {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
     table_names[table_name][POSTGRESQL]['Find row'] = find_row_psql
     table_names[table_name][SQLITE]['Find row'] = find_row_psql
 
     def update_daf_row(cursor, row):
         row['update_file_extract_id'] = row.pop('file_extract_id')
         cursor.execute(f"update {table_name} set " +
-                       ", ".join([f"{c} = %({c})s " for c in column_names]) +
+                       ", ".join([f"{c} = %({c})s " for c in row.keys()]) +
                        " where true "
                        "AND id_lokalId = %(id_lokalId)s "
-                       "AND registreringFra = %(registreringFra)s "
-                       "AND virkningFra = %(virkningFra)s", row)
+                       "AND registreringFra_UTC = %(registreringFra_UTC)s "
+                       "AND virkningFra_UTC = %(virkningFra_UTC)s", row)
     # table_names[table_name][POSTGRESQL]['Update DAF row'] = update_daf_row     # FIXME: update ranges
     table_names[table_name][SQLITE]['Update DAF row'] = update_daf_row
 
@@ -142,17 +163,17 @@ def prepare_table(table):
                        {k: row[k] for k in violation_columns})
     table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
 
-    def log_overlap(cursor, row, message, vio):
+    def log_violation(cursor, row, violation_type, message, vio):
         if vio == None:
             vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
         cursor.execute("insert into violation_log (table_name, file_extract_id, id_lokalId,"
-                       " registreringFra_UTC, virkningFra_UTC, violation_text,"
+                       " registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
                        " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
-                       " VALUES(?, ?,  ?, ?, ?,  ?, ?, ?)",
-                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], message,
+                       " VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
+                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], violation_type, message,
                         vio['registreringFra_UTC'], vio['virkningFra_UTC']))
-    table_names[table_name][SQLITE]['Log overlap'] = log_overlap
-    #  table_names[table_name][POSTGRESQL]['Log overlap'] = log_overlap
+    table_names[table_name][SQLITE]['Log violation'] = log_violation
+    table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
     def insert_row_sqlite(cursor, row):
         return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
@@ -353,6 +374,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'id_lokalId', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'registreringFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'virkningFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'violation_type', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'violation_text', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullspec': 'null'},
                     {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullspec': 'null'},
