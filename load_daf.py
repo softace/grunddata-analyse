@@ -54,7 +54,7 @@ def insert_row(cursor, db_functions, row):
                 f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
                 f" fandt {len(rows)} forekomster")
         elif len(rows) == 1:
-            db_functions['Update row'](cursor, row)
+            db_functions['Update DAF row'](cursor, row)
             return 0
         # else this is just a normal insert
     db_functions['Find overlaps'](cursor, row)
@@ -93,8 +93,7 @@ def prepare_table(table):
     table_names[table_name][POSTGRESQL]['Find row'] = find_row_psql
     table_names[table_name][SQLITE]['Find row'] = find_row_psql
 
-    # FIXME: update ranges
-    def update_row_psql(cursor, row):
+    def update_daf_row(cursor, row):
         row['update_file_extract_id'] = row.pop('file_extract_id')
         cursor.execute(f"update {table_name} set " +
                        ", ".join([f"{c} = %({c})s " for c in column_names]) +
@@ -102,8 +101,16 @@ def prepare_table(table):
                        "AND id_lokalId = %(id_lokalId)s "
                        "AND registreringFra = %(registreringFra)s "
                        "AND virkningFra = %(virkningFra)s", row)
-    table_names[table_name][POSTGRESQL]['Update row'] = update_row_psql
-    table_names[table_name][SQLITE]['Update row'] = update_row_psql
+    # table_names[table_name][POSTGRESQL]['Update DAF row'] = update_daf_row     # FIXME: update ranges
+    table_names[table_name][SQLITE]['Update DAF row'] = update_daf_row
+
+    def update_row(cursor, row):
+        cursor.execute(f"update {table_name} set " +
+                       ", ".join([f"{c} = %({c})s " for c in row.keys() if c != 'id']) +
+                       " where true "
+                       "AND id = %(id)s "
+                       , row)
+    table_names[table_name][SQLITE]['Update row'] = update_row
 
     violation_columns = ['id_lokalId',
                          'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
@@ -524,6 +531,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                 if event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
                     db_row[db_column] = value
                     db_column = None
+        table_names['file_extract'][database_options['backend']]['Update row'](
+            cursor,{'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()
     conn.close()
 
