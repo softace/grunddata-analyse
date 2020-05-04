@@ -171,8 +171,8 @@ SQLITE_TYPE_MAPPING = {
 }
 
 
-def sqlite3_create_table(table):
-    sql = f"CREATE TABLE {table['name']} (\n"
+def sqlite3_create_table(table, fail):
+    sql = f"CREATE TABLE{'' if fail else ' IF NOT EXISTS'} {table['name']} (\n"
     extra_columns = []
     indexes = []
     for column in table['extra_columns']:
@@ -185,7 +185,7 @@ def sqlite3_create_table(table):
                                    'nullspec': 'null',  # column['nullspec'],
                                    'description': f"Expansion of '{column['name']}. {column['description']}"
                                    }]
-                indexes += [f"CREATE INDEX {table['name']}_{col_name}_idx ON {table['name']} ({col_name});"]
+                indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} {table['name']}_{col_name}_idx ON {table['name']} ({col_name});"]
         else:
             extra_columns.append(column)
     table['extra_columns'] = extra_columns
@@ -224,8 +224,8 @@ PSQL_TYPE_MAPPING = {
 }
 
 
-def psql_create_table(table):
-    sql = f"CREATE TABLE {table['name']} (\n"
+def psql_create_table(table, fail):
+    sql = f"CREATE TABLE{'' if fail else ' IF NOT EXISTS'} {table['name']} (\n"
     indexes = []
     for (column) in table['columns'] + table['extra_columns']:
         # table_content['items']['properties'].items()
@@ -234,7 +234,7 @@ def psql_create_table(table):
             raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
         type_spec += PSQL_TYPE_MAPPING[column['type']]
         if type_spec == 'tsrange':
-            indexes += [f"CREATE INDEX {table['name']}_{column['name']}_idx "
+            indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} {table['name']}_{column['name']}_idx "
                         f"ON {table['name']} USING GIST ({column['name']});"]
         if 'nullspec' in column:
             if column['nullspec'] == 'null':
@@ -309,27 +309,7 @@ def jsonschema2table(table_name, table_content):
     return table
 
 
-def initialise_db(dbo, create, force, jsonschema):
-    if dbo['backend'] == SQLITE:
-        sqlite3.register_adapter(decimal.Decimal, decimal2text)
-        sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
-        conn = sqlite3paramstyle.connect(dbo['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
-        conn.execute("PRAGMA encoding = 'UTF-8';")
-        conn.execute("PRAGMA foreign_keys = ON;")
-        conn.commit()
-        sql_create_table = sqlite3_create_table
-    elif dbo['backend'] == POSTGRESQL:
-        conn = psycopg2.connect(host=dbo['host'],
-                                port=dbo['port'],
-                                user=dbo['user'],
-                                password=dbo['password'],
-                                dbname=dbo['database'])
-        sql_create_table = psql_create_table
-    else:
-        raise NotImplementedError(
-            f"Unknown database backend '{dbo['backend']}'.")
-
-    cur = conn.cursor()
+def initialise_db(conn, sql_create_table, initialise_tables):
     tables = []
     tables.append({
         'name': 'file_extract',
@@ -375,35 +355,46 @@ def initialise_db(dbo, create, force, jsonschema):
         'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
     })
     #  Consider prepare_table(tables[-1])
+    if initialise_tables:
+        cur = conn.cursor()
+        for table in tables:
+            # cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
+            # print(f"Table {table['name']} droped.")
+            for sql in sql_create_table(table, True):
+                # print(sql)
+                cur.execute(sql)
+            print(f"Table {table['name']} created.")
+        conn.commit()
 
+
+def initialise_registry_tables(conn, sql_create_table, wipe, jsonschema):
+    tables = []
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
         tables.append(jsonschema2table(table_name[:-4], table_content))
         prepare_table(tables[-1])
-    for table in reversed(tables):
-        if create:
-            if force:
-                cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-                print(f"Table {table['name']} droped.")
-            for sql in sql_create_table(table):
-                # print(sql)
-                cur.execute(sql)
-            print(f"Table {table['name']} created.")
+    cur = conn.cursor()
+    for table in tables:
+        if wipe:
+            cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
+            print(f"Table {table['name']} maybe droped.")
+        for sql in sql_create_table(table, False):
+            # print(sql)
+            cur.execute(sql)
+        print(f"Table {table['name']} maybe created.")
     conn.commit()
-    print(f"Database {dbo['database']} initialised.")
-    return conn
 
 
-def main(create: ("Create the tables before inserting", 'flag', 'C'),
-         force: ("Force creation of tables (DROP) if they already exists", 'flag', 'F'),
+def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 'i'),
+         wipe: ("Wipe DAF registry data before loading (dangerous)", 'flag', 'W'),
          db_backend: ("DB backend. Supported is 'sqlite', 'psql'", 'option', 'b'),
          db_host: ("Database host", 'option', 'H'),
          db_port: ("Database port", 'option', 'p'),
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         registry: ("DAF register: dar, bbr", 'option', 'r'),
+         registry: ("DAF registry: dar, bbr", 'option', 'r'),
          data_package: 'file path to the zip datapackage'):
     """Loads a DAF data file into database
     """
@@ -427,8 +418,29 @@ def main(create: ("Create the tables before inserting", 'flag', 'C'),
         json_schema_file_name = 'BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
     else:
         raise ValueError(f"Ukendt register '{registry}'.")
+
+    if database_options['backend'] == SQLITE:
+        sqlite3.register_adapter(decimal.Decimal, decimal2text)
+        sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
+        conn = sqlite3paramstyle.connect(database_options['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
+        conn.execute("PRAGMA encoding = 'UTF-8';")
+        conn.execute("PRAGMA foreign_keys = ON;")
+        conn.commit()
+        sql_create_table = sqlite3_create_table
+    elif database_options['backend'] == POSTGRESQL:
+        conn = psycopg2.connect(host=database_options['host'],
+                                port=database_options['port'],
+                                user=database_options['user'],
+                                password=database_options['password'],
+                                dbname=database_options['database'])
+        sql_create_table = psql_create_table
+    else:
+        raise NotImplementedError(
+            f"Unknown database backend '{database_options['backend']}'.")
+
+    initialise_db(conn, sql_create_table, initialise)
     with open(json_schema_file_name, 'rb') as file:
-        conn = initialise_db(database_options, create, force, json.load(file))
+        initialise_registry_tables(conn, sql_create_table, wipe, json.load(file))
 
     cursor = conn.cursor()
     with ZipFile(data_package, 'r') as myzip:
