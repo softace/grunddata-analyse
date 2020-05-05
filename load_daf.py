@@ -479,7 +479,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         json_data_name = next(x for x in myzip.namelist() if 'Metadata' not in x)
         zip2iso = lambda ts: datetime.datetime(*ts).isoformat()
         file_extract = {
-            'zip_file_name': data_package,
+            'zip_file_name': os.path.basename(data_package),
             'zip_file_timestamp': datetime.datetime.fromtimestamp(os.path.getmtime(data_package)).astimezone().isoformat(),
             'metadata_file_name': meta_data_name,
             'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
