@@ -344,9 +344,11 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'columns': [{'name': 'id', 'type': 'integer'},
                     {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'zip_file_size', 'type': 'integer', 'nullspec': 'notnull'},
                     {'name': 'metadata_file_name', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
                     {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
+                    {'name': 'data_file_size', 'type': 'integer', 'nullspec': 'notnull'},
                     {'name': 'job_begin', 'type': 'datetimetz', 'nullspec': 'notnull'},
                     {'name': 'job_end', 'type': 'datetimetz', 'nullspec': 'null'},
                     ],
@@ -478,12 +480,15 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         meta_data_name = next(x for x in myzip.namelist() if 'Metadata' in x)
         json_data_name = next(x for x in myzip.namelist() if 'Metadata' not in x)
         zip2iso = lambda ts: datetime.datetime(*ts).isoformat()
+        data_file_zipinfo = myzip.getinfo(json_data_name)
         file_extract = {
             'zip_file_name': os.path.basename(data_package),
             'zip_file_timestamp': datetime.datetime.fromtimestamp(os.path.getmtime(data_package)).astimezone().isoformat(),
+            'zip_file_size': os.path.getsize(data_package),
             'metadata_file_name': meta_data_name,
             'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
-            'data_file_timestamp': zip2iso(myzip.getinfo(json_data_name).date_time),
+            'data_file_timestamp': zip2iso(data_file_zipinfo.date_time),
+            'data_file_size': data_file_zipinfo.file_size,
             'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
         }
         file_extract_id = table_names['file_extract'][database_options['backend']]['Insert row'](cursor, file_extract).lastrowid
