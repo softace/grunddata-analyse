@@ -71,7 +71,7 @@ def insert_row(cursor, db_functions, row):
                 return result
             invalid_update_cols = invalid_update_columns(cursor.description, rows[0], row)
             if invalid_update_cols:
-                db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier.',
+                db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier',
                                               f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
                                               " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
                                               None)
@@ -145,12 +145,12 @@ def prepare_table(table):
                        "      AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
                        "  OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
                        "      AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
-                       "  )"
+                       "    )"
                        "AND ((       virkningFra_UTC   <= %(virkningFra_UTC)s "
                        "      AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
                        "  OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
                        "      AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
-                       "  ) ", {k: row[k] for k in violation_columns})
+                       "    ) ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
     # FIXME: use ranges
