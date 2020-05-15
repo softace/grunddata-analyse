@@ -444,9 +444,9 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     package_name = data_package[:-4]
     print(f'Loading data from {package_name}')
     if registry == 'dar':
-        json_schema_file_name = "DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
+        json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
     elif registry == 'bbr':
-        json_schema_file_name = 'BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
+        json_schema_file_name = 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
     else:
         raise ValueError(f"Ukendt register '{registry}'.")
 
