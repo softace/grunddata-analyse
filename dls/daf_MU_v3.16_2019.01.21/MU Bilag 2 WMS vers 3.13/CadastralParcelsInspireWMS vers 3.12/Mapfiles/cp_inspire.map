@@ -1,0 +1,161 @@
+#MATRIKEL_INS_A-harmoniseret WMS-tjeneste "Cadastral Parcels"
+#Cf. INSPIRE Dataspecification CP v. 3.0.1
+#Oprettet oktober 2012, MORPL
+#Aendret 2018, NIPER
+MAP
+ NAME "Cadastral Parcels"
+ PROJECTION 
+   "init=epsg:25832" 
+ END
+ EXTENT 120000 5900000 1000000 6500000 
+ MAXSIZE 10000
+ OUTPUTFORMAT
+   NAME aggjpeg
+   DRIVER AGG/JPEG
+   MIMETYPE "image/jpeg"
+   IMAGEMODE RGB
+   EXTENSION "jpg"
+   FORMATOPTION "QUALITY=85"
+ END
+ FONTSET "../fonts/fontset.txt" 
+ STATUS ON
+ UNITS METERS
+ DEBUG 5
+ CONFIG "ON_MISSING_DATA" "FAIL"
+ CONFIG "MS_ERRORFILE" "/local/tmp_ms/maperror_cp_inspire.txt"
+ WEB
+   IMAGEPATH "/local/tmp_ms/"
+   TEMPPATH "/local/tmp_ms/"
+   METADATA 
+     "wms_title" "Cadastral Parcels"
+     "wms_srs" "EPSG:4326 EPSG:4258 EPSG:25832 EPSG:25833 EPSG:32632 EPSG:32633 EPSG:4093 EPSG:4094 EPSG:4095 EPSG:4096 EPSG:3395 EPSG:3857"
+	 "wms_bbox_extended" "TRUE"
+	 "wms_getmap_formatlist" "image/png,image/jpeg"
+	 "wms_feature_info_mime_type" "text/plain"
+	 "ows_enable_request" "*"
+	 "wms_encoding" "utf-8"
+   END
+ END
+
+SYMBOL
+  NAME "circle"
+  TYPE ellipse
+  FILLED false
+  POINTS
+    1 1
+  END
+END
+
+  LAYER #CP.CadastralParcel
+   NAME "CP.CadastralParcel"
+   TYPE polygon
+   INCLUDE "./inspire_include_df.map"
+   DATA "GEOMETRI FROM MATRIKEL_INS_A.INS_CADASTRALPARCEL USING UNIQUE INSPIREID_LOCALID SRID 25832" 
+   LABELITEM "LABEL"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  20000
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 20000
+   PROCESSING "LABEL_NO_CLIP=on" 
+   METADATA
+     "wms_title" "Cadastral parcel"
+     "wms_srs" "epsg:25832"
+	 "ows_include_items" "all"
+   END
+   CLASS
+     NAME "CP.CadastralParcel.Default"
+	 GROUP "CP.CadastralParcel.Default"
+     MINSCALEDENOM  1
+     MAXSCALEDENOM  20000
+	 STYLE
+	  OUTLINECOLOR 0 0 0
+	  WIDTH 1
+	 END
+     LABEL
+       COLOR 0 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+	   ANTIALIAS FALSE
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END
+	 METADATA
+	   "wms_title" "Cadastral Parcel Default Style"
+	   #description "Parcel outline as a black line carried by the attribute geometry + text with attribute label carried by the attribute geometry. Parcel outlines: black (#000000) line 1 pixel. Labels: in Arial 10 black (#000000)."
+	 END
+   END
+  END
+ 
+  LAYER #CP.CadastralZoning
+   NAME "CP.CadastralZoning"
+   TYPE polygon
+   INCLUDE "./inspire_include_df.map"
+   DATA "GEOMETRI FROM MATRIKEL_INS_A.INS_CADASTRALZONING USING UNIQUE INSPIREID_LOCALID SRID 25832" 
+   LABELITEM "LABEL" 
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  20000
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 20000
+   PROCESSING "LABEL_NO_CLIP=on" 
+   METADATA
+     "wms_title" "Cadastral Zoning"
+     "wms_srs" "epsg:25832"
+	 "ows_include_items" "all"
+   END
+   CLASS
+     NAME "CP.CadastralZoning.Default"
+	 GROUP "CP.CadastralZoning.Default"
+	 STYLE
+	  OUTLINECOLOR 0 0 0
+	  WIDTH 2
+	 END
+     LABEL
+       COLOR 0 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 20
+	   ANTIALIAS FALSE
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END
+	 METADATA
+	   "wms_title" "Cadastral Zoning Default Style"
+	   #description "Cadastral zoning outline carried by the attribute geometry+ text with attribute label carried by the attribute geometry. Cadastral zoning outline : black (#000000) line 2 pixels. Labels: in Arial 20 black (#000000)."
+	 END
+   END
+  END
+
+  LAYER #CP.CadastralBoundary
+   NAME "CP.CadastralBoundary"
+   TYPE LINE
+   INCLUDE "./inspire_include_df.map"
+   DATA "GEOMETRI FROM MATRIKEL_INS_A.INS_CADASTRALBOUNDARY USING UNIQUE INSPIREID_LOCALID SRID 25832" 
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  20000
+   PROCESSING "LABEL_NO_CLIP=on" 
+   TEMPLATE "blank.html"
+   METADATA
+     "wms_title" "Cadastral boundary"
+     "wms_srs" "epsg:25832"
+	 "ows_include_items" "all"
+   END
+   #Cadastral Boundary Default Style
+   CLASS
+     NAME "CP.CadastralBoundary.Default"
+	 GROUP "CP.CadastralBoundary.Default"
+	 STYLE
+	  OUTLINECOLOR 0 0 0
+	  WIDTH 1
+	 END
+	 METADATA
+	   "wms_title" "Cadastral Boundary Default Style"
+	   #description "Cadastral boundary: black (#000000) line 1 pixel."
+	 END
+   END
+  END
+END #MAP

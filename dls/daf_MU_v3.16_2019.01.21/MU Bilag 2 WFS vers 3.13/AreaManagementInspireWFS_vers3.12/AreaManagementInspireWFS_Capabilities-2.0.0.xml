@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:WFS_Capabilities xmlns:wfs="http://www.opengis.net/wfs/2.0" version="2.0.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:inspire_dls="http://inspire.ec.europa.eu/schemas/inspire_dls/1.0" xsi:schemaLocation="
+http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd
+http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd
+http://inspire.ec.europa.eu/schemas/inspire_dls/1.0 http://inspire.ec.europa.eu/schemas/inspire_dls/1.0/inspire_dls.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>Area Management</ows:Title>
+    <ows:Abstract>Area Management. INSPIRE AM Download Service.</ows:Abstract>
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>Contact Agency for Data Supply and Efficiency</ows:Fees>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Agency for Data Supply and Efficiency</ows:ProviderName>
+    <ows:ServiceContact>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+45 72 54 50 00</ows:Voice>
+          <ows:Facsimile>+45 38 88 99 10</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>+45 38 88 99 10</ows:DeliveryPoint>
+          <ows:City>Copenhagen NV</ows:City>
+          <ows:PostalCode>DK-2400</ows:PostalCode>
+          <ows:Country>Denmark</ows:Country>
+          <ows:ElectronicMailAddress>sdfe@sdfe.dk</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+                <ows:AllowedValues>
+                    <ows:Value>2.0.0</ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+            <ows:Parameter name="AcceptFormats">
+                <ows:AllowedValues>
+                    <ows:Value>text/xml</ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+            <ows:Parameter name="Sections">
+                <ows:AllowedValues>
+                    <ows:Value>ServiceIdentification</ows:Value>
+                    <ows:Value>ServiceProvider</ows:Value>
+                    <ows:Value>OperationsMetadata</ows:Value>
+                    <ows:Value>FeatureTypeList</ows:Value>
+                    <ows:Value>ServesGMLObjectTypeList</ows:Value>
+                    <ows:Value>SupportsGMLObjectTypeList</ows:Value>
+                    <ows:Value>Filter_Capabilities</ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+        </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+	  <ows:Parameter name="outputFormat">
+            <ows:AllowedValues>
+                <ows:Value>text/xml; subtype=gml/3.2</ows:Value>
+		  	    <ows:Value>application/gml+xml; version=3.2</ows:Value>
+            </ows:AllowedValues>
+       </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="resultType">
+	  <ows:AllowedValues>
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+		</ows:AllowedValues>
+      </ows:Parameter>
+	  <ows:Parameter name="outputFormat">
+                <ows:AllowedValues>
+                    <ows:Value>text/xml; subtype=gml/3.2</ows:Value>
+					<ows:Value>application/gml+xml; version=3.2</ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="ListStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="CreateStoredQuery">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DropStoredQuery">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="${wfsurl}?"/>
+          <ows:Post xlink:href="${wfsurl}?"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Parameter name="srsName">
+            <ows:AllowedValues>
+                <ows:Value>urn:ogc:def:crs:EPSG::25832</ows:Value>
+            </ows:AllowedValues>
+        </ows:Parameter>
+        <ows:Constraint name="CountDefault">
+            <ows:NoValues/>
+            <ows:DefaultValue>10000</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsBasicWFS">
+            <ows:NoValues/>
+            <ows:DefaultValue>TRUE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsTransactionalWFS">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsLockingWFS">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="KVPEncoding">
+            <ows:NoValues/>
+            <ows:DefaultValue>TRUE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="XMLEncoding">
+            <ows:NoValues/>
+            <ows:DefaultValue>TRUE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="SOAPEncoding">
+            <ows:NoValues/>
+            <ows:DefaultValue>TRUE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsInheritance">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsRemoteResolve">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsStandardJoins">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsSpatialJoins">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsTemporalJoins">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsFeatureVersioning">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ImplementsResultPaging">
+            <ows:NoValues/>
+            <ows:DefaultValue>FALSE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="ManageStoredQueries">
+            <ows:NoValues/>
+            <ows:DefaultValue>TRUE</ows:DefaultValue>
+        </ows:Constraint>
+        <ows:Constraint name="QueryExpressions">
+            <ows:AllowedValues>
+                <ows:Value>wfs:Query</ows:Value>
+                <ows:Value>wfs:StoredQuery</ows:Value>
+            </ows:AllowedValues>
+        </ows:Constraint>
+        <ows:Constraint name="LocalTraverseXLinkScope">
+            <ows:AllowedValues>
+                <ows:Value>0</ows:Value>
+                <ows:Value>0</ows:Value>
+            </ows:AllowedValues>
+        </ows:Constraint>
+        <ows:Constraint name="RemoteTraverseXLinkScope">
+            <ows:AllowedValues>
+                <ows:Value>0</ows:Value>
+                <ows:Value>0</ows:Value>
+            </ows:AllowedValues>
+        </ows:Constraint>
+	<!-- ***************************************************** -->
+		<!-- ==============================================================-->
+		<!-- == The INSPIRE Extended Capabilities.                  ==-->
+		<!-- ==============================================================-->
+		<ows:ExtendedCapabilities>
+			<inspire_dls:ExtendedCapabilities>
+				<inspire_common:MetadataUrl>
+					<inspire_common:URL>https://geodata-info.dk/srv/dan/csw?service=CSW&version=2.0.2&request=GetRecordById&id=8d8a7ae7-65d1-4097-b1e1-e6018c2c577e&outputschema=http://www.isotc211.org/2005/gmd&elementsetname=full&resulttype=results</inspire_common:URL>
+					<inspire_common:MediaType>application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
+				</inspire_common:MetadataUrl>
+				<inspire_common:SupportedLanguages>
+					<inspire_common:DefaultLanguage>
+						<inspire_common:Language>dan</inspire_common:Language>
+					</inspire_common:DefaultLanguage>
+				</inspire_common:SupportedLanguages>
+				<inspire_common:ResponseLanguage>
+					<inspire_common:Language>dan</inspire_common:Language>
+				</inspire_common:ResponseLanguage>
+				<inspire_dls:SpatialDataSetIdentifier>
+					<inspire_common:Code>https://geo.data.gov.dk/dataset/9d7161b3-805b-2791-047f-834319916410</inspire_common:Code>
+				</inspire_dls:SpatialDataSetIdentifier>
+			</inspire_dls:ExtendedCapabilities>
+		</ows:ExtendedCapabilities>
+  </ows:OperationsMetadata>
+  <wfs:FeatureTypeList>
+    <wfs:FeatureType>
+      <wfs:Name xmlns:am="http://inspire.ec.europa.eu/schemas/am/4.0">am:ManagementRestrictionOrRegulationZone</wfs:Name>
+      <wfs:Title>Management restriction or regulation zone</wfs:Title>
+      <wfs:Abstract>-- Name -- management restriction or regulation zone -- Definition -- Area managed, restricted or regulated in accordance with a legal requirement related to an environmental policy or a policy or activity that may have an impact on the environment at any level of administration (or used for reporting at international, European, national, regional and local) levels.</wfs:Abstract>
+      <ows:Keywords>
+        <ows:Keyword>ManagementRestrictionOrRegulationZone</ows:Keyword>
+      </ows:Keywords>
+      <wfs:DefaultCRS>urn:ogc:def:crs:EPSG::25832</wfs:DefaultCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::3035</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::3857</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::25833</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::4093</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::4094</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::4095</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::4096</wfs:OtherCRS>
+      <wfs:OtherCRS>urn:ogc:def:crs:EPSG::4326</wfs:OtherCRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>2.48 53.02</ows:LowerCorner>
+        <ows:UpperCorner>17.56 58.47</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+	  <wfs:MetadataURL xlink:href="https://www.geodata-info.dk/srv/dan/csw?service=CSW&request=GetRecordById&version=2.0.2&id=9d7161b3-805b-2791-047f-834319916410&outputSchema=http://www.isotc211.org/2005/gmd&elementSetName=full"/>
+    </wfs:FeatureType>
+  </wfs:FeatureTypeList>
+  <fes:Filter_Capabilities xmlns:fes="http://www.opengis.net/fes/2.0">
+    <fes:Conformance>
+      <fes:Constraint name="ImplementsAdHocQuery">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsExtendedOperators">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsFunctions">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinSpatialFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinStandardFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinTemporalFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsQuery">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSorting">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSpatialFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsStandardFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsTemporalFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+	  <fes:Constraint name="ImplementsMinimumXPath">
+		<ows:NoValues/>
+		<ows:DefaultValue>TRUE</ows:DefaultValue>
+	  </fes:Constraint>
+      <fes:Constraint name="ImplementsVersionNav">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+    </fes:Conformance>
+    <fes:Id_Capabilities>
+      <fes:ResourceIdentifier name="fes:ResourceId"/>
+    </fes:Id_Capabilities>
+    <fes:Scalar_Capabilities>
+      <fes:LogicalOperators/>
+      <fes:ComparisonOperators>
+        <fes:ComparisonOperator name="PropertyIsBetween"/>
+        <fes:ComparisonOperator name="PropertyIsEqualTo"/>
+        <fes:ComparisonOperator name="PropertyIsGreaterThan"/>
+        <fes:ComparisonOperator name="PropertyIsGreaterThanOrEqualTo"/>
+        <fes:ComparisonOperator name="PropertyIsLessThan"/>
+        <fes:ComparisonOperator name="PropertyIsLessThanOrEqualTo"/>
+        <fes:ComparisonOperator name="PropertyIsLike"/>
+        <fes:ComparisonOperator name="PropertyIsNotEqualTo"/>
+        <fes:ComparisonOperator name="PropertyIsNull"/>
+      </fes:ComparisonOperators>
+    </fes:Scalar_Capabilities>
+    <fes:Spatial_Capabilities>
+      <fes:GeometryOperands>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:Envelope"/>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:Point"/>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:LineString"/>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:Polygon"/>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:Arc"/>
+        <fes:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2" name="gml:Circle"/>
+      </fes:GeometryOperands>
+      <fes:SpatialOperators>
+        <fes:SpatialOperator name="BBOX"/>
+        <fes:SpatialOperator name="Equals"/>
+        <fes:SpatialOperator name="Disjoint"/>
+        <fes:SpatialOperator name="Intersects"/>
+        <fes:SpatialOperator name="Touches"/>
+        <fes:SpatialOperator name="Crosses"/>
+        <fes:SpatialOperator name="Within"/>
+        <fes:SpatialOperator name="Contains"/>
+        <fes:SpatialOperator name="Overlaps"/>
+        <fes:SpatialOperator name="Beyond"/>
+        <fes:SpatialOperator name="DWithin"/>
+      </fes:SpatialOperators>
+    </fes:Spatial_Capabilities>
+    <fes:Temporal_Capabilities>
+      <fes:TemporalOperands>
+        <fes:TemporalOperand xmlns="http://www.opengis.net/gml/3.2" name="TimeInstant"/>
+        <fes:TemporalOperand xmlns="http://www.opengis.net/gml/3.2" name="TimePeriod"/>
+      </fes:TemporalOperands>
+      <fes:TemporalOperators>
+        <fes:TemporalOperator name="After"/>
+        <fes:TemporalOperator name="Before"/>
+        <fes:TemporalOperator name="Begins"/>
+        <fes:TemporalOperator name="BegunBy"/>
+        <fes:TemporalOperator name="During"/>
+        <fes:TemporalOperator name="EndedBy"/>
+        <fes:TemporalOperator name="Ends"/>
+        <fes:TemporalOperator name="Meets"/>
+        <fes:TemporalOperator name="MetBy"/>
+        <fes:TemporalOperator name="OverlappedBy"/>
+        <fes:TemporalOperator name="TContains"/>
+        <fes:TemporalOperator name="TEquals"/>
+        <fes:TemporalOperator name="TOverlaps"/>
+      </fes:TemporalOperators>
+    </fes:Temporal_Capabilities>
+  </fes:Filter_Capabilities>
+</wfs:WFS_Capabilities>

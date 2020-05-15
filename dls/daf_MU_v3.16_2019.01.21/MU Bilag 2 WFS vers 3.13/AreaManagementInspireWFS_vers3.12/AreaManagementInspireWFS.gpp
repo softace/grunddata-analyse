@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sfgp:GoPublisherProject xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="AreaManagement" xsi:schemaLocation="http://www.snowflakesoftware.co.uk/publisher/3.0 jar:file:/C:/Program%20Files/GOPublisherv3.0.0/jar/go-publisher-lib-3.0.0.jar!/schema/projectdoc.xsd">
+<sfgp:SoftwareProduct buildDate="2013-11-04 18:50" buildNumber="2f41ba3" name="publisher" version="3.0.0"/>
+<sfgp:RuntimeController autoGrouping="true" batchSize="0" compression="None" copySchemas="false" encoding="UTF-8" formatOutput="true" formatOutputIndent="2" multiQuery="true" useQuotes="true" validateOutput="false" wfsCompression="None"/>
+<sfdb:OracleDataSource xmlns:sfdb="http://www.snowflakesoftware.com/datasource">
+<sfdb:user>geobankread</sfdb:user>
+<sfdb:password>g7g7g56g5g15g8g0gc</sfdb:password>
+<sfdb:databaseName>geobankbeta.prod.sitad.dk</sfdb:databaseName>
+<sfdb:portNumber>1521</sfdb:portNumber>
+<sfdb:serverName>gst-orarac.prod.sitad.dk</sfdb:serverName>
+<sfdb:driverType>thin</sfdb:driverType>
+<sfdb:includeSynonyms>true</sfdb:includeSynonyms>
+<sfdb:databaseVersion>11</sfdb:databaseVersion>
+<sfdb:useServiceName>true</sfdb:useServiceName>
+</sfdb:OracleDataSource>
+<sfgp:SchemaLocationModel xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:schemaRepository>schemas/</sfgp:schemaRepository>
+<sfgp:schemaLocation>
+<sfgp:locationPath>http://inspire.ec.europa.eu/schemas/am/4.0/AreaManagementRestrictionRegulationZone.xsd</sfgp:locationPath>
+<sfgp:locationPath>http://schemas.opengis.net/gml/3.2.1/gml.xsd</sfgp:locationPath>
+<sfgp:locationPath>http://schemas.opengis.net/wfs/2.0/wfs.xsd</sfgp:locationPath>
+</sfgp:schemaLocation>
+<sfgp:defaultGeometrySchema>unknown</sfgp:defaultGeometrySchema>
+<sfgp:namespaces prefixMapping="true">
+<sfgp:namespaceMap>
+<sfgp:entry prefix="tn" url="http://inspire.ec.europa.eu/schemas/tn/4.0"/>
+<sfgp:entry prefix="gmd" url="http://www.isotc211.org/2005/gmd"/>
+<sfgp:entry prefix="xs" url="http://www.w3.org/2001/XMLSchema"/>
+<sfgp:entry prefix="net" url="http://inspire.ec.europa.eu/schemas/net/4.0"/>
+<sfgp:entry prefix="gts" url="http://www.isotc211.org/2005/gts"/>
+<sfgp:entry prefix="base2" url="http://inspire.ec.europa.eu/schemas/base2/2.0"/>
+<sfgp:entry prefix="sfgp" url="http:://www.snowflakesoftware.co.uk/publisher"/>
+<sfgp:entry prefix="ogc" url="http://www.opengis.net/ogc"/>
+<sfgp:entry prefix="kml" url="http://www.opengis.net/kml/2.2"/>
+<sfgp:entry prefix="xsl" url="http://www.w3.org/1999/XSL/Transform"/>
+<sfgp:entry prefix="fes" url="http://www.opengis.net/fes/2.0"/>
+<sfgp:entry prefix="svg" url="http://www.w3.org/2000/svg"/>
+<sfgp:entry prefix="gco" url="http://www.isotc211.org/2005/gco"/>
+<sfgp:entry prefix="sc" url="http://www.interactive-instruments.de/ShapeChange/AppInfo"/>
+<sfgp:entry prefix="xml" url="http://www.w3.org/XML/1998/namespace"/>
+<sfgp:entry prefix="env" url="http://www.w3.org/2003/05/soap-envelope"/>
+<sfgp:entry prefix="gsr" url="http://www.isotc211.org/2005/gsr"/>
+<sfgp:entry prefix="gss" url="http://www.isotc211.org/2005/gss"/>
+<sfgp:entry prefix="au" url="http://inspire.ec.europa.eu/schemas/au/4.0"/>
+<sfgp:entry prefix="gn" url="http://inspire.ec.europa.eu/schemas/gn/4.0"/>
+<sfgp:entry prefix="cp" url="http://inspire.ec.europa.eu/schemas/cp/4.0"/>
+<sfgp:entry prefix="glwu" url="http://www.snowflakesoftware.com/schema/goloaderworkflow/update"/>
+<sfgp:entry prefix="bu-base" url="http://inspire.ec.europa.eu/schemas/bu-base/4.0"/>
+<sfgp:entry prefix="osgb" url="http://www.ordnancesurvey.co.uk/xml/namespaces/osgb"/>
+<sfgp:entry prefix="wfs" url="http://www.opengis.net/wfs/2.0"/>
+<sfgp:entry prefix="am" url="http://inspire.ec.europa.eu/schemas/am/4.0"/>
+<sfgp:entry prefix="ows" url="http://www.opengis.net/ows/1.1"/>
+<sfgp:entry prefix="xsd" url="http://www.w3.org/2001/XMLSchema"/>
+<sfgp:entry prefix="base" url="http://inspire.ec.europa.eu/schemas/base/3.3"/>
+<sfgp:entry prefix="xlink" url="http://www.w3.org/1999/xlink"/>
+<sfgp:entry prefix="ad" url="http://inspire.ec.europa.eu/schemas/ad/4.0"/>
+<sfgp:entry prefix="gml" url="http://www.opengis.net/gml/3.2"/>
+<sfgp:entry prefix="soap" url="http://schemas.xmlsoap.org/soap/envelope/"/>
+<sfgp:entry prefix="xsi" url="http://www.w3.org/2001/XMLSchema-instance"/>
+</sfgp:namespaceMap>
+</sfgp:namespaces>
+</sfgp:SchemaLocationModel>
+<sfgp:ModelSpecification mbr="false" mimeType="text/xml" renameElements="true" rootName="gml:FeatureCollection">
+<sfgp:GeometrySettings coordinateDimension="-1" gml2="false" points="posList" publishingSrsId="urn:ogc:def:crs:EPSG::25832" replacementValue="0.0" sourceSrsId="urn:ogc:def:crs:EPSG::25832" surfaceMode="Default"/>
+<TimezoneSettings xmlns="http://www.snowflakesoftware.co.uk/publisher/3.0" showInOutput="false"/>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="id" required="false" type="VARCHAR" value="#GENERATED_ID" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@id" type="xs:ID" xsltResource=""/>
+<sfgp:name>id</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:Table dbname="INS_AREAMANAGEMENTZONE" decomposable="false" enabled="true" name="INS_AREAMANAGEMENTZONE" queryDateTime="" queryGeometry="INS_AREAMANAGEMENTZONE.GEOMETRY" schemaName="MATRIKEL_INS_A">
+<sfgp:ComplexMapping path="gml:featureMember/am:ManagementRestrictionOrRegulationZone" type="am:ManagementRestrictionOrRegulationZoneType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+<sfgp:name>GMLID</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="INSPIREID" required="false" separator=".">
+<sfgp:ComplexMapping path="am:inspireId/base:Identifier" type="base:IdentifierType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0"/>
+<sfgp:Column enabled="true" name="INSPIREID_LOKALID" required="false" type="VARCHAR2" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base:localId" type="xs:string"/>
+<sfgp:name>INSPIREID_LOKALID</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="INSPIREID_NAMESPACE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base:namespace" type="xs:string"/>
+<sfgp:name>INSPIREID_NAMESPACE</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Group complex="true" enabled="true" name="thematicIdentifier" required="false" separator="">
+<sfgp:ComplexMapping path="am:thematicId/base2:ThematicIdentifier" type="base2:ThematicIdentifierType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="THEMATICID_IDENTIFIER" required="false" type="NUMBER" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:identifier" type="xs:string"/>
+<sfgp:name>THEMATICID_IDENTIFIER</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="THEMATICID_IDENTIFIERSCHEME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:identifierScheme" type="xs:string"/>
+<sfgp:name>THEMATICID_IDENTIFIERSCHEME</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Group complex="true" enabled="true" name="NAME" required="false" separator=".">
+<sfgp:ComplexMapping path="am:name/gn:GeographicalName" type="gn:GeographicalNameType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0"/>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="language_nilReason" required="false" type="VARCHAR" value="inapplicable" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:language/@nilReason" type="gml:NilReasonType" xsltResource=""/>
+<sfgp:name>language_nilReason</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="nativeness_nilReason" required="false" type="VARCHAR" value="inapplicable" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:nativeness/@gml:nilReason" type="gml:NilReasonType" xsltResource=""/>
+<sfgp:name>nativeness_nilReason</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="namestatus_nilReason" required="false" type="VARCHAR" value="inapplicable" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:nameStatus/@gml:nilReason" type="gml:NilReasonType" xsltResource=""/>
+<sfgp:name>namestatus_nilReason</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="sourceOfName_nilReason" required="false" type="VARCHAR" value="inapplicable" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:sourceOfName/@nilReason" type="gml:NilReasonType" xsltResource=""/>
+<sfgp:name>sourceOfName_nilReason</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="pronunciation_nilReason" required="false" type="VARCHAR" value="inapplicable" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:pronunciation/@nilReason" type="gml:NilReasonType" xsltResource=""/>
+<sfgp:name>pronunciation_nilReason</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:Group complex="true" enabled="true" name="spelllingOfName" required="false" separator="">
+<sfgp:ComplexMapping path="gn:spelling/gn:SpellingOfName" type="gn:SpellingOfNameType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="NAME_SPELLING_TEXT" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:text" type="xs:string"/>
+<sfgp:name>NAME_SPELLING_TEXT</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="NAME_SPELLING_SCRIPT" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gn:script" type="gn:(anonymous)"/>
+<sfgp:name>NAME_SPELLING_SCRIPT</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="GEOMETRY" required="false" type="SDO_GEOMETRY" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:geometry" type="gml:GeometryPropertyType"/>
+<sfgp:name>GEOMETRY</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ZONETYPE" required="false" type="VARCHAR2" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:zoneType/@xlink:href" type="xlink:hrefType"/>
+<sfgp:name>ZONETYPE</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SPECIALISEDZONETYPE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:specialisedZoneType/@gml:nilReason" type="gml:NilReasonType"/>
+<sfgp:name>SPECIALISEDZONETYPE</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="DESIGNATIONPERIOD" required="false" separator=".">
+<sfgp:ComplexMapping path="am:designationPeriod/gml:TimePeriod" type="gml:TimePeriodType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0"/>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="timeperiod_id" required="false" type="VARCHAR" value="#GENERATED_ID" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@id" type="xs:ID" xsltResource=""/>
+<sfgp:name>timeperiod_id</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:Column enabled="true" name="DESIGNATIONPERIOD_BEGIN" required="false" type="TIMESTAMP(6)" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gml:beginPosition" type="gml:TimePositionType"/>
+<sfgp:name>DESIGNATIONPERIOD_BEGIN</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="DESIGNATIONPERIOD_END" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gml:end/@nilReason" type="gml:NilReasonType"/>
+<sfgp:name>DESIGNATIONPERIOD_END</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="ENVIRONMENTALDOMAIN" required="false" type="VARCHAR2" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:environmentalDomain/@xlink:href" type="xlink:hrefType"/>
+<sfgp:name>ENVIRONMENTALDOMAIN</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="competentAuthority" required="false" separator=".">
+<sfgp:ComplexMapping path="am:competentAuthority/base2:RelatedParty" type="base2:RelatedPartyType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="COMPETENTAUTH_INDIVIDUALNAME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:individualName/@gco:nilReason" type="gml:NilReasonType"/>
+<sfgp:name>COMPETENTAUTH_INDIVIDUALNAME</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="organisationName" required="false" separator="">
+<sfgp:ComplexMapping path="base2:organisationName/gmd:PT_FreeText" type="gmd:PT_FreeText_Type" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="COMPETENTAUTH_ORGANISATIONNAME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gmd:textGroup/gmd:LocalisedCharacterString" type="gmd:LocalisedCharacterString_Type"/>
+<sfgp:name>COMPETENTAUTH_ORGANISATIONNAME</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="COMPETENTAUTH_POSITIONNAME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:positionName/@gco:nilReason" type="gml:NilReasonType"/>
+<sfgp:name>COMPETENTAUTH_POSITIONNAME</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="COMPETENTAUTH_CONTACT" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:contact/@nilReason" type="gml:NilReasonType"/>
+<sfgp:name>COMPETENTAUTH_CONTACT</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="COMPETENTAUTH_ROLE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:role/@xlink:href" type="xlink:hrefType"/>
+<sfgp:name>COMPETENTAUTH_ROLE</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="BEGINLIFESPANVERSION" required="false" type="TIMESTAMP(6)" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:beginLifespanVersion" type="am:(anonymous)"/>
+<sfgp:name>BEGINLIFESPANVERSION</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ENDLIFESPANVERSION" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:endLifespanVersion/@nilReason" type="gml:NilReasonType"/>
+<sfgp:name>ENDLIFESPANVERSION</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PLAN" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="am:plan/@gml:nilReason" type="gml:NilReasonType"/>
+<sfgp:name>PLAN</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="legalBasis" required="false" separator="">
+<sfgp:ComplexMapping path="am:legalBasis/base2:LegislationCitation" type="base2:LegislationCitationType" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="id" required="false" type="VARCHAR" value="#GENERATED_ID" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID" xsltResource=""/>
+<sfgp:name>id</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+<sfgp:Column enabled="true" name="LEGISLATIONNAME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:name" type="xs:string"/>
+<sfgp:name>LEGISLATIONNAME</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LEGISLATIONSHORTNAME" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:shortName" type="base2:(anonymous)"/>
+<sfgp:name>LEGISLATIONSHORTNAME</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="date" required="false" separator="">
+<sfgp:ComplexMapping path="base2:date/gmd:CI_Date" type="gmd:CI_Date_Type" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="DATEENTEREDINTOFORCE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="gmd:date/gco:Date" type="gco:Date_Type"/>
+<sfgp:name>DATEENTEREDINTOFORCE</sfgp:name>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="datetype" required="false" separator="">
+<sfgp:ComplexMapping path="gmd:dateType/gmd:CI_DateTypeCode" type="gco:CodeListValue_Type" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0" xsltResource=""/>
+<sfgp:Column enabled="true" name="DATETYPE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@gco:codeListValue" type="xs:anyURI"/>
+<sfgp:name>DATETYPE</sfgp:name>
+</sfgp:Column>
+<sfgp:ConstantColumn enabled="true" isId="false" isLink="false" name="codeList" required="false" type="VARCHAR" value="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" xmlContent="false" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="@gco:codeList" type="xs:anyURI" xsltResource=""/>
+<sfgp:name>codeList</sfgp:name>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:ConstantColumn>
+</sfgp:Group>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="LINK" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:link" type="base2:(anonymous)"/>
+<sfgp:name>LINK</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SPECIFICREFERENCE" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:specificReference/@nilReason" type="gml:NilReasonType"/>
+<sfgp:name>SPECIFICREFERENCE</sfgp:name>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LEGISLATIONLEVEL" required="false" type="CHAR" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SimpleMapping path="base2:level/@xlink:href" type="xlink:hrefType"/>
+<sfgp:name>LEGISLATIONLEVEL</sfgp:name>
+</sfgp:Column>
+</sfgp:Group>
+</sfgp:Table>
+</sfgp:ModelSpecification>
+<sfgp:WFSSettings allowsUnboundedPeriods="true" includeLicence="false" isTwoStage="true" servletName="GOPublisherWFS" servletURL="/GOPublisherWFS" validating="false" webArchivePath="file:/C:/configstore/store/AreaManagement/AreaManagement.war">
+<ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows" LowerCorner="-180.0 -90.0" UpperCorner="180.0 90.0"/>
+<wfs:otherSRSList xmlns:wfs="http://www.opengis.net/wfs/2.0">
+<wfs:OtherSRS/>
+</wfs:otherSRSList>
+<wfs:WFS_Capabilities xmlns:wfs="http://www.opengis.net/wfs" xmlns:ows="http://www.opengis.net/ows" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1.0">
+<ows:ServiceIdentification>
+<ows:Title>GO Publisher WFS</ows:Title>
+<ows:ServiceType>WFS</ows:ServiceType>
+<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+<ows:Fees>NONE</ows:Fees>
+<ows:AccessConstraints>NONE</ows:AccessConstraints>
+</ows:ServiceIdentification>
+<ows:ServiceProvider>
+<ows:ProviderName>My Company</ows:ProviderName>
+<ows:ServiceContact>
+<ows:ContactInfo>
+<ows:Phone>
+<ows:Voice/>
+<ows:Facsimile/>
+</ows:Phone>
+<ows:Address>
+<ows:DeliveryPoint/>
+<ows:ElectronicMailAddress/>
+</ows:Address>
+</ows:ContactInfo>
+</ows:ServiceContact>
+</ows:ServiceProvider>
+<ows:OperationsMetadata>
+<ows:Operation name="GetCapabilities">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="AcceptVersions">
+<ows:Value>2.0.0</ows:Value>
+<ows:Value>1.1.0</ows:Value>
+<ows:Value>1.0.0</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="AcceptFormats">
+<ows:Value>text/xml</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="Sections">
+<ows:Value>ServiceIdentification</ows:Value>
+<ows:Value>ServiceProvider</ows:Value>
+<ows:Value>OperationsMetadata</ows:Value>
+<ows:Value>FeatureTypeList</ows:Value>
+<ows:Value>ServesGMLObjectTypeList</ows:Value>
+<ows:Value>SupportsGMLObjectTypeList</ows:Value>
+<ows:Value>Filter_Capabilities</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Operation name="DescribeFeatureType">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="outputFormat">
+<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Operation name="GetFeature">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="resultType">
+<ows:Value>results</ows:Value>
+<ows:Value>hits</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="outputFormat">
+<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Parameter name="srsName">
+<ows:Value>urn:ogc:def:crs:EPSG::25832</ows:Value>
+</ows:Parameter>
+<ows:Constraint name="ImplementsBasicWFS">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsTransactionalWFS">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsLockingWFS">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="KVPEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="XMLEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="SOAPEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsInheritance">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsRemoteResolve">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsStandardJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsSpatialJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsTemporalJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsFeatureVersioning">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ManageStoredQueries">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="QueryExpressions">
+<ows:Value>wfs:Query</ows:Value>
+<ows:Value>wfs:StoredQuery</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="LocalTraverseXLinkScope">
+<ows:Value>0</ows:Value>
+<ows:Value>0</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="RemoteTraverseXLinkScope">
+<ows:Value>0</ows:Value>
+<ows:Value>0</ows:Value>
+</ows:Constraint>
+</ows:OperationsMetadata>
+<wfs:FeatureTypeList>
+<wfs:FeatureType>
+<wfs:Name xmlns:am="http://inspire.ec.europa.eu/schemas/am/4.0">am:ManagementRestrictionOrRegulationZone</wfs:Name>
+<wfs:Title>ManagementRestrictionOrRegulationZone</wfs:Title>
+<wfs:Abstract>-- Name --
+management restriction or regulation zone
+
+-- Definition --
+Area managed, restricted or regulated in accordance with a legal requirement related to an environmental policy or a policy or activity that may have an impact on the environment at any level of administration (or used for reporting at international, European, national, regional and local) levels.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>ManagementRestrictionOrRegulationZone</ows:Keyword>
+<ows:Keyword>INS_AREAMANAGEMENTZONE</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>urn:ogc:def:crs:EPSG::25832</wfs:DefaultSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+</wfs:FeatureTypeList>
+<ogc:Filter_Capabilities xmlns:ogc="http://www.opengis.net/ogc">
+<ogc:Spatial_Capabilities>
+<ogc:GeometryOperands>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Envelope</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Point</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:LineString</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Polygon</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Arc</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Circle</ogc:GeometryOperand>
+</ogc:GeometryOperands>
+<ogc:SpatialOperators>
+<ogc:SpatialOperator name="BBOX"/>
+<ogc:SpatialOperator name="Equals"/>
+<ogc:SpatialOperator name="Disjoint"/>
+<ogc:SpatialOperator name="Intersects"/>
+<ogc:SpatialOperator name="Touches"/>
+<ogc:SpatialOperator name="Crosses"/>
+<ogc:SpatialOperator name="Within"/>
+<ogc:SpatialOperator name="Contains"/>
+<ogc:SpatialOperator name="Overlaps"/>
+<ogc:SpatialOperator name="Beyond"/>
+<ogc:SpatialOperator name="DWithin"/>
+</ogc:SpatialOperators>
+</ogc:Spatial_Capabilities>
+<ogc:Scalar_Capabilities>
+<ogc:LogicalOperators/>
+<ogc:ComparisonOperators>
+<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+</ogc:ComparisonOperators>
+<ogc:ArithmeticOperators>
+<ogc:SimpleArithmetic/>
+</ogc:ArithmeticOperators>
+</ogc:Scalar_Capabilities>
+<ogc:Id_Capabilities>
+<ogc:EID/>
+<ogc:FID/>
+</ogc:Id_Capabilities>
+</ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>
+</sfgp:WFSSettings>
+</sfgp:GoPublisherProject>

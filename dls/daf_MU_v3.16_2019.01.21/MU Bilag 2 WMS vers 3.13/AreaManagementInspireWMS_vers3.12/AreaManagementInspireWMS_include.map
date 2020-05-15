@@ -1,0 +1,10 @@
+STATUS ON
+CONNECTIONTYPE oraclespatial
+#CONNECTION geobankread/ti9rsdag@geobankbeta.prod.sitad.dk
+CONNECTION "geobankread/ti9rsdag@gst-orarac.prod.sitad.dk/geobankbeta.prod.sitad.dk"
+#CONNECTION "geobankread/ti9rsdag@gst-orat1.prod.sitad.dk/geobanktest.prod.sitad.dk"
+EXTENT 120000 5900000 1000000 6500000
+PROCESSING "LABEL_NO_CLIP=on" #Fæstner labels geografisk, så de ikke duplikeres i fx tiletjenester
+PROCESSING "CLOSE_CONNECTION=DEFER"
+DUMP TRUE
+

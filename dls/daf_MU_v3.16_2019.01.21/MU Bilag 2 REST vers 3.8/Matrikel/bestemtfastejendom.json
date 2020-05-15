@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": [
+    "object"
+  ],
+  "required": [
+    "SamletFastEjendom",
+    "Ejerlejlighed",
+    "BygningPaaFremmedGrund"
+  ],
+  "properties": {
+    "SamletFastEjendom": {
+      "$ref": "samletfastejendom.json#"
+    },
+    "Ejerlejlighed": {
+      "$ref": "ejerlejlighed.json#"
+    },
+    "BygningPaaFremmedGrund": {
+      "$ref": "bygningpaafremmedgrund.json#"
+    }
+  }
+}

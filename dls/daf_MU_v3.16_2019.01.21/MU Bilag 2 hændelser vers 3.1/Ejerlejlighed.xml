@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ejerlejlighed xmlns="http://data.gov.dk/schemas/matrikel/1/payload/Ejerlejlighed" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<forretningshaendelse>Load(forretningshaendelse)</forretningshaendelse>
+	<forretningsomraade>Load(forretningsomraade)</forretningsomraade>
+	<forretningsproces>Load(forretningsproces)</forretningsproces>
+	<id_namespace>Load(id_namespace)</id_namespace>
+	<id_lokalId>Load(id_lokalId)</id_lokalId>
+	<paataenktHandling>Load(paataenktHandling)</paataenktHandling>
+	<registreringFra>Load(registreringFra)</registreringFra>
+	<registreringsaktoer>Load(registreringsaktoer)</registreringsaktoer>
+	<registreringTil>Load(registreringTil)</registreringTil>
+	<status>Load(status)</status>
+	<virkningFra>Load(virkningFra)</virkningFra>
+	<virkningsaktoer>Load(virkningsaktoer)</virkningsaktoer>
+	<virkningTil>Load(virkningTil)</virkningTil>
+	<BFEnummer>Load(BFEnummer)</BFEnummer>
+	<senesteSagLokalId>Load(senesteSagLokalId)</senesteSagLokalId>
+	<ejerlejlighedskort>Load(ejerlejlighedskort)</ejerlejlighedskort>
+	<ejerlejlighedsnummer>Load(ejerlejlighedsnummer)</ejerlejlighedsnummer>
+	<fordelingstalNaevner>Load(fordelingstalNaevner)</fordelingstalNaevner>
+	<fordelingstalTaeller>Load(fordelingstalTaeller)</fordelingstalTaeller>
+	<iBygningPaaFremmedGrund>Load(iBygningPaaFremmedGrund)</iBygningPaaFremmedGrund>
+	<samletAreal>Load(samletAreal)</samletAreal>
+	<samletFastEjendomLokalId>Load(samletFastEjendomLokalId)</samletFastEjendomLokalId>
+	<bygningPaaFremmedGrundFladeLokalId>Load(bygningPaaFremmedGrundFladeLokalId)</bygningPaaFremmedGrundFladeLokalId>
+	<bygningPaaFremmedGrundPunktLokalId>Load(bygningPaaFremmedGrundPunktLokalId)</bygningPaaFremmedGrundPunktLokalId>
+</Ejerlejlighed>

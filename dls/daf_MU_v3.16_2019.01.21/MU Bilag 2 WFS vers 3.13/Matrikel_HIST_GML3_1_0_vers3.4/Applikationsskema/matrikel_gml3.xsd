@@ -1,0 +1,3009 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gd="http://data.gov.dk/schemas/grunddata/1/gml3" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:mat="http://data.gov.dk/schemas/matrikel/1/gml3" elementFormDefault="qualified" targetNamespace="http://data.gov.dk/schemas/matrikel/1/gml3" version="1.2.3">
+  <import namespace="http://data.gov.dk/schemas/grunddata/1/gml3"/>
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <simpleType name="ArealberegningsmetodeType">
+    <annotation>
+      <documentation>Liste med typer af arealberegningsmetoder.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Areal beregnet efter opmåling - o">
+        <annotation>
+          <documentation>Angiver at arealet er beregnet efter opmåling af landinspektør.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Areal beregnet efter konstruktion i større målforhold - s">
+        <annotation>
+          <documentation>større målestoksforhold end det analoge matrikelkort.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Areal beregnet efter kortet - k">
+        <annotation>
+          <documentation>arealet er beregnet på grundlag af kort.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="ArealtypeType">
+    <annotation>
+      <documentation>Liste med typer af arealanvendelser på jordstykket.
+NOTE En form for notering med angivelse af jordstykkets anvendelse, som bl. a. kan være følgende: Gade, Jernbane, Kirkegård, Vand, Vej, Kanal, Motorvej, Fælles Grusgrav, Fælles Lergrav, Fælles Sandgrav, Fælles Vanding, Dige, Drift eller Dæmning.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Offentlig vej">
+        <annotation>
+          <documentation>Angiver at arealtypen er Offentlig vej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Privat vej">
+        <annotation>
+          <documentation>Angiver at arealtypen er Privat vej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jernbane">
+        <annotation>
+          <documentation>Angiver at arealtypen er Jernbane.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kirke">
+        <annotation>
+          <documentation>Angiver at arealtypen er Kirke.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kirkegård">
+        <annotation>
+          <documentation>Angiver at arealtypen er Kirkegård.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Byens gade">
+        <annotation>
+          <documentation>Angiver at arealtypen er Byens gade.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fælles grusgrav">
+        <annotation>
+          <documentation>Angiver at arealtypen er Fælles grusgrav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="DigeDæmning">
+        <annotation>
+          <documentation>Angiver at arealtypen er Dige/Dæmning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fælles drift">
+        <annotation>
+          <documentation>Angiver at arealtypen er fælles drift.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kanal">
+        <annotation>
+          <documentation>Angiver at arealtypen er Kanal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Strand">
+        <annotation>
+          <documentation>Angiver at arealtypen er Strand.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fælles vanding">
+        <annotation>
+          <documentation>Angiver at arealtypen er Fælles vanding.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element abstract="true" name="BestemtFastEjendom" substitutionGroup="mat:MatrikulaertElement" type="mat:BestemtFastEjendomType">
+    <annotation>
+      <documentation>Fast ejendom, hvorpå der er tinglyst rettigheder.
+NOTE Bestemt fast ejendom underopdeles i ejendomstyperne:
+Samlet fast ejendom
+Bygning på fremmed grund (BPFG) 
+Ejerlejlighed, herunder ejerlejlighed i BPFG</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="BestemtFastEjendomType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="BFEnummer" type="integer">
+            <annotation>
+              <documentation>Unikt fortløbende identifikation tildelt den specifikke bestemte fast ejendom.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BestemtFastEjendomPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:BestemtFastEjendom"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="BygningPaaFremmedGrund" substitutionGroup="mat:BestemtFastEjendom" type="mat:BygningPaaFremmedGrundType">
+    <annotation>
+      <documentation>En bygning eller et teknisk anlæg, som er opført på, over eller under enten: En Samlet fast Ejendom med anden ejer end bygningen/anlægget eller et ikke-registreret areal, hvor hvor arealet har anden ejer end bygningen eller havet.
+NOTE En Bygning på fremmed grund er geometrisk repræsenteret ved enten én polygon eller ét punkt. 
+En polygon er enten indberettet til Matriklen af en landinspektør eller stammer fra en GML-fil fra Tingbogen. Når en BPFG er geografisk repræsenteret ved en polygon, betragtes den som ’stedfæstet’. En BPFG kan dog godt være stedfæstet, selvom der ikke er en polygon registreret i Matriklen, hvis dokumentationen for stedfæstelsen findes i Tingbogen.
+Et punkt for BPFG er enten kommet ind i Matriklen ved konvertering fra ESR/e-TL eller ved at ejendommen er indberettet af en kommune. Dvs. at BygningPåFremmedGrundOprindelse for BPFG’en enten er ”Nedarv fra ESR”, ” Nedarv fra ESR og eTL” eller ”Født i Matriklen – indberettet af kommune”. Selvom der ikke er en polygon for de ejendomme, som er geometrisk repræsenteret ved et punkt, kan ejendommene godt være stedfæstet med polygon. Dokumentationen for stedfæstelse ligger i så fald blot i Tingbogen og ikke i Matriklen.</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="BygningPaaFremmedGrundType">
+    <complexContent>
+      <extension base="mat:BestemtFastEjendomType">
+        <sequence>
+          <element name="opdeltIEjerlejligheder" type="boolean">
+            <annotation>
+              <documentation>Angiver, om der er tale om en hovedejendom, der er opdelt i ejerlejligheder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="samletFastEjendomLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den samlede faste ejendom hvorpå bygningen på fremmed grund er registreret.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="oprindelse" type="mat:BygningPaaFremmedGrundOprindelseType">
+            <annotation>
+              <documentation>Angiver, hvor de registrerede oplysninger om bygningen på fremmed grund stammer fra og om bygningen er stedfæstet.</documentation>
+            </annotation>
+          </element>
+          <element name="paaHavet" type="boolean">
+            <annotation>
+              <documentation>Angiver, om bygningen på fremmed grund er en bygning placeret på havet.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="rids" type="anyURI">
+            <annotation>
+              <documentation>Skitsering af en bygnings beliggenhed.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="samletFastEjendom" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den ejendom hvor en bygning på fremmed grund indgår.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:SamletFastEjendom</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BygningPaaFremmedGrundPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:BygningPaaFremmedGrund"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="BygningPaaFremmedGrundFlade" substitutionGroup="mat:BygningPaaFremmedGrund" type="mat:BygningPaaFremmedGrundFladeType">
+    <annotation>
+      <documentation>BygningPåFremmedGrund geometrisk registreret med fladegeometri.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BygningPaaFremmedGrundFladeType">
+    <complexContent>
+      <extension base="mat:BygningPaaFremmedGrundType">
+        <sequence>
+          <element name="geometri" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Geometri – Polygon</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BygningPaaFremmedGrundFladePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:BygningPaaFremmedGrundFlade"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="BygningPaaFremmedGrundOprindelseType">
+    <annotation>
+      <documentation>Liste med typer af oprindelse for bygning på fremmed grund.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="ESR">
+        <annotation>
+          <documentation>Angiver at de registrerede oplysninger i Matriklen kommer fra ESR.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Matriklen - stedfæstet">
+        <annotation>
+          <documentation>Angiver at bygningen på fremmed grund er født i Matriklen og at den er stedfæstet, således at der kan tinglyses rettigheder i ejendommen.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Matriklen - ikke stedfæstet">
+        <annotation>
+          <documentation>Angiver at bygningen på fremmed grund er født i Matriklen, men at den endnu ikke er stedfæstet, dvs. der kan ikke tinglyses rettigheder i ejendommen.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="BygningPaaFremmedGrundPunkt" substitutionGroup="mat:BygningPaaFremmedGrund" type="mat:BygningPaaFremmedGrundPunktType">
+    <annotation>
+      <documentation>BygningPåFremmedGrund geometrisk registreret med punktgeometri.</documentation>
+    </annotation>
+  </element>
+  <complexType name="BygningPaaFremmedGrundPunktType">
+    <complexContent>
+      <extension base="mat:BygningPaaFremmedGrundType">
+        <sequence>
+          <element name="geometri" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Geometri – Punkt</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BygningPaaFremmedGrundPunktPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:BygningPaaFremmedGrundPunkt"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Centroide" substitutionGroup="mat:MatrikulaertElement" type="mat:CentroideType">
+    <annotation>
+      <documentation>Et punkt inden i et jordstykke, hvorved man med en simpel position kan stedfæste alle egenskabsdata, der er knyttet til et jordstykke.
+NOTE Centroide indgår i den matrikulære proces som pladsholder for oplysninger om jordstykket. Selve jordstykkets udstrækning beskrives i den matrikulære proces gennem jordstykkets MatrikelSkel.</documentation>
+    </annotation>
+  </element>
+  <complexType name="CentroideType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Geometri – Punkt.</documentation>
+            </annotation>
+          </element>
+          <element name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det jordstykke hvorpå lodfladen ligger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="flade" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det jordstykke som har en centroide tilknyttet.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="CentroidePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Centroide"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Ejerlav" substitutionGroup="mat:MatrikelAdministrativtOmraade" type="mat:EjerlavType">
+    <annotation>
+      <documentation>Underinddeling af sogne i matrikulære distrikter.</documentation>
+    </annotation>
+  </element>
+  <complexType name="EjerlavType">
+    <complexContent>
+      <extension base="mat:MatrikelAdministrativtOmraadeType">
+        <sequence>
+          <element name="geometri" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="ejerlavskode" type="integer">
+            <annotation>
+              <documentation>Unik identifikation af det specifikke ejerlav.
+NOTE Et matrikelnummer består af et nummer og et ejerlav, hvor matrikelnummeret er unikt inde for ejerlavet.</documentation>
+            </annotation>
+          </element>
+          <element name="ejerlavsnavn" type="string">
+            <annotation>
+              <documentation>Navnet på ejerlavet - normalt angivet ved ejerlav,sogn.
+NOTE Enkelte ejerlavsnavne har dubletter, eksempelvis findes ejerlavsnavnet Hørby By, Hørby i både Mariagerfjord Kommune og Holbæk Kommune</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EjerlavPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Ejerlav"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Ejerlejlighed" substitutionGroup="mat:BestemtFastEjendom" type="mat:EjerlejlighedType">
+    <annotation>
+      <documentation>Lejlighed i en beboelsesejendom hvor hver enkelt lejlighed ejes særskilt og betragtes som selvstændig fast ejendom, mens de fælles dele og faciliteter ejes i fællesskab af en ejerforening.
+NOTE Hver Ejerlejlighed har en selvstændig identitet, således at der kan tinglyses rettigheder på hver enkelt Ejerlejlighed. En Ejerlejlighed er del af en hovedejendom, som enten er en Samlet fast ejendom eller en Bygning på fremmed grund. Ejeren af en Ejerlejlighed ejer selve lejligheden, mens hovedejendommen med jordstykke, trapper m.v. normalt ejes af alle ejerlejlighedsejere i fælles sameje, efter ejerlejlighedernes fordelingstal.</documentation>
+    </annotation>
+  </element>
+  <complexType name="EjerlejlighedType">
+    <complexContent>
+      <extension base="mat:BestemtFastEjendomType">
+        <sequence>
+          <element minOccurs="0" name="bygningPaaFremmedGrundLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den bygning på fremmed grund som er hovedejendom for den pågældende ejerlejlighed.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="ejerlejlighedskort" type="anyURI">
+            <annotation>
+              <documentation>Sagsbilag hvorpå geometrien for ejerlejligheden og eventuelle ejerlejlighedslodder er illustreret.
+NOTE For nye ejerlejligheder der registreres i Matriklen skal der altid være et ejerlejlighedskort. Men for de ejerlejligheder som overføres fra ESR/Tingbog vil der ikke være ejerlejlighedskort. Derfor er der 0..1 kardinalitet for Sagsbilag.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="samletFastEjendomLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den samlede faste ejendom som er hovedejendom for den pågældende ejerlejlighed.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="ejerlejlighedsnummer" type="string">
+            <annotation>
+              <documentation>Identifikation af den enkelte ejerlejlighed der ligger i en hovedejendom.</documentation>
+            </annotation>
+          </element>
+          <element name="fordelingstalNaevner" type="integer">
+            <annotation>
+              <documentation>Udgør sammen med fordelingstalTæller ejerlejlighedens andel af ejendomsretten af den hovedejendom som ejerlejligheden indgår i.</documentation>
+            </annotation>
+          </element>
+          <element name="fordelingstalTaeller" type="integer">
+            <annotation>
+              <documentation>Udgør sammen med fordelingstalNævner ejerlejlighedens andel af ejendomsretten af den hovedejendom som ejerlejligheden indgår i.</documentation>
+            </annotation>
+          </element>
+          <element name="iBygningPaaFremmedGrund" type="boolean">
+            <annotation>
+              <documentation>Angiver, om ejerlejligheden er beliggende i en bygning på fremmed grund.</documentation>
+            </annotation>
+          </element>
+          <element name="samletAreal" type="gml:AreaType">
+            <annotation>
+              <documentation>Angiver det aktuelle, samlede areal for ejerlejligheden i kvadratmeter.
+NOTE Svarer til begrebet ’Tinglyst areal’, som pt. anvendes af Tinglysningsretten. Opmålingen af arealet er foretaget af landinspektør.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="ejendom" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den samlede faste ejendom som indbefatter en ejerlejlighed.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:SamletFastEjendom</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="bygning" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den bygning på fremmed grund hvor ejerlejligheden ligger i.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:BygningPaaFremmedGrund</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EjerlejlighedPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Ejerlejlighed"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Ejerlejlighedslod" substitutionGroup="mat:MatrikulaertElement" type="mat:EjerlejlighedslodType">
+    <annotation>
+      <documentation>En ejerlejlighed kan bestå af flere arealer, som er fysisk adskilt fra hinanden. Disse arealer kaldes ejerlejlighedslodder.
+NOTE Information vedr. ejerlejlighedslodder registreres i dag ikke i Tingbogen. Dvs. ved idriftsættelsestidspunktet af Matriklens Udvidelse vil der ikke findes ejerlejlighedslodder på eksisterende ejerlejligheder. Nye ejerlejligheder, der kommer ind efter idriftsættelse, vil bestå af én eller flere ejerlejlighedslodder. Formålet med at registrere ejerlejlighedslodder er primært at give mulighed for at landinspektører kan genbruge data i sager, hvor der sker forandring af &lt;i&gt;ejerlejligheder&lt;/i&gt;.</documentation>
+    </annotation>
+  </element>
+  <complexType name="EjerlejlighedslodType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="ejerlejlighedLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den ejerlejlighed som ejerlejlighedsloddet indgår i.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="etagebetegnelse" type="string">
+            <annotation>
+              <documentation>Angivelse af hvilken etage ejerlejlighedslodden er beliggende på.
+NOTE 0 = Stue, 1=1. sal, 2=2. sal osv. -1, -2, -3 osv. kan angives for etager under terræn.</documentation>
+            </annotation>
+          </element>
+          <element name="geometri" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Udarbejdes af landinspektøren som en del af udarbejdelsen af ejerlejlighedskort.</documentation>
+            </annotation>
+          </element>
+          <element name="lodAreal" type="gml:AreaType">
+            <annotation>
+              <documentation>Det registrerede areal for det pågældende ejerlejlighedslod.
+NOTE Er kun relevant hvis ejerlejligheden består af mere end én ejerlejlighedslod.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lodBeliggenhedstekst" type="string">
+            <annotation>
+              <documentation>Tekst, der angiver ejerlejlighedsloddens beliggenhed i relation til hovedejendommen.
+NOTE Er kun relevant hvis ejerlejligheden består af mere end én ejerlejlighedslod.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="lodLitra" type="string">
+            <annotation>
+              <documentation>Bogstav, der bruges for at angive en underinddeling af en ejerlejlighed i ejerlejlighedslodder.
+NOTE Litra, som tildeles af indberetningssystemet i alfabetisk rækkefølge indenfor ejerlejligheden. Er kun relevant hvis ejerlejligheden består af mere end én ejerlejlighedslod.</documentation>
+            </annotation>
+          </element>
+          <element name="ejerlejlighed" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den ejerlejlighed som ejerlejlighedslod er en del af.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Ejerlejlighed</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EjerlejlighedslodPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Ejerlejlighedslod"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="ForloebType">
+    <annotation>
+      <documentation>Liste med typer af forløb for et matrikelskel.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Skal følge skel">
+        <annotation>
+          <documentation>Angiver at temalinjen skal følge skel.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Skal ikke følge skelbillede">
+        <annotation>
+          <documentation>Angiver at temalinjen ikke skal følge skel.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Skal følge skelbillede">
+        <annotation>
+          <documentation>Angiver at temalinjen skal følge skelbilledet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Lukkelinje">
+        <annotation>
+          <documentation>Angiver at temalinjen udelukkende har til formål at lukke temafladen.
+NOTE En temalinje af typen lukkelinje har ikke en reference til et Jordstykke</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="Fredskov" substitutionGroup="gml:AbstractObject" type="mat:FredskovType">
+    <annotation>
+      <documentation>Registrering af fredskovspligt.</documentation>
+    </annotation>
+  </element>
+  <complexType name="FredskovType">
+    <sequence>
+      <element name="fredskovsareal" type="gml:AreaType">
+        <annotation>
+          <documentation>Arealet for den registrerede fredskov på jordstykket.</documentation>
+        </annotation>
+      </element>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="FredskovPropertyType">
+    <sequence>
+      <element ref="mat:Fredskov"/>
+    </sequence>
+  </complexType>
+  <simpleType name="GraensekodeType">
+    <annotation>
+      <documentation>Udfaldsrum for grænsekoder.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Region + kommune + sogn + ejerlav">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 regioner, 2 kommuner, 2 sogne og 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Region + kommune + sogn">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 regioner, 2 kommuner og 2 sogne. og 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Region + kommune">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 regioner og 2 kommuner.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Region">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 regioner.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kommune + sogn + ejerlav">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 kommuner, 2 sogne og 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kommune + sogn">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 kommuner og 2 sogne.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kommune + ejerlav">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 kommuner og 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kommune">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 kommuner.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sogn + ejerlav">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 sogne og 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sogn">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 sogne.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ejerlav">
+        <annotation>
+          <documentation>Skelgrænse imellem 2 ejerlav.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ingen administrativ grænse">
+        <annotation>
+          <documentation>Skel indgår ikke i en administrativ grænse.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="IndlaegningstypeType">
+    <annotation>
+      <documentation>Liste med indlægningstyper.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Indlagt over fikspunkter - FP">
+        <annotation>
+          <documentation>Angiver at indlægning er foretaget over fikspunkt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt over fikspunkter og/eller skelkredse - FS">
+        <annotation>
+          <documentation>Angiver at indlægning er foretaget over fikspunkt og/eller skelkredse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt over støttemateriale - ST">
+        <annotation>
+          <documentation>Angiver at indlægning er foretaget ved anvendelse af støttemateriale.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ukendt - UK">
+        <annotation>
+          <documentation>Angiver at indlægningstypen er ukendt.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="Jordrente" substitutionGroup="gml:AbstractObject" type="mat:JordrenteType">
+    <annotation>
+      <documentation>Omfanget af jordstykket som har jordrentenotering.</documentation>
+    </annotation>
+  </element>
+  <complexType name="JordrenteType">
+    <sequence>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="JordrentePropertyType">
+    <sequence>
+      <element ref="mat:Jordrente"/>
+    </sequence>
+  </complexType>
+  <element name="Jordstykke" substitutionGroup="mat:MatrikulaertElement" type="mat:JordstykkeType">
+    <annotation>
+      <documentation>Areal på jordoverfladen som er registreret i Matriklen og afgrænset af matrikelskel.
+NOTE Jordstykker kan selvstændigt eller i forening danne en Samlet fast ejendom. Et jordstykke kan enten være: et matrikuleret areal eller et umatrikuleret areal i form af udskilt, offentlig vej optaget i matriklen med matrikelnummer 7000 plus vejlitra.</documentation>
+    </annotation>
+  </element>
+  <complexType name="JordstykkeType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element minOccurs="0" name="samletFastEjendomLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den samlede faste ejendom som jordstykket indgår i.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="skelforretningssagsLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af den seneste skelforretningssag som er gennemført på jordstykket.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="stammerFraJordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Angiver det jordstykke, som det pågældende jordstykke oprinder fra.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="supplerendeMaalingSagLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af seneste sag som indeholder supplerende måloplysninger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="arealberegningsmetode" type="mat:ArealberegningsmetodeType">
+            <annotation>
+              <documentation>Angivelse af beregningsmetoden for arealet på det pågældende jordstykke.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="arealbetegnelse" type="string">
+            <annotation>
+              <documentation>Tekstlig beskrivelse af arealets art eller type.
+NOTE Anvendes til konverterede data, mens det for nyere data er erstattet af Arealtype.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="arealtype" type="mat:ArealtypeType">
+            <annotation>
+              <documentation>Den registrerede type for arealet.
+NOTE Arealtypen er ofte, men ikke nødvendigvis i overensstemmelse med den faktiske anvendelse.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="brugsretsareal" type="boolean">
+            <annotation>
+              <documentation>Et areal, der er stiftet en brugsret over for højest 30 år, såfremt arealet udgør en del af en samlet fast ejendom, eller for højest 10 år, såfremt arealet udgør en del af en umatrikuleret ejendom.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="delnummer" type="string">
+            <annotation>
+              <documentation>Midlertidigt nummer tildelt jordstykket inden det får tildelt det endelige matrikelnummer.
+NOTE Indtil jordstykket har fået matrikelnummer (ved matrikelmyndighedens godkendelse af sagen), benævnes jordstykket ud fra dets delnummer.</documentation>
+            </annotation>
+          </element>
+          <element name="faelleslod" type="boolean">
+            <annotation>
+              <documentation>Angiver om jordstykket er et fælleslod og dermed indgår i flere faste ejendomme.
+NOTE Kan være noteret som ja eller nej, tager udgangspunkt i udstykningsloven §3</documentation>
+            </annotation>
+          </element>
+          <element name="matrikelnummer" type="string">
+            <annotation>
+              <documentation>Entydig identifikation af et jordstykke inden for et ejerlav.
+NOTE Omfatter også vejlitra der angives som 7000 efterfulgt af vejlitra.</documentation>
+            </annotation>
+          </element>
+          <element name="ejerlavLokalid" type="string">
+            <annotation>
+              <documentation>Den unikke identifikation af det specifikke ejerlav.
+NOTE Entydig identifikation af et ejerlav på landsplan.</documentation>
+            </annotation>
+          </element>
+          <element name="sogneLokalid" type="string">
+            <annotation>
+              <documentation>Kode for det sogn som jordstykket hører under.</documentation>
+            </annotation>
+          </element>
+          <element name="kommuneLokalid" type="string">
+            <annotation>
+              <documentation>Unik identifikation for den specifikke kommune.</documentation>
+            </annotation>
+          </element>
+          <element name="regionLokalid" type="string">
+            <annotation>
+              <documentation>Unik identifikation tildelt en specifik region.</documentation>
+            </annotation>
+          </element>
+          <element name="registreretAreal" type="gml:AreaType">
+            <annotation>
+              <documentation>Jordstykkets registrerede areal i Matriklen.
+NOTE Det i Matriklen registrerede areal på Jordstykket. Det registrerede areal er ikke nødvendigvis identisk med det geometriske areal. Arealet er angivet som heltal i kvadratmeter.</documentation>
+            </annotation>
+          </element>
+          <element name="vandarealinkludering" type="mat:VandarealinkluderingType">
+            <annotation>
+              <documentation>Angivelse af om et eventuelt vandareal indenfor jordstykket indgår i det registrerede areal for jordstykket.
+NOTE Angivelse af ’vandkode’ for jordstykket.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="vejareal" type="gml:AreaType">
+            <annotation>
+              <documentation>Det i matriklen registrerede areal for en ikke udskilt vej på Jordstykket.
+NOTE Angivet som heltal i kvadratmeter</documentation>
+            </annotation>
+          </element>
+          <element name="vejarealberegningsstatus" type="mat:VejarealberegningsstatusType">
+            <annotation>
+              <documentation>Angiver hvorvidt et eventuelt vejareal på jordstykket er beregnet.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="fredskov" type="mat:FredskovPropertyType">
+            <annotation>
+              <documentation>Registrering af om der er fredskovspligt, på et jordstykke der er skov.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="jordrente" type="mat:JordrentePropertyType">
+            <annotation>
+              <documentation>Registrering af om der på jordstykket hviler jordrenteforpligtigelse i henhold til Bekendtgørelse om statshusmandsbrug m.m. og jordrente.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="klitfredning" type="mat:KlitfredningPropertyType">
+            <annotation>
+              <documentation>Registrering af, om der på jordstykket er klitfredning jf. naturbeskyttelsesloven.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="majoratsskov" type="mat:MajoratsskovPropertyType">
+            <annotation>
+              <documentation>Registrering af, om den fredskov som er registreret på jordstykket er noteret som majoratsskov i henhold til Skovloven.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="stormfald" type="mat:StormfaldPropertyType">
+            <annotation>
+              <documentation>Registrering af, om der for jordstykket er udbetalt tilskud til oprydning eller gentilplantning af private fredskove, der er væltet som følge af storme.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="strandbeskyttelse" type="mat:StrandbeskyttelsePropertyType">
+            <annotation>
+              <documentation>Registrering af, om der på jordstykket er strandbeskyttelse  jf. naturbeskyttelsesloven.</documentation>
+            </annotation>
+          </element>
+          <element name="samletFastEjendomSomErSamletAfJordstykker" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den samlede faste ejendom som et jordstykke samles i.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:SamletFastEjendom</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomHarAendretJordstykkeVedSkelforretning" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den seneste matrikulære sag der har ændret jordstykket ved en skelforretning.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="oprindelig" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det jordstykket hvori der er foretaget en udstykning.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomHarAendretJordstykkeVedSupplerendeMaaling" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den seneste matrikulære sag der har ændret jordstykket ved supplerende måling.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element name="ejerlav" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver det ejerlav som et jordstykke ligger indenfor.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Ejerlav</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element name="sogn" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver det sogn som et jordstykke ligger indenfor.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikelSogn</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element name="kommune" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den kommune som et jordstykke ligger indenfor.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikelKommune</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element name="region" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den region som et jordstykke ligger indenfor.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikelRegion</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="JordstykkePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Jordstykke"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="JordstykkeTemaflade" substitutionGroup="mat:MatrikulaertElement" type="mat:JordstykkeTemafladeType">
+    <annotation>
+      <documentation>En flade, der er dannet ved aggregering af temalinjer.</documentation>
+    </annotation>
+  </element>
+  <complexType name="JordstykkeTemafladeType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="temaFladeID" type="integer">
+            <annotation>
+              <documentation>Unik identifikation af temafladen.</documentation>
+            </annotation>
+          </element>
+          <element name="tematype" type="mat:TematypeType">
+            <annotation>
+              <documentation>Typen af tema der er registreret på det pågældende jordstykke.</documentation>
+            </annotation>
+          </element>
+          <element name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det jordstykke hvorpå temafladen er registreret.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="jordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver det jordstykke som en temaflade ligger indenfor.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="JordstykkeTemafladePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:JordstykkeTemaflade"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Klitfredning" substitutionGroup="gml:AbstractObject" type="mat:KlitfredningType">
+    <annotation>
+      <documentation>Registrering af klitfredning.</documentation>
+    </annotation>
+  </element>
+  <complexType name="KlitfredningType">
+    <sequence>
+      <element name="klitfredningsareal" type="gml:AreaType">
+        <annotation>
+          <documentation>Angiver størrelsen af klitfredning på et jordstykke hvorpå der er registreret klitfredning.
+NOTE Angivet i m2. Store klitområder langs den jyske vestkyst mod Skagerak og Vesterhavet er klitfredede. De klitfredede arealer danner et næsten sammenhængende bælte og strækker sig fra Skagen til Blåvandshuk og Skallingen, og derfra langs vestsiden af Fanø, Mandø og Rømø. Grænserne for de fredede arealer er afmærkede på stedet, og desuden er klitfredningen tinglyst.</documentation>
+        </annotation>
+      </element>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="KlitfredningPropertyType">
+    <sequence>
+      <element ref="mat:Klitfredning"/>
+    </sequence>
+  </complexType>
+  <simpleType name="LandbrugsnoteringType">
+    <annotation>
+      <documentation>Liste af typer af landbrugsnotering på jordstykke.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="FamilieBrug">
+        <annotation>
+          <documentation>Jf. bekendtgørelse om landbrugsejendommes notering som familieejendomme.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Landbrug">
+        <annotation>
+          <documentation>Angiver, at der på ejendommen er noteret landbrugspligt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="LandbrugUdenBygning">
+        <annotation>
+          <documentation>Angiver, at der på ejendommen er noteret landbrugspligt og at ejendommen er uden beboelsesbygninger.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="Lodflade" substitutionGroup="mat:MatrikulaertElement" type="mat:LodfladeType">
+    <annotation>
+      <documentation>Fladegeometrien hørende til et Jordstykke.
+NOTE Bemærk at Lodflade er et Ejendom forretningsobjekt i sig selv. Dvs. Lodflade og Jordstykke kan ændres uafhængigt af hinanden.</documentation>
+    </annotation>
+  </element>
+  <complexType name="LodfladeType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det jordstykke hvorpå lodfladen ligger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="jordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det objekt som har en lodflade tilknyttet.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="LodfladePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Lodflade"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Majoratsskov" substitutionGroup="gml:AbstractObject" type="mat:MajoratsskovType">
+    <annotation>
+      <documentation>Registrering af om fredskov som er registreret på jordstykket er noteret som majoratsskov.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MajoratsskovType">
+    <sequence>
+      <element name="majoratsskovsnummer" type="integer">
+        <annotation>
+          <documentation>Naturstyrelsens unikke identifikation af en majoratsskov.
+NOTE Nummeret er oplyst af Naturstyrelsen.</documentation>
+        </annotation>
+      </element>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="MajoratsskovPropertyType">
+    <sequence>
+      <element ref="mat:Majoratsskov"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="MatrikelAdministrativtOmraade" substitutionGroup="gml:AbstractFeature" type="mat:MatrikelAdministrativtOmraadeType">
+    <annotation>
+      <documentation>Abstrakt objekt der indeholder de fælles egenskaber for de administrative objekttyper der geometrisk baseres på matrikelskel.</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="MatrikelAdministrativtOmraadeType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="id" type="gd:IdentifikationPropertyType">
+            <annotation>
+              <documentation>Det unikke administrative områdes unikke identifikation.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor registreringen af versionen af forretningsobjektet er foretaget.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har foretaget registreringen.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="registreringTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor versionen af et forretningsobjekt enten er blevet erstattet af en nyere version eller er logisk slettet.
+NOTE Hvis feltet ikke er udfyldt med en tid, er versionen stadig gældende.</documentation>
+            </annotation>
+          </element>
+          <element name="sagLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den sag som sidst har foretaget opdatering af det pågældende administrative område.</documentation>
+            </annotation>
+          </element>
+          <element name="status" type="mat:MatrikulaertElementStatusType">
+            <annotation>
+              <documentation>Angivelse af hvor et forretningsobjekt er i sin livscyklus.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvorfra forretningsobjektet har virkning.
+NOTE Anvendes til at angive starten på en forretningsmæssig gyldighedsperiode for en given version af et forretningsobjekt.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har afstedkommet forvaltningsobjektets virkning.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="virkningTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor forvaltningsobjektets virkning ophører.
+NOTE Er i informationsmodel v1.0 benævnt VirkningTilTid.</documentation>
+            </annotation>
+          </element>
+          <element name="sag" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den matrikelsag hvor en ændring af et administrativt område indgår.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikelAdministrativtOmraadePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikelAdministrativtOmraade"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="MatrikelForretningsomraadeType">
+    <annotation>
+      <documentation>Udfaldsrum for FORM forretningsområder i matriklen.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="52.20.05">
+        <annotation>
+          <documentation>FORM nøgle der høre til Matrikel og ejendomsdannelse.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="MatrikelKommune" substitutionGroup="mat:MatrikelAdministrativtOmraade" type="mat:MatrikelKommuneType">
+    <annotation>
+      <documentation>Geometrisk inddeling af kommune pba. registreringer i matrikelregisteret.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MatrikelKommuneType">
+    <complexContent>
+      <extension base="mat:MatrikelAdministrativtOmraadeType">
+        <sequence>
+          <element name="geometri" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="kommunenavn" type="string">
+            <annotation>
+              <documentation>Navnet tilhørende kommunen.</documentation>
+            </annotation>
+          </element>
+          <element name="kommunekode" type="string">
+            <annotation>
+              <documentation>Den 4-cifrede CPR-kode tilhørende kommunen.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikelKommunePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikelKommune"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="MatrikelRegion" substitutionGroup="mat:MatrikelAdministrativtOmraade" type="mat:MatrikelRegionType">
+    <annotation>
+      <documentation>Geometrisk inddeling af region pba. registreringer i matrikelregisteret.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MatrikelRegionType">
+    <complexContent>
+      <extension base="mat:MatrikelAdministrativtOmraadeType">
+        <sequence>
+          <element name="regionskode" type="string">
+            <annotation>
+              <documentation>Koden tilhørende regionen.</documentation>
+            </annotation>
+          </element>
+          <element name="regionsnavn" type="string">
+            <annotation>
+              <documentation>Navnet tilhørende regionen.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikelRegionPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikelRegion"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="MatrikelSogn" substitutionGroup="mat:MatrikelAdministrativtOmraade" type="mat:MatrikelSognType">
+    <annotation>
+      <documentation>Geometrisk inddeling af sogn pba. registreringer i matrikelregisteret.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MatrikelSognType">
+    <complexContent>
+      <extension base="mat:MatrikelAdministrativtOmraadeType">
+        <sequence>
+          <element name="geometri" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="sognenavn" type="string">
+            <annotation>
+              <documentation>Navnet tilhørende sognet.</documentation>
+            </annotation>
+          </element>
+          <element name="sognekode" type="string">
+            <annotation>
+              <documentation>Den 4-cifrede CPR-kode tilhørende sognet.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikelSognPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikelSogn"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Matrikelskel" substitutionGroup="mat:MatrikulaertElement" type="mat:MatrikelskelType">
+    <annotation>
+      <documentation>En linje eller en polylinje, der – sammen med mindst ét andet matrikelskel - afgrænser et Jordstykke.
+NOTE Et matrikelskel er typisk en linje, men hvis skellet følger en cirkelbue, vil cirkelbuen blive repræsenteret ved en polylinje.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MatrikelskelType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="administrativGraenseKode" type="mat:GraensekodeType">
+            <annotation>
+              <documentation>Angivelse af hvilke administrative inddelinger, der er sammenfaldende med skellet.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="hoejreJordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det højre jordstykke matrikelskellet opbygger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="oprindelsesSagsLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af den sag, som indeholder de måloplysninger der er brugt til at angive matrikelskellets placering.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="skelforretningsSagsLokalId" type="string">
+            <annotation>
+              <documentation>Identificerer den seneste Sag, hvor Matrikelskellet er blevet fastlagt ved en skelforretning .
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="2" minOccurs="2" name="skelpunktLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af de 2 skelpunkter som opbygger matrikelskellet.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="venstreJordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det venstre jordstykke matrikelskellet opbygger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="geometri" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="oprindelseJournalnummer" type="string">
+            <annotation>
+              <documentation>Identifikation af den sag, via journalnummer, som indeholder de måloplysninger der er brugt til at angive objektets placering.</documentation>
+            </annotation>
+          </element>
+          <element name="produktionsmetode" type="mat:ProduktionsmetodeType">
+            <annotation>
+              <documentation>Angivelse af hvilken metode og baggrundsmateriale, som matrikelskellet er produceret ved hjælp af.</documentation>
+            </annotation>
+          </element>
+          <element name="skeltype" type="mat:SkeltypeType">
+            <annotation>
+              <documentation>Klassifikation af skellet ud fra skelhierarki.
+NOTE Afhængigt af hvilken type af arealer, der ligger på hver side af skellet, afgøres det, hvilken skeltype der gældende. Eksempel: Hvis skellet grænser op mod en sø, vil det være en 'søgrænse' skeltype, selvom det også er et ejendomsskel.</documentation>
+            </annotation>
+          </element>
+          <element name="transformationsId" type="integer">
+            <annotation>
+              <documentation>TransformationsID er en fortløbende nummerering af transformationerne inden for det enkelte ejerlav.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="venstreJordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Identificerer det Jordstykke, som ligger til venstre for matrikelskellet, når man står ved det  første Skelpunkt, som matrikelskellet starter med.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="hoejreJordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Identificerer det Jordstykke, som ligger til højre for matrikelskellet, når man står ved det  første Skelpunkt, som matrikelskellet starter med.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element maxOccurs="2" minOccurs="2" name="skelpunkt" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver de skelpunkter der definerer enderne i et skel.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Skelpunkt</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomFastlaeggerMatrikelskel" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den matrikulære sag der har fastlagt matrikelskellet på grundlag af måloplysninger.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomHarAendretMatrikelskel" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den seneste matrikulære sag der har ændret matrikelskellet ved en skelforretning.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikelskelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Matrikelskel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="MatrikulaerSag" substitutionGroup="gml:AbstractFeature" type="mat:MatrikulaerSagType">
+    <annotation>
+      <documentation>Helheden af de faktorer og omstændigheder der knytter sig til en matrikulær hændelse.</documentation>
+    </annotation>
+  </element>
+  <complexType name="MatrikulaerSagType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="id" type="gd:IdentifikationPropertyType">
+            <annotation>
+              <documentation>Unik fortløbende nummer, der identificerer en sag.
+NOTE Tildeles ved sagens fødsel.</documentation>
+            </annotation>
+          </element>
+          <element name="forretningshaendelse" type="mat:SagsoperationType">
+            <annotation>
+              <documentation>Den begivenhed i virkeligheden som udløste ændringen i data.</documentation>
+            </annotation>
+          </element>
+          <element name="forretningsomraade" type="mat:MatrikelForretningsomraadeType">
+            <annotation>
+              <documentation>Den del af den offentlige forretning der håndterer hændelsen og derved udvirker ændringen i data.</documentation>
+            </annotation>
+          </element>
+          <element name="forretningsproces" type="mat:SagskategoriType">
+            <annotation>
+              <documentation>Den manuelle eller IT-understøttede proces hvori forretningsområdet håndterer hændelsen.</documentation>
+            </annotation>
+          </element>
+          <element name="journaliseringsdato" type="date">
+            <annotation>
+              <documentation>Dato for den dag, hvor sagen er journaliseret af matrikelmyndigheden.
+NOTE Er ensbetydende med at sagen har fået matrikelmyndighedens journalnummer.</documentation>
+            </annotation>
+          </element>
+          <element name="kommune" type="string">
+            <annotation>
+              <documentation>Den kommune matrikelnummeret hører til og som er blevet brugt til at stedfæste sagen.</documentation>
+            </annotation>
+          </element>
+          <element name="matrikelmyndighedensJournalnummer" type="string">
+            <annotation>
+              <documentation>Det unikke sagsnummer som er tildelt af matrikelmyndigheden.
+NOTE Tildeles når matrikelmyndigheden modtager sagen.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor registreringen af versionen af forretningsobjektet er foretaget.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har foretaget registreringen.
+NOTE Registreringsaktøren udstilles som en CharacterString indtil der kan peges på et andet objekt (som ikke ejes af GST).</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="registreringTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor versionen af et forretningsobjekt enten er blevet erstattet af en nyere version eller er logisk slettet.
+NOTE Hvis feltet ikke er udfyldt med en tid, er versionen stadig gældende.</documentation>
+            </annotation>
+          </element>
+          <element name="rekvirentRef" type="string">
+            <annotation>
+              <documentation>Den sagsansvarliges (ofte landinspektørens) eget journalnummer for sagen.
+NOTE Journalnummeret er kun unikt indenfor sagsansvarligs egen organisation.</documentation>
+            </annotation>
+          </element>
+          <element name="sagstitel" type="string">
+            <annotation>
+              <documentation>Den repræsentative tekst, der beskriver sagen.</documentation>
+            </annotation>
+          </element>
+          <element name="status" type="mat:SagsstatusType">
+            <annotation>
+              <documentation>Angivelse af hvor sagen er i sin livscyklus.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvorfra forretningsobjektet har virkning.
+NOTE Anvendes til at angive starten på en forretningsmæssig gyldighedsperiode for en given version af et forretningsobjekt.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har afstedkommet forvaltningsobjektets virkning.
+NOTE Virkningsaktøren udstilles som en CharacterString indtil der kan peges på et andet objekt (som ikke ejes af GST).</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="virkningTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor forretningsobjektets virkning ophører.
+NOTE Anvendes til at angive slutningen på en gyldighedsperiode for en given version af et forretningsobjekt.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="jordstykkeSomStedfaesterMatrikulaerSag" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det jordstykke som stedfæster en matrikulær sag.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="ejerlav" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpegelse af det ejerlav hvori en matrikulær sag finder sted.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Ejerlav</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="ejerlavLokalid" type="string">
+            <annotation>
+              <documentation>Den unikke identifikation af det specifikke ejerlav.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af det jordstykke som stedfæster en matrikulær sag.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikulaerSagPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikulaerSag"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="MatrikulaertElement" substitutionGroup="gml:AbstractFeature" type="mat:MatrikulaertElementType">
+    <annotation>
+      <documentation>Abstrakt objekt der indeholder de fælles egenskaber for de matrikulære objekttyper.
+NOTE Ejendom forretningsobjekt beskriver fælles egenskaber for følgende forretningsobjekttyper:
+Bestemt fast ejendom
+Ejerlejlighedslod
+Jordstykke
+Lodflade
+Centroide
+Matrikelskel
+Skelpunkt
+Temalinje
+Anden grænse</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="MatrikulaertElementType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType">
+            <annotation>
+              <documentation>Den primære begivenhed i virkeligheden som udløste ændringen i data.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="sekundaerForretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType">
+            <annotation>
+              <documentation>De begivenheder i virkeligheden som udløste ændringen i data.</documentation>
+            </annotation>
+          </element>
+          <element name="senesteSagLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af den sag som sidst har foretaget opdatering af det pågældende matrikulære element.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="forretningsomraade" type="mat:MatrikelForretningsomraadeType">
+            <annotation>
+              <documentation>Den del af den offentlige forretning der håndterer hændelsen og derved udvirker ændringen i data.</documentation>
+            </annotation>
+          </element>
+          <element name="forretningsproces" type="mat:SagskategoriType">
+            <annotation>
+              <documentation>Den manuelle eller IT-understøttede proces hvori forretningsområdet håndterer hændelsen.</documentation>
+            </annotation>
+          </element>
+          <element name="id" type="gd:IdentifikationPropertyType">
+            <annotation>
+              <documentation>Unik identifikation af objektet.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="paataenktHandling" type="mat:PaataenktHandlingType">
+            <annotation>
+              <documentation>Den påtænkte handling for objekter med status 'Under udarbejdelse' og 'Foreløbig'.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor registreringen af versionen af forretningsobjektet er foretaget.</documentation>
+            </annotation>
+          </element>
+          <element name="registreringsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har foretaget registreringen.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="registreringTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor versionen af et forretningsobjekt enten er blevet erstattet af en nyere version eller er logisk slettet.
+NOTE Hvis feltet ikke er udfyldt med en tid, er versionen stadig gældende.</documentation>
+            </annotation>
+          </element>
+          <element name="status" type="mat:MatrikulaertElementStatusType">
+            <annotation>
+              <documentation>Angivelse af hvor et forretningsobjekt er i sin livscyklus.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningFra" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvorfra forretningsobjektet har virkning.
+NOTE Anvendes til at angive starten på en forretningsmæssig gyldighedsperiode for en given version af et forretningsobjekt.</documentation>
+            </annotation>
+          </element>
+          <element name="virkningsaktoer" type="string">
+            <annotation>
+              <documentation>Den aktør der har afstedkommet forretningsobjektets virkning.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="virkningTil" type="dateTime">
+            <annotation>
+              <documentation>Tidspunktet hvor forretningsobjektets virkning ophører.
+NOTE Anvendes til at angive slutningen på en gyldighedsperiode for en given version af et forretningsobjekt.</documentation>
+            </annotation>
+          </element>
+          <element name="senesteSag" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver den matrikelsag hvor et matrikulært element indgår.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MatrikulaertElementPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:MatrikulaertElement"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="MatrikulaertElementForretningshaendelseType">
+    <annotation>
+      <documentation>Udfaldsrum for forretningshændelser i matriklen.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Afledt ændring">
+        <annotation>
+          <documentation>Angiver at ændringen er afledt af en ændring på et relateret objekt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Anden ændring">
+        <annotation>
+          <documentation>Ændring der falder udenfor udfaldsrummet i øvrigt, typisk af mere teknisk karakter.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealændring på Ejerlejlighed">
+        <annotation>
+          <documentation>Registreret areal på ejerlejlighed ændret.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ejerlejlighed bortfaldet">
+        <annotation>
+          <documentation>Ejerlejlighed afregistreret.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ejerlejlighed tilkommet">
+        <annotation>
+          <documentation>Ejerlejlighed registreret.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealændring på Jordstykke">
+        <annotation>
+          <documentation>Registreret areal ændret på jordstykkeniveau.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="BPFG med oprindelse 'Matriklen - stedfæstet' bortfaldet">
+        <annotation>
+          <documentation>BPFG indberettet fra landinspektør med oprindelse 'Matriklen - stedfæstet' bortfaldet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet">
+        <annotation>
+          <documentation>BPFG indberettet fra kommunen med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet">
+        <annotation>
+          <documentation>BPFG indberettet fra kommunen med oprindelse 'Matriklen - ikke stedfæstet' tilkommet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'">
+        <annotation>
+          <documentation>Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af relation fra SFE til BPFG bortfaldet">
+        <annotation>
+          <documentation>Registrering af at en 'Bygning på fremmed grund' ikke længere ligger på 'Samlet fast ejendom'.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af relation fra SFE til BPFG tilkommet">
+        <annotation>
+          <documentation>Registrering af at en 'Bygning på fremmed grund ligger på Samlet fast ejendom'.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet">
+        <annotation>
+          <documentation>Afregistrering af, at hovedejedom er opdelt i ejerlejligheder.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet">
+        <annotation>
+          <documentation>Registrering af, at hovedejedom er opdelt i ejerlejligheder.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Noteringsændring på Jordstykke">
+        <annotation>
+          <documentation>Notering på jordstykkeniveau er ændret.
+NOTE Kan være noteringer om: Ikke udskilt vej, Fredskov, Jordrente, Klitfredning, stormfald, Majoratsskov.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordstykke(r) bortfaldet">
+        <annotation>
+          <documentation>Den samlede faste ejendom består af færre jordstykker end før.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Noteringsændring på ejendom">
+        <annotation>
+          <documentation>Notering på den samlede faste ejendom er ændret.
+NOTE Kan være: Arbejderbolig, Landbrugsejendom, Landbrug uden beboelse, Familieejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordstykke(r) tilkommet">
+        <annotation>
+          <documentation>Den samlede faste ejendom består af flere jordstykker end før.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="MatrikulaertElementStatusType">
+    <annotation>
+      <documentation>Liste af typer af objektstatus for et matrikulært element.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Gældende">
+        <annotation>
+          <documentation>Angiver at versionen objektet er gældende.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Foreløbig">
+        <annotation>
+          <documentation>Angiver at versionen objektet er foreløbigt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Historisk">
+        <annotation>
+          <documentation>Angiver at versionen objektet er historisk.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ikke Gennemført">
+        <annotation>
+          <documentation>Angiver at versionen objektet er historisk.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="Nullinje" substitutionGroup="mat:MatrikulaertElement" type="mat:NullinjeType">
+    <annotation>
+      <documentation>Nullinjen i Nissum Fjord angiver grænsen for henholdsvis statens og strandejernes ejendomsret.
+NOTE Grænsen er fastlagt af den i henhold til § 4 i lov nr. 143 af 17. juni 1929 nedsatte kommission.</documentation>
+    </annotation>
+  </element>
+  <complexType name="NullinjeType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Geometri – Linestring</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="NullinjePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Nullinje"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="OmfangType">
+    <annotation>
+      <documentation>Liste af omfang for registrering på jordstykke.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="hel">
+        <annotation>
+          <documentation>Angiver at omfanget af registreringen på jordstykket er hel.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="delvis">
+        <annotation>
+          <documentation>Angiver at omfanget af registreringen på jordstykket er delvis.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="ukendt">
+        <annotation>
+          <documentation>Angiver at omfanget af registreringen på jordstykket er ukendt.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="OptagetVej" substitutionGroup="mat:MatrikulaertElement" type="mat:OptagetVejType">
+    <annotation>
+      <documentation>Registrering af vej og sti, som tjener som adgang til anden ejendom, og som ikke er udskilt med eget vejlitra eller matrikelnummer.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OptagetVejType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.
+NOTE Linestring</documentation>
+            </annotation>
+          </element>
+          <element name="produktionsmetode" type="mat:ProduktionsmetodeType">
+            <annotation>
+              <documentation>Angivelse af hvilken metode og baggrundsmateriale, som vejen er produceret ved hjælp af.
+NOTE Benævnes også som ’Grundmateriale’.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="vejbredde" type="double">
+            <annotation>
+              <documentation>Vejens bredde .
+NOTE Angivet i meter med to decimaler.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="vejtype" type="mat:VejtypeType">
+            <annotation>
+              <documentation>Angiver typen af vej ud fra dens oprindelse.</documentation>
+            </annotation>
+          </element>
+          <element name="transformationsId" type="integer">
+            <annotation>
+              <documentation>TransformationsID er en fortløbende nummerering af transformationerne inden for det enkelte ejerlav.
+NOTE TransformationsID skal anvendes i forbindelse med den efterfølgende vedligeholdelse (ajourføring) af matrikelkortet, hvor det er vigtigt at kunne udskille elementer fra den enkelte transformation.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af de Jordstykker, som vejlinjen ligger på.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" name="jordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det jordstykke som har optagetvej liggende på sig.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OptagetVejPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:OptagetVej"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="PaataenktHandlingType">
+    <annotation>
+      <documentation>Angivelse af den handling, som forretningsobjektet bliver udsat for, når sagen registreres endeligt i Matriklen.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Ændring">
+        <annotation>
+          <documentation>Forretningsobjektet vil opstå som nyt i Matriklen, når sagen registreres endeligt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyoprettelse">
+        <annotation>
+          <documentation>Forretningsobjektet vil udgå af Matriklen, når sagen registreres endeligt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udgår">
+        <annotation>
+          <documentation>Forretningsobjektet vil blive ændret i Matriklen, når sagen registreres endeligt.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="ProduktionsmetodeType">
+    <annotation>
+      <documentation>Liste af produktionsmetoder for matrikelskellet.
+NOTE Benævnes også som ’Grundmateriale’.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Indlagt med koordinaterne fra en skelmåling - MI">
+        <annotation>
+          <documentation>Beskriver at data er indlagt med koordinaterne fra en skelmåling.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt vha. et måleblad, der er digitaliseret - MD">
+        <annotation>
+          <documentation>Beskriver at data er indlagt vha. et måleblad, der er digitaliseret.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt vha. digitalisering af et økort - MK">
+        <annotation>
+          <documentation>Beskriver at data er indlagt vha. et digitaliseret søkort.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt vha. digitalisering af et rammekort i målforhold &gt;1:2000 - RL">
+        <annotation>
+          <documentation>Beskriver at data er indlagt vha. digitalisering af et rammekort i målforhold &gt;1:2000</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt vha. digitalisering af et rammekort i målforhold 1:500 til 1:2000 - RS">
+        <annotation>
+          <documentation>Beskriver at data er indlagt vha. digitalisering af et ramme kort i målforhold 1:500 til 1:2000</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indlagt vha. digitalisering af et skelkort eller en konstruktion - SK">
+        <annotation>
+          <documentation>Beskriver at data er indlagt vha. digitalisering af et skelkort eller en konstruktion.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ukendt - UK">
+        <annotation>
+          <documentation>Beskriver oprindelsen for data er ukendt.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="PunktKlasseType">
+    <annotation>
+      <documentation>Liste med typer af punktklasser.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Fikspunkt - 0">
+        <annotation>
+          <documentation>Angiver at skelkredsen er indlagt pba. En måling knyttet til et fikspunkt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indmålt ved hjælp af RTK GPS - 1">
+        <annotation>
+          <documentation>Angiver at skelkredsen er indlagt pba. en måling knyttet til et fikspunkt og/eller et fikspunkt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Indmålt terrestrisk på anden vis - 2">
+        <annotation>
+          <documentation>Angiver at skelkredsen er indlagt pba. en anden type indmåling.
+NOTE Sjældent forekommende. Den normale tilknytning sker via måling til fikspunkt eller ved anvendelse af RTK GPS</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Digitaliseret punkt eller labil grænse - 3">
+        <annotation>
+          <documentation>Angiver at der er tale om et digitaliseret punkt eller et punkt i en labil grænse.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="SagskategoriType">
+    <annotation>
+      <documentation>Liste af sagskategorier en matrikulær sag kan have.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Anden sagskategori">
+        <annotation>
+          <documentation>Sag af intern karakter</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Matrikulær sag">
+        <annotation>
+          <documentation>Sag, der medfører matrikulære forandringer.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kvalitetsforbedring af matriklen">
+        <annotation>
+          <documentation>Sag vedr. kvalitetsforbedring af matriklen.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Minirenovering">
+        <annotation>
+          <documentation>Sag vedr. forbedring af geometrien ved en minirenovering.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Klitfredning">
+        <annotation>
+          <documentation>Sag vedr. registrering af klitfredning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Strandbeskyttelse">
+        <annotation>
+          <documentation>Sag vedr. registrering af strandbeskyttelse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fredskov">
+        <annotation>
+          <documentation>Sag vedr. registrering af fredskov.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Majoratsskov">
+        <annotation>
+          <documentation>Sag vedr. registrering af majoratsskov.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Stormfald">
+        <annotation>
+          <documentation>Sag vedr. stormfaldsnotering.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Landbrug">
+        <annotation>
+          <documentation>Sag vedr. landbrugsnotering.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arbejderbolig">
+        <annotation>
+          <documentation>Sag vedr. notering om arbejderbolig.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordrente">
+        <annotation>
+          <documentation>Sag vedr. registrering af jordrente.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Amts- og kommunegrænse">
+        <annotation>
+          <documentation>Sag vedr. registrering af amts- og/eller kommunegrænse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sognegrænse">
+        <annotation>
+          <documentation>Sag vedr. registrering af sognegrænse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordfordeling">
+        <annotation>
+          <documentation>Sag som er resultat af kendelsen for en jordfordeling.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ekspropriation">
+        <annotation>
+          <documentation>Sag som er resultat af kendelsen for en ekspropriation.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Tilbageførselssag">
+        <annotation>
+          <documentation>Sag som gennemføres med henblik på at tilbageføre tidligere udførte forandringer.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ejerlejlighedssag">
+        <annotation>
+          <documentation>Sag vedr. forandring eller oprettelse af ejerlejligheder.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ikke beskikkelseskrævende ændringssag">
+        <annotation>
+          <documentation>Sag der kan indsendes til matrikelmyndigheden af andre end en beskikket landinspektør.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Bygning på fremmed grund fra kommune">
+        <annotation>
+          <documentation>Sag vedr. ny eller forandret bygning på fremmed grund – indberettet af kommune.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Bygning på fremmed grund fra landinspektør">
+        <annotation>
+          <documentation>Sag vedr. ny eller forandret bygning på fremmed grund – indberettet af landinspektør.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Bygning på havet">
+        <annotation>
+          <documentation>Sag vedrørende bygning på havet, herunder bl.a. vindmøller.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kombinationssag - Ejerlejlighed">
+        <annotation>
+          <documentation>Sag, der indeholder forandringer af både samlet fast ejendom og ejerlejlighed samt evt. bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kombinationssag - Bygning på fremmed grund">
+        <annotation>
+          <documentation>Sag, der indeholder forandringer af både samlet fast ejendom og bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="SagsoperationType">
+    <annotation>
+      <documentation>Liste af sagsoperationer en matrikulær sag kan have.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Administrative grænser">
+        <annotation>
+          <documentation>Ændring af administrative grænser.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af ejerlejlighedsnummer">
+        <annotation>
+          <documentation>Ændring af ejerlejlighedsnummer.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af fordelingstal">
+        <annotation>
+          <documentation>Ændring af fordelingstal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af geometri for ejerlejlighed">
+        <annotation>
+          <documentation>Ændring af geometrien for en ejerlejlighed.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af information om ejerlejlighedslodder">
+        <annotation>
+          <documentation>Ændring af informationer om ejerlejlighedslod.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af relation til hovedejendom">
+        <annotation>
+          <documentation>Ændring af relationen til hovedejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af relation til samlet fast ejendom">
+        <annotation>
+          <documentation>Ændring af relationen til den samlede faste ejendom, som bygningen ligger på.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Afregistrering af bygning på fremmed grund">
+        <annotation>
+          <documentation>Afregistrering af bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Anden hjemmel">
+        <annotation>
+          <documentation>Nyopdeling med anden hjemmel.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel af aflagt offentligt vejareal">
+        <annotation>
+          <documentation>Arealoverførsel af aflagt offentligt vejareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel af helt matr.nr. - matr.nr. bevares (ejendom til ejendom)">
+        <annotation>
+          <documentation>Arealoverførsel af helt matr.nr. - matr.nr. bevares (ejendom til ejendom)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel med tildeling af nyt matr.nr. (ejendom til ejendom)">
+        <annotation>
+          <documentation>Arealoverførsel til offentlig vej+ tildeling af nyt stamnr.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel med tildeling af nyt matr.nr. (stamnr.) (ejendom til ejendom). Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Arealoverførsel med tildeling af nyt matr.nr. (stamnr.) (ejendom til ejendom).</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel til offentlig vej+ tildeling nyt stamnr, ejendom til vej/sti. Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Arealoverførsel til offentlig vej+ tildeling nyt stamnr, ejendom til vej/sti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel til offentlig vej, ejendom til vej/sti">
+        <annotation>
+          <documentation>Arealoverførsel til offentlig vej, ejendom til vej/sti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel til offentligvej + tildeling nyt litra, ejendom til vej/sti">
+        <annotation>
+          <documentation>Arealoverførsel til offentligvej + tildeling nyt litra, ejendom til vej/sti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arealoverførsel, ejendom til ejendom">
+        <annotation>
+          <documentation>Arealoverførsel, ejendom til ejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Berigtigelse mod fællesjord">
+        <annotation>
+          <documentation>Berigtigelse mod fællesjord.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Berigtigelse mod havet">
+        <annotation>
+          <documentation>Berigtigelse mod havet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Berigtigelse mod sø og vandløb">
+        <annotation>
+          <documentation>Berigtigelse mod sø og vandløb.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Deling af jordstykke - registrering nyt skel (internt skel)">
+        <annotation>
+          <documentation>Deling af jordstykke - registrering nyt skel (internt skel) – gebyrfrit.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Deling af jordstykke - registrering nyt skel (internt skel) gebyr">
+        <annotation>
+          <documentation>Deling af jordstykke - registrering nyt skel (internt skel) – med gebyr.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Deling af jordstykke - registrering nyt skel (internt skel). Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Deling af jordstykke - registrering nyt skel (internt skel). Anvendt i historiske sager i Sønderjylland</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Diverse">
+        <annotation>
+          <documentation>Diverse mindre ændringer af data.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ejendomsberigtigelse">
+        <annotation>
+          <documentation>Fejlrettelse på data om en ejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1">
+        <annotation>
+          <documentation>Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2">
+        <annotation>
+          <documentation>Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3">
+        <annotation>
+          <documentation>Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4">
+        <annotation>
+          <documentation>Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 2">
+        <annotation>
+          <documentation>Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 2</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fælleslodsnotering">
+        <annotation>
+          <documentation>Ændring af fælleslodsnotering.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fredskov">
+        <annotation>
+          <documentation>Ændring ang. fredskov.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Genoptagelse af matrikelnummer">
+        <annotation>
+          <documentation>Genoptagelse af matrikelnummer.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Inddragelse af matr.nr.">
+        <annotation>
+          <documentation>Inddragelse af matr.nr.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordforurening - boligerklæring">
+        <annotation>
+          <documentation>Ændring ang. jordforurening – boligerklæring.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordforurening V1">
+        <annotation>
+          <documentation>Ændring ang. jordforurening på vidensniveau 1.
+NOTE Anvendes ikke fremadrettet</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordforurening V2">
+        <annotation>
+          <documentation>Ændring ang. jordforurening på vidensniveau 2 .
+NOTE Anvendes ikke fremadrettet</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Klitfredning">
+        <annotation>
+          <documentation>Ændring ang. klitfredning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kortopretning">
+        <annotation>
+          <documentation>En geometrisk forbedring af et matrikulært elements geografiske nøjagtighed.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Landbrug - familieejendom">
+        <annotation>
+          <documentation>Ændring ang. landbrug – familieejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Landbrugsejendom">
+        <annotation>
+          <documentation>Ændring ang. landbrugsejendom.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Majoratskov/samlet skovstrækning">
+        <annotation>
+          <documentation>Ændring ang. majoratskov/samlet skovstrækning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Matrikulering af ikke tidligere registreret areal">
+        <annotation>
+          <documentation>Matrikulering af ikke tidligere registreret areal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Matrikulering ved kendelse">
+        <annotation>
+          <documentation>Matrikulering af ikke tidligere registreret areal ved kendelse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyberegning af areal matr.nr.">
+        <annotation>
+          <documentation>Nyberegning af jordstykkets areal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyberegning fredskovsareal">
+        <annotation>
+          <documentation>Nyberegning af fredskovsareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyberegning klitfredningsareal">
+        <annotation>
+          <documentation>Nyberegning af klitfredningsareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyberegning strandbeskyttelsesareal">
+        <annotation>
+          <documentation>Nyberegning af strandbeskyttelsesareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Nyberegning vejareal">
+        <annotation>
+          <documentation>Nyberegning af vejareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Opløsning af ejerlejlighedsfællesskab">
+        <annotation>
+          <documentation>Ppløsning af ejerlejlighedsfællesskab.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel fra fællesareal">
+        <annotation>
+          <documentation>Overførsel fra fællesareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel mellem bygning på fremmed grund">
+        <annotation>
+          <documentation>Overførsel mellem bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel mellem ejerlejligheder">
+        <annotation>
+          <documentation>Overførsel mellem ejerlejligheder.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel til fællesareal">
+        <annotation>
+          <documentation>Overførsel til fællesareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel ved teknisk ændring - Uden gebyr">
+        <annotation>
+          <documentation>Overførsel ved teknisk ændring – uden gebyr.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Overførsel ved teknisk ændring med gebyr">
+        <annotation>
+          <documentation>Overførsel ved teknisk ændring – med gebyr.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af ændret etageareal">
+        <annotation>
+          <documentation>Registrering af ændret etageareal.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Arbejderbolig">
+        <annotation>
+          <documentation>Ændring ang. arbejderbolig.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jordrente">
+        <annotation>
+          <documentation>Ændring ang. jordrente.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Registrering af ny bygning på fremmed grund">
+        <annotation>
+          <documentation>Registrering af ny bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Stormfald - gentilplantning">
+        <annotation>
+          <documentation>Ændring ang. stormfald – gentilplantning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Stormfald - oprydning">
+        <annotation>
+          <documentation>Ændring ang. stormfald - oprydning .</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Rettelse (interne ændringer for et matr.nr.)">
+        <annotation>
+          <documentation>Rettelse (interne ændringer for et matr.nr.)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Rettelse af geometri (interne ændringer for et matr.nr.)">
+        <annotation>
+          <documentation>Rettelse af geometri.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sammenlægning af bygning på fremmed grund">
+        <annotation>
+          <documentation>Sammenlægning af bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sammenlægning af ejendomme (noteringsmæssigt)">
+        <annotation>
+          <documentation>Sammenlægning af ejendomme (noteringsmæssigt).</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sammenlægning af ejerlejligheder">
+        <annotation>
+          <documentation>Sammenlægning af ejerlejligheder.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Skelforretning - ejendomsberigtigelse">
+        <annotation>
+          <documentation>Skelforretning med ejendomsberigtigelse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Skelforretning - ejendomsgrænsen fastholdes">
+        <annotation>
+          <documentation>Skelforretning - ejendomsgrænsen fastholdes.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Sletning af ikke udskilt offentlig vej/sti">
+        <annotation>
+          <documentation>Sletning af ikke udskilt offentlig vej/sti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Stedfæstelse af eksisterende bygning på fremmed grund. Udføres af landinspektør.">
+        <annotation>
+          <documentation>Stedfæstelse af eksisterende bygning på fremmed grund.
+NOTE Udføres af landinspektør. Er grundlag for, at der kan tinglyses rettigheder i ejendommen.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Strandbeskyttelse">
+        <annotation>
+          <documentation>Ændring ang. strandbeskyttelse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Supplerende ændringer">
+        <annotation>
+          <documentation>Supplerende ændringer.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Supplerende måling">
+        <annotation>
+          <documentation>Supplerende måling.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Tildeling af matr.nr. til særskilt beliggende jordstykke">
+        <annotation>
+          <documentation>Tildeling af matr.nr. til særskilt beliggende jordstykke.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Tildeling af matr.nr. til særskilt beliggende jordstykke. Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Tildeling af matr.nr. til særskilt beliggende jordstykke – i historisk sag i Sønderjylland.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udskillelse af areal til offentlig vej">
+        <annotation>
+          <documentation>Udskillelse af areal til offentlig vej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udskillelse af areal til offentlig vej (nyt litra)">
+        <annotation>
+          <documentation>Udskillelse af areal til offentlig vej (nyt litra).</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udstykning">
+        <annotation>
+          <documentation>En matrikulær forandring der opdeler et jordstykke.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udstykning fra flere ejendomme">
+        <annotation>
+          <documentation>Udstykning fra flere ejendomme (udstykning i særlige tilfælde)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udstykning fra flere ejendomme + tildeling af nyt matr.nr.(stamnr.)">
+        <annotation>
+          <documentation>Udstykning fra flere ejendomme + tildeling af nyt matr.nr.(stamnr.)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udstykning, deling eller matr.nr. til lod (stamnummer). Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Udstykning, deling eller matr.nr. til lod (stamnummer) – i historisk sag i Sønderjylland.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Udstykning. Tidligere anvendt i Sønderjylland.">
+        <annotation>
+          <documentation>Udstykning – i historisk sag i Sønderjylland.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Vej berigtiget">
+        <annotation>
+          <documentation>Vejoplysninger berigtiget.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Vej omlagt">
+        <annotation>
+          <documentation>Vej omlagt.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Vej optaget">
+        <annotation>
+          <documentation>Vej optaget på matrikelkortet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1">
+        <annotation>
+          <documentation>Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2">
+        <annotation>
+          <documentation>Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3">
+        <annotation>
+          <documentation>Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 2">
+        <annotation>
+          <documentation>Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 2</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4">
+        <annotation>
+          <documentation>Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Videreopdeling i henhold til anden hjemmel">
+        <annotation>
+          <documentation>Videreopdeling i henhold til anden hjemmel.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Ændring af geometri for bygning på fremmed grund">
+        <annotation>
+          <documentation>Ændring af geometri for bygning på fremmed grund.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="SagsstatusType">
+    <annotation>
+      <documentation>Liste af sagsstatus en matrikulær sag kan have.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Hjemsendt til indberetter">
+        <annotation>
+          <documentation>Sagen er hjemsendt til indberetteren pga. fejl fundet ved matrikelmyndighedens revision.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Hos matrikelmyndigheden">
+        <annotation>
+          <documentation>Sagen er under behandling i matrikelmyndigheden.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Foreløbige sagsdata udstillet">
+        <annotation>
+          <documentation>Sagen er hos landinspektøren, der har valgt at udstille data.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Afventer svar fra kommunen">
+        <annotation>
+          <documentation>Sagen afventer svar fra kommunen.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Afventer indsendelse til registrering">
+        <annotation>
+          <documentation>Sagen afventer indsendelse til registrering.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Annulleret">
+        <annotation>
+          <documentation>Sagen er annulleret.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Afventer Tinglysningsretten">
+        <annotation>
+          <documentation>Sagen afventer en handling fra Tinglysningsretten.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Afsluttet">
+        <annotation>
+          <documentation>Sagen er afsluttet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Aflyst">
+        <annotation>
+          <documentation>Sagen er aflyst.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="SamletFastEjendom" substitutionGroup="mat:BestemtFastEjendom" type="mat:SamletFastEjendomType">
+    <annotation>
+      <documentation>En vedvarende forening af et eller flere jordstykker som tilsammen udgør én ejendom.
+NOTE Begrebet er knyttet til arealer på jordoverfladen og er fysisk bestemt ved det eller de jordstykker, der indgår i den samlede faste ejendom (se definition af jordstykke tidligere).
+Parcelhusgrunde vil normalt kun bestå af ét Jordstykke, hvorimod landbrugsejendomme ofte består af flere Jordstykker.</documentation>
+    </annotation>
+  </element>
+  <complexType name="SamletFastEjendomType">
+    <complexContent>
+      <extension base="mat:BestemtFastEjendomType">
+        <sequence>
+          <element minOccurs="0" name="arbejderbolig" type="boolean">
+            <annotation>
+              <documentation>Angiver om den samlede faste ejendom er en arbejderbolig.</documentation>
+            </annotation>
+          </element>
+          <element name="erFaelleslod" type="boolean">
+            <annotation>
+              <documentation>Angiver, at typen af samlet fast ejendom er fælleslod.
+NOTE Juridisk set er fælleslod ikke at betragte som en samlet fast ejendom eller bestemt fast ejendom. En fælleslod er en del af andre samlede faste ejendomme.</documentation>
+            </annotation>
+          </element>
+          <element name="geometri" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="hovedejendomOpdeltIEjerlejligheder" type="boolean">
+            <annotation>
+              <documentation>Angiver, om den pågældende samlede faste ejendom er registreret som hovedejendom og opdelt i ejerlejligheder.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="landbrugsnotering" type="mat:LandbrugsnoteringType">
+            <annotation>
+              <documentation>Angiver hvorvidt ejendommen er noteret som landbrugsejendom og derfor har landbrugspligt.</documentation>
+            </annotation>
+          </element>
+          <element name="udskiltVej" type="boolean">
+            <annotation>
+              <documentation>Angiver, om der er tale om en udskilt, offentlig vej med selvstændigt matrikelnummer.
+NOTE Juridisk set er udskilt vej ikke at betragte som en samlet fast ejendom eller bestemt fast ejendom.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Angivelse af Jordstykke der indgår i den SamletFastEjendom.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="jordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Angiver det jordstykke som indgår som fælleslod i en samlet fast ejendom.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SamletFastEjendomPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:SamletFastEjendom"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Skelpunkt" substitutionGroup="mat:MatrikulaertElement" type="mat:SkelpunktType">
+    <annotation>
+      <documentation>Et punkt, der angiver et Matrikelskels start eller slut.
+NOTE Punktet anvendes til opbevaring af informationer, som relaterer sig til punktet.</documentation>
+    </annotation>
+  </element>
+  <complexType name="SkelpunktType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="geometri" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="oprindelsesSagsLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af den sag, som indeholder de måloplysninger der er brugt til at angive skelpunktets placering.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="supplerendeMaalingSagsLokalId" type="string">
+            <annotation>
+              <documentation>Identifikation af den sag, som indeholder de måloplysninger der er brugt til at angive skelpunktets placering.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="indlaegningstype" type="mat:IndlaegningstypeType">
+            <annotation>
+              <documentation>Angiver den måde hvorpå det pågældende skelpunkt er indlagt i matrikelkortet.</documentation>
+            </annotation>
+          </element>
+          <element name="oprindelseJournalnummer" type="string">
+            <annotation>
+              <documentation>Identifikation af den sag, via journalnummer, som indeholder de måloplysninger der er brugt til at angive objektets placering.</documentation>
+            </annotation>
+          </element>
+          <element name="produktionsmetode" type="mat:ProduktionsmetodeType">
+            <annotation>
+              <documentation>Angivelse af hvilken metode og baggrundsmateriale, som skelpunktet er produceret ved hjælp af.
+NOTE Benævnes også som ’Grundmateriale’.</documentation>
+            </annotation>
+          </element>
+          <element name="punktKlasse" type="mat:PunktKlasseType">
+            <annotation>
+              <documentation>Klassificering af punktet i forhold til målemetode mv.</documentation>
+            </annotation>
+          </element>
+          <element name="transformationsId" type="integer">
+            <annotation>
+              <documentation>TransformationsID er en fortløbende nummerering af transformationerne inden for det enkelte ejerlav.
+NOTE TransformationsID skal anvendes i forbindelse med den efterfølgende vedligeholdelse (ajourføring) af matrikelkortet, hvor det er vigtigt at kunne udskille elementer fra den enkelte transformation.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomHarAendretSkelpunkt" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den seneste matrikulære sag der har ændret skelpunktet ved supplerende måling.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikulaerSagSomFastlaeggerSkelpunkt" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger den matrikulære sag der har fastlagt skelpunktet på grundlag af måloplysninger.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:MatrikulaerSag</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SkelpunktPropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Skelpunkt"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="SkeltypeType">
+    <annotation>
+      <documentation>Liste af skeltyper for et matrikulært skel.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Almindeligt">
+        <annotation>
+          <documentation>Skel af typen ”Skel i øvrigt”.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="VejogGade">
+        <annotation>
+          <documentation>Skel af typen ”Skel for udskilt vej og gadejord”.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Jernbane">
+        <annotation>
+          <documentation>Skel af typen ”Skel for jernbane”.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Midtlinie">
+        <annotation>
+          <documentation>Grænse af typen ”Grænse i vandløb og sø”.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Søgrænse">
+        <annotation>
+          <documentation>Grænse af typen ”Grænse mod sø”.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Kystlinje">
+        <annotation>
+          <documentation>Grænse af typen ”Kystlinie”.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="Stormfald" substitutionGroup="gml:AbstractObject" type="mat:StormfaldType">
+    <annotation>
+      <documentation>Registrering af udbetalt tilskud til oprydning eller gentilplantning af private fredskove, der er væltet som følge af storme.</documentation>
+    </annotation>
+  </element>
+  <complexType name="StormfaldType">
+    <sequence>
+      <element name="betalingsdato" type="date">
+        <annotation>
+          <documentation>Tidspunkt hvor udbetaling af stormfaldstilskud er startet.</documentation>
+        </annotation>
+      </element>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+      <element name="ophoersdato" type="date">
+        <annotation>
+          <documentation>Tidspunkt hvor udbetaling af stormfaldstilskud er ophørt.</documentation>
+        </annotation>
+      </element>
+      <element name="SNSJournalNummer" type="string">
+        <annotation>
+          <documentation>Det af Naturstyrelsen angivne journalnummer på en stormfaldssag.</documentation>
+        </annotation>
+      </element>
+      <element name="tilskudstype" type="mat:TilskudstypeType">
+        <annotation>
+          <documentation>Typen af tilskud det registrerede stormfald er omfattet af.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="StormfaldPropertyType">
+    <sequence>
+      <element ref="mat:Stormfald"/>
+    </sequence>
+  </complexType>
+  <element name="Strandbeskyttelse" substitutionGroup="gml:AbstractObject" type="mat:StrandbeskyttelseType">
+    <annotation>
+      <documentation>Registrering af strandbeskyttelse.</documentation>
+    </annotation>
+  </element>
+  <complexType name="StrandbeskyttelseType">
+    <sequence>
+      <element name="omfang" type="mat:OmfangType">
+        <annotation>
+          <documentation>Angiver hvor stor en del af jordstykket der er omfattet af registreringen.</documentation>
+        </annotation>
+      </element>
+      <element name="strandbeskyttelsesareal" type="gml:AreaType">
+        <annotation>
+          <documentation>Arealet på jordstykket som er omfattet af strandbeskyttelse.
+NOTE Angivet i m2</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="StrandbeskyttelsePropertyType">
+    <sequence>
+      <element ref="mat:Strandbeskyttelse"/>
+    </sequence>
+  </complexType>
+  <element name="Temalinje" substitutionGroup="mat:MatrikulaertElement" type="mat:TemalinjeType">
+    <annotation>
+      <documentation>Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</documentation>
+    </annotation>
+  </element>
+  <complexType name="TemalinjeType">
+    <complexContent>
+      <extension base="mat:MatrikulaertElementType">
+        <sequence>
+          <element name="forloeb" type="mat:ForloebType">
+            <annotation>
+              <documentation>Hvordan linjerne skal håndteres i forbindelse med ændringer i det aktuelle skelbillede.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="jordstykkeLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af de Jordstykker, som temalinjen ligger på.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="matrikelskelLokalId" type="string">
+            <annotation>
+              <documentation>Unik identifikation af det matrikelskel som temalinjen følger.
+NOTE Denne attribut er afledt, og er tilføjet modellen til brug for Web Feature Services.</documentation>
+            </annotation>
+          </element>
+          <element name="geometri" type="gml:CurvePropertyType">
+            <annotation>
+              <documentation>Objektets geografiske placering.</documentation>
+            </annotation>
+          </element>
+          <element name="originalTemafladeID" type="string">
+            <annotation>
+              <documentation>Reference til den originale temaflade i matrikelsystemet.
+NOTE Temaflader i udstillingsmodellen er opklippet efter jordstykkernes lodflader. Denne identifikation er nøglen til den uklippede temaflade i matrikelsystemet.</documentation>
+            </annotation>
+          </element>
+          <element name="tematype" type="mat:TematypeType">
+            <annotation>
+              <documentation>Typen af temalinje der er registreret på det pågældende jordstykke.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="jordstykke" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det jordstykke som har temalinje liggende på sig.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Jordstykke</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="skel" type="gml:ReferenceType">
+            <annotation>
+              <documentation>Udpeger det matrikelskel som har en temalinje liggende langs sig.</documentation>
+              <appinfo>
+                <targetElement xmlns="http://www.opengis.net/gml/3.2">mat:Matrikelskel</targetElement>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TemalinjePropertyType">
+    <sequence minOccurs="0">
+      <element ref="mat:Temalinje"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="TematypeType">
+    <annotation>
+      <documentation>Liste af tematyper for en temalinje.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="fredskov">
+        <annotation>
+          <documentation>Fredskovsgrænse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="strandbeskyttelse">
+        <annotation>
+          <documentation>Strandbeskyttelsesgrænse.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="klitfredning">
+        <annotation>
+          <documentation>Klitfredningsgrænse.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="TilskudstypeType">
+    <annotation>
+      <documentation>Liste af tilskudstyper for en stormfalds registrering.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="1: Tilskud til oprydning">
+        <annotation>
+          <documentation>Der er ydet tilskud til oprydning.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="2: Tilskud til gentilplantning">
+        <annotation>
+          <documentation>Der er ydet tilskud til tilplantning.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="VandarealinkluderingType">
+    <annotation>
+      <documentation>Liste af beregningstyper for et vandareal på et jordstykke.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="inklusiv">
+        <annotation>
+          <documentation>Vandareal på jordstykket er inkluderet i det registrerede areal for jordstykket.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="eksklusiv">
+        <annotation>
+          <documentation>Vandareal på jordstykket er ikke inkluderet i det registrerede areal for jordstykket.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="ukendt">
+        <annotation>
+          <documentation>Vandareal er ikke oplyst.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="VejarealberegningsstatusType">
+    <annotation>
+      <documentation>Liste af beregningstyper for et vejareal på et jordstykke.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="vejareal beregnet">
+        <annotation>
+          <documentation>Vejareal på jordstykket er beregnet (og kan være 0).</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="vejareal ej beregnet">
+        <annotation>
+          <documentation>Der er konstateret vej på jordstykket, men areal er ikke beregnet.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="ukendt vejareal">
+        <annotation>
+          <documentation>Det er ukendt, om der findes vej på jordstykket.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="VejtypeType">
+    <annotation>
+      <documentation>Liste af vejtyper for en optaget vej.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="sti">
+        <annotation>
+          <documentation>Angiver om vejtypen er sti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="kirkesti">
+        <annotation>
+          <documentation>Angiver om vejtypen er kirkesti.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="markvej">
+        <annotation>
+          <documentation>Angiver om vejtypen er markvej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="byvej">
+        <annotation>
+          <documentation>Angiver om vejtypen er byvej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="landevej">
+        <annotation>
+          <documentation>Angiver om vejtypen er landevej.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="ukendt">
+        <annotation>
+          <documentation>Angiver om vejtypen er ukendt.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+</schema>

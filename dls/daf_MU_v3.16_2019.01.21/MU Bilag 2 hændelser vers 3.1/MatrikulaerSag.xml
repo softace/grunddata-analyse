@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MatrikulaerSag xmlns="http://data.gov.dk/schemas/matrikel/1/payload/MatrikulaerSag" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<id_namespace>Load(id_namespace)</id_namespace>
+	<id_lokalId>Load(id_lokalId)</id_lokalId>
+	<forretningshaendelse>Load(forretningshaendelse)</forretningshaendelse>
+	<forretningsomraade>Load(forretningsomraade)</forretningsomraade>
+	<forretningsproces>Load(forretningsproces)</forretningsproces>
+	<journaliseringsdato>Load(journaliseringsdato)</journaliseringsdato>
+	<kommune>Load(kommune)</kommune>
+	<matrikelmyndighedensJournalnum>Load(matrikelmyndighedensJournalnum)</matrikelmyndighedensJournalnum>
+	<registreringFra>Load(registreringFra)</registreringFra>
+	<registreringsaktoer>Load(registreringsaktoer)</registreringsaktoer>
+	<registreringTil>Load(registreringTil)</registreringTil>
+	<rekvirentRef>Load(rekvirentRef)</rekvirentRef>
+	<sagstitel>Load(sagstitel)</sagstitel>
+	<status>Load(status)</status>
+	<virkningFra>Load(virkningFra)</virkningFra>
+	<virkningsaktoer>Load(virkningsaktoer)</virkningsaktoer>
+	<virkningTil>Load(virkningTil)</virkningTil>
+	<jordstykkeLokalId>Load(jordstykkeLokalId)</jordstykkeLokalId>
+	<ejerlavLokalId>Load(ejerlavLokalId)</ejerlavLokalId>
+</MatrikulaerSag>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WMS_Capabilities version="1.3.0"
+		xmlns="http://www.opengis.net/wms" 
+		xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" 
+		xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0"
+		xmlns:xlink="http://www.w3.org/1999/xlink" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:sld="http://www.opengis.net/sld" 
+		xsi:schemaLocation="http://www.opengis.net/wms 
+	http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd  
+	http://www.opengis.net/sld 
+	http://schemas.opengis.net/sld/1.1.0/sld_capabilities.xsd
+	http://inspire.ec.europa.eu/schemas/inspire_vs/1.0 
+	http://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd">
+	<Service>
+		<Name>WMS</Name>
+		<Title>DK INSPIRE View Service</Title>
+		<Abstract>Service for making available INSPIRE themes</Abstract>
+		<KeywordList>
+			<Keyword vocabulary="ISO">infoMapAccessService</Keyword>
+			<Keyword vocabulary="GEMET">Cadastral parcels</Keyword>
+		</KeywordList>
+		<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson/>
+				<ContactOrganization>The Agency for Data Supply and Efficiency</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Rentemestervej 8</Address>
+				<City>København NV</City>
+				<StateOrProvince/>
+				<PostCode>2400</PostCode>
+				<Country>Denmark</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+45 7254 5500</ContactVoiceTelephone>
+			<ContactElectronicMailAddress>sdfe@sdfe.dk</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>Contact The Agency for Data Supply and Efficiency</Fees>
+		<AccessConstraints>Requires username on Kortforsyningen</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>text/xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/plain</Format>
+				<Format>application/vnd.ogc.gml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>XML</Format> 
+			<Format>INIMAGE</Format>
+			<Format>BLANK</Format>
+		</Exception>
+		<inspire_vs:ExtendedCapabilities>
+			<inspire_common:MetadataUrl>
+				<inspire_common:URL>https://geodata-info.dk/srv/dan/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;id=ce966145-4aed-416a-bf56-cb1b1836251f&amp;outputschema=http://www.isotc211.org/2005/gmd&amp;elementsetname=full&amp;resulttype=results</inspire_common:URL>
+				<inspire_common:MediaType>application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
+			</inspire_common:MetadataUrl>				
+			<inspire_common:SupportedLanguages>
+				<inspire_common:DefaultLanguage>
+					<inspire_common:Language>eng</inspire_common:Language>
+				</inspire_common:DefaultLanguage>
+			</inspire_common:SupportedLanguages>
+			<inspire_common:ResponseLanguage>
+				<inspire_common:Language>eng</inspire_common:Language>
+			</inspire_common:ResponseLanguage>
+		</inspire_vs:ExtendedCapabilities>
+		<sld:UserDefinedSymbolization SupportSLD="1" UserLayer="1" UserStyle="1"/>
+		<!-- Compound layer -->
+		<Layer  queryable="1"> 
+			<Title>Cadastral parcels</Title>
+			<Abstract>Areas defined by cadastral registers or equivalent.</Abstract>
+			<CRS>EPSG:25832</CRS>
+			<CRS>EPSG:25833</CRS>
+			<CRS>EPSG:3035</CRS>
+			<CRS>EPSG:3044</CRS>
+			<CRS>EPSG:3857</CRS>
+			<CRS>EPSG:4093</CRS>
+			<CRS>EPSG:4094</CRS>
+			<CRS>EPSG:4095</CRS>
+			<CRS>EPSG:4096</CRS>
+			<CRS>EPSG:4258</CRS>
+			<CRS>EPSG:4326</CRS>
+			<CRS>EPSG:32632</CRS>
+			<CRS>EPSG:32633</CRS>
+			<CRS>CRS:84</CRS>
+			<EX_GeographicBoundingBox>
+				<westBoundLongitude>2.47842</westBoundLongitude>
+				<eastBoundLongitude>17.5578</eastBoundLongitude>
+				<southBoundLatitude>53.015</southBoundLatitude>
+				<northBoundLatitude>58.6403</northBoundLatitude>
+			</EX_GeographicBoundingBox>
+			<BoundingBox CRS="EPSG:25832" minx="120000" miny="5.9e+06" maxx="1e+06" maxy="6.5e+06"/>
+			<BoundingBox CRS="EPSG:25833" minx="-280235" miny="5.87493e+06" maxx="649671" maxy="6.54973e+06"/>
+			<BoundingBox CRS="EPSG:3035" minx="3.34221e+06" miny="3.87441e+06" maxx="3.95353e+06" maxy="4.76326e+06"/>
+			<BoundingBox CRS="EPSG:3044" minx="5.9e+06" miny="120000" maxx="6.5e+06" maxy="1e+06"/>
+			<BoundingBox CRS="EPSG:3857" minx="275897" miny="6.98577e+06" maxx="1.95452e+06" maxy="8.10304e+06"/>
+			<BoundingBox CRS="EPSG:4093" minx="-180144" miny="902243" maxx="700190" maxy="1.50247e+06"/>
+			<BoundingBox CRS="EPSG:4094" minx="-46994" miny="895713" maxx="841906" maxy="1.50858e+06"/>
+			<BoundingBox CRS="EPSG:4095" minx="36116.8" miny="886552" maxx="939765" maxy="1.52136e+06"/>
+			<BoundingBox CRS="EPSG:4096" minx="19452.9" miny="877286" maxx="949731" maxy="1.55235e+06"/>
+			<BoundingBox CRS="EPSG:4258" minx="53.015" miny="2.47842" maxx="58.6403" maxy="17.5578"/>
+			<BoundingBox CRS="EPSG:4326" minx="53.015" miny="2.47842" maxx="58.6403" maxy="17.5578"/>
+			<BoundingBox CRS="EPSG:32632" minx="120000" miny="5.9e+06" maxx="1e+06" maxy="6.5e+06"/>
+			<BoundingBox CRS="EPSG:32633" minx="-280235" miny="5.87493e+06" maxx="649671" maxy="6.54973e+06"/>
+			<BoundingBox CRS="CRS:84" minx="53.015" miny="2.47842" maxx="58.6403" maxy="17.5578"/>
+			<AuthorityURL name="sdfe">
+				<OnlineResource xlink:type="simple" xlink:href="https://www.sdfe.dk"/>
+			</AuthorityURL>
+			<Layer queryable="1">
+				<Name>CP.CadastralParcel</Name>
+				<Title>Cadastral Parcel</Title>
+				<MetadataURL type="ISO19115:2005">				
+					<Format>text/xml</Format>
+					<OnlineResource xlink:type="simple" xlink:href="https://geodata-info.dk/srv/dan/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;id=1bbc1ecf-fe3d-4a28-aace-e614aabfd71d&amp;outputschema=http://www.isotc211.org/2005/gmd&amp;elementsetname=full&amp;resulttype=results"/>
+				</MetadataURL>				
+				<Style>
+					<Name>CP.CadastralParcel.Default</Name>
+					<Title>Cadastral parcel Default Style</Title>
+					<Abstract>Parcel outline as a black line carried by the attribute geometry + text with attribute label carried by the attribute geometry parcel outlines: black (#000000) line 1 pixel Labels: in Arial 10 black (#000000).</Abstract>
+					<LegendURL>
+						<Format>image/png</Format>
+						<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=CP.CadastralParcel&amp;format=image/png&amp;STYLE=CP.CadastralParcel.Default"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer queryable="1">
+				<Name>CP.CadastralZoning</Name>
+				<Title>Cadastral Zoning</Title>
+				<MetadataURL type="ISO19115:2005">
+					<Format>text/xml</Format>
+					<OnlineResource xlink:type="simple" xlink:href="https://geodata-info.dk/srv/dan/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;id=1bbc1ecf-fe3d-4a28-aace-e614aabfd71d&amp;outputschema=http://www.isotc211.org/2005/gmd&amp;elementsetname=full&amp;resulttype=results"/>
+				</MetadataURL>		
+				<Style>				
+					<Name>CP.CadastralZoning.Default</Name>
+					<Title>Cadastral Zoning Default Style</Title>
+					<Abstract>Cadastral zoning outline carried by the attribute geometry + text with attribute label carried by the attribute geometry Cadastral zoning outline: black (#000000) line 2 pixels Labels: in Arial 20 black (#000000).</Abstract>
+					<LegendURL>
+						<Format>image/png</Format>
+						<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=CP.CadastralZoning&amp;format=image/png&amp;STYLE=CP.CadastralZoning.Default"/>
+					</LegendURL>
+				</Style>
+			</Layer>	
+			<Layer queryable="1">
+				<Name>CP.CadastralBoundary</Name>
+				<Title>Cadastral Boundary</Title>
+				<MetadataURL type="ISO19115:2005">
+					<Format>text/xml</Format>
+					<OnlineResource xlink:type="simple" xlink:href="https://geodata-info.dk/srv/dan/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;id=1bbc1ecf-fe3d-4a28-aace-e614aabfd71d&amp;outputschema=http://www.isotc211.org/2005/gmd&amp;elementsetname=full&amp;resulttype=results"/>
+				</MetadataURL>				
+				<Style>
+					<Name>CP.CadastralBoundary.Default</Name>
+					<Title>Cadastral Boundary Default Style</Title>
+                    <Abstract>Cadastral boundary: black (#000000) line 1 pixel.</Abstract>					
+					<LegendURL>
+						<Format>image/png</Format>
+						<OnlineResource xlink:type="simple" xlink:href="https://services.kortforsyningen.dk/cp_inspire?version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=CP.CadastralBoundary&amp;format=image/png&amp;STYLE=CP.CadastralBoundary.Default"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMS_Capabilities>

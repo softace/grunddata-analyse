@@ -1,0 +1,90 @@
+MAP
+ NAME "CP"
+ PROJECTION 
+   "init=epsg:25832" 
+ END
+ EXTENT 120000 5900000 1000000 6500000 
+ MAXSIZE 10000
+ 
+ #SHAPEPATH ""
+ STATUS ON
+ UNITS METERS
+ DEBUG 0
+ CONFIG "ON_MISSING_DATA" "FAIL"
+ CONFIG "MS_ERRORFILE" "/local/tmp_ms/AM_maperror.txt"
+ WEB
+   IMAGEPATH "/local/tmp_ms/"
+   #IMAGEURL "/tmp/tmp_ms/"
+   TEMPPATH "/local/tmp_ms/"
+   METADATA 
+     "wms_title" "Area Management"
+     "wms_srs" "EPSG:4326 EPSG:4258 EPSG:25832 EPSG:25833 EPSG:32632 EPSG:32633 EPSG:4093 EPSG:4094 EPSG:4095 EPSG:4096 EPSG:3395 EPSG:3857"
+	 "wms_bbox_extended" "TRUE"
+	 "wms_getmap_formatlist" "image/jpeg,image/png,image/png; mode=8bit,image/gif"
+	 "ows_enable_request" "*"
+	 "wms_feature_info_mime_type" "text/plain,text/html,application/vnd.ogc.gml"
+	 "ows_sld_enabled" "true"
+     "wms_encoding" "utf-8"
+   END
+ END
+ 
+ LAYER #Strandbeskyttelse og Klitfredning
+   NAME "AM.CoastalZoneManagementArea"
+   TYPE polygon
+   INCLUDE "./AM_include.map"   
+   DATA "GEOMETRY FROM (SELECT * FROM MATRIKEL_INS_A.INS_AREAMANAGEMENTZONE WHERE ZONETYPE='http://inspire.ec.europa.eu/codelist/ZoneTypeCode/coastalZoneManagementArea') USING SRID 25832"
+   TEMPLATE "./templates/mat_pg-ejerlav.html"
+   #MINSCALEDENOM  1
+   #MAXSCALEDENOM  187773
+   METADATA
+     "wms_title" "AM.CoastalZoneManagementArea"
+     "wms_srs" "epsg:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRY"
+	 "gml_GEOMETRY_type" "polygon"
+   END
+   CLASS
+	 GROUP "default"
+     NAME "AM.CoastalZoneManagementArea.Default"
+	 STYLE
+	   OUTLINECOLOR 133 171 255 
+	   WIDTH 2
+	 END # STYLE
+	 STYLE
+	   COLOR 133 171 255
+	   OPACITY 50
+	 END # STYLE
+   END # CLASS
+ END 
+  
+ LAYER #Fredskov
+   NAME "AM.ForestManagementArea"
+   TYPE polygon
+   INCLUDE "./AM_include.map"   
+   DATA "GEOMETRY FROM (SELECT * FROM MATRIKEL_INS_A.INS_AREAMANAGEMENTZONE WHERE ZONETYPE='http://inspire.ec.europa.eu/codelist/ZoneTypeCode/forestManagementArea') USING SRID 25832"
+   TEMPLATE "./templates/mat_pg-matrikelskel.html"
+   #layerstoerrelse 5000
+   #MINSCALEDENOM  1
+   #MAXSCALEDENOM  37555  
+   METADATA
+     "wms_title" "AM.ForestManagementArea"
+     "wms_srs" "epsg:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRY"
+	 "gml_GEOMETRY_type" "polygon"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+     NAME "AM.ForestManagementArea.Default"
+	 STYLE
+	   OUTLINECOLOR 51 204 51 
+	   WIDTH 2
+	 END # STYLE
+	 STYLE
+	   COLOR 51 204 51
+	   OPACITY 50
+	 END # STYLE
+   END # CLASS
+  END # LAYER 
+   
+END # MAP

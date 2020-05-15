@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:gd="http://data.gov.dk/schemas/grunddata/1/gml3"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    elementFormDefault="qualified"
+    targetNamespace="http://data.gov.dk/schemas/grunddata/1/gml3"
+    version="1.0">
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element name="Identifikation" substitutionGroup="gml:AbstractObject" type="gd:IdentifikationType">
+    <annotation>
+      <documentation>Unik identifikation af et objekt</documentation>
+    </annotation>
+  </element>
+  <complexType name="IdentifikationType">
+    <sequence>
+      <element name="namespace" type="string">
+        <annotation>
+          <documentation>Identifikation af et namespace inden for hvilket lokalId er unik</documentation>
+        </annotation>
+      </element>
+      <element name="lokalId" type="string">
+        <annotation>
+          <documentation>Identifikation af objektet</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="IdentifikationPropertyType">
+    <sequence>
+      <element ref="gd:Identifikation"/>
+    </sequence>
+  </complexType>
+</schema>

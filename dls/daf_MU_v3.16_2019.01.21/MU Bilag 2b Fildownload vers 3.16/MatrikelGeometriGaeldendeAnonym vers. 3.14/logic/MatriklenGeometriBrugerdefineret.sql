@@ -1,0 +1,23 @@
+-- Selects featuretypes from WFS view with status "Gældende" and with bitemporality defined by user
+SELECT *.* FROM
+BYGNINGPAAFREMMEDGRUNDFLADE_G WHERE [snippet_bitemp_full_with_period(BYGNINGPAAFREMMEDGRUNDFLADE_G)],
+BYGNINGPAAFREMMEDGRUNDPUNKT_G WHERE [snippet_bitemp_full_with_period(BYGNINGPAAFREMMEDGRUNDPUNKT_G)],
+CENTROIDE_G WHERE [snippet_bitemp_full_with_period(CENTROIDE_G)],
+EJERLAV_G WHERE [snippet_bitemp_full_with_period(EJERLAV_G)],
+MATRIKELKOMMUNE_G WHERE [snippet_bitemp_full_with_period(MATRIKELKOMMUNE_G)],
+MATRIKELSOGN_G WHERE [snippet_bitemp_full_with_period(MATRIKELSOGN_G)],
+EJERLEJLIGHED_G WHERE [snippet_bitemp_full_with_period(EJERLEJLIGHED_G)],
+EJERLEJLIGHEDSLOD_G WHERE [snippet_bitemp_full_with_period(EJERLEJLIGHEDSLOD_G)],
+JORDSTYKKE_G WHERE [snippet_bitemp_full_with_period(JORDSTYKKE_G)],
+LODFLADE_G WHERE [snippet_bitemp_full_with_period(LODFLADE_G)],
+MATRIKELSKEL_G WHERE [snippet_bitemp_full_with_period(MATRIKELSKEL_G)],
+NULLINJE_G WHERE [snippet_bitemp_full_with_period(NULLINJE_G)],
+OPTAGETVEJ_G WHERE [snippet_bitemp_full_with_period(OPTAGETVEJ_G)],
+SAMLETFASTEJENDOM_G WHERE [snippet_bitemp_full_with_period(SAMLETFASTEJENDOM_G)],
+SKELPUNKT_G WHERE [snippet_bitemp_full_with_period(SKELPUNKT_G)],
+STRANDBESKYTTELSEFLADE_G WHERE [snippet_bitemp_full_with_period(STRANDBESKYTTELSEFLADE_G)],
+KLITFREDNINGFLADE_G WHERE [snippet_bitemp_full_with_period(KLITFREDNINGFLADE_G)],
+FREDSKOVFLADE_G WHERE [snippet_bitemp_full_with_period(FREDSKOVFLADE_G)],
+STRANDBESKYTTELSELINJE_G WHERE [snippet_bitemp_full_with_period(STRANDBESKYTTELSELINJE_G)],
+KLITFREDNINGLINJE_G WHERE [snippet_bitemp_full_with_period(KLITFREDNINGLINJE_G)],
+FREDSKOVLINJE_G WHERE [snippet_bitemp_full_with_period(FREDSKOVLINJE_G)]
