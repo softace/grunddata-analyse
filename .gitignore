@@ -1,5 +1,5 @@
 /venv
 /.idea
-*.db
-*.db-journal
+/*.db
+/*.db-journal
 *~
