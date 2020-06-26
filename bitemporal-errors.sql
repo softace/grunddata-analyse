@@ -1,4 +1,5 @@
-select * from file_extract;
+select * from file_extract
+where substr(zip_file_name,1,3) = 'DAR';
 
 select count(*)
 from violation_log
