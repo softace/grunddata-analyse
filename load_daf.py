@@ -425,7 +425,6 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         registry: ("DAF registry: dar, bbr", 'option', 'r'),
          data_package: 'file path to the zip datapackage'):
     """Loads a DAF data file into database
     """
@@ -443,12 +442,6 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
     print(f'Loading data from {package_name}')
-    if registry == 'dar':
-        json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
-    elif registry == 'bbr':
-        json_schema_file_name = 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
-    else:
-        raise ValueError(f"Ukendt register '{registry}'.")
 
     if database_options['backend'] == SQLITE:
         sqlite3.register_adapter(decimal.Decimal, decimal2text)
@@ -470,8 +463,6 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
             f"Unknown database backend '{database_options['backend']}'.")
 
     initialise_db(conn, sql_create_table, initialise)
-    with open(json_schema_file_name, 'rb') as file:
-        initialise_registry_tables(conn, sql_create_table, wipe, json.load(file))
 
     cursor = conn.cursor()
     with ZipFile(data_package, 'r') as myzip:
@@ -512,6 +503,16 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
             values = flatten_dict(metadata)
             for key, value in values.items():
                 table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value, 'file_extract_id': file_extract_id})
+            registry = metadata['AbonnementsOplysninger'][0]['tjenestenavn'][:3]
+            if registry == 'DAR':
+                json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
+            elif registry == 'BBR':
+                json_schema_file_name = 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
+            else:
+                raise ValueError(f"Ukendt register '{registry}'.")
+            with open(json_schema_file_name, 'rb') as file:
+                initialise_registry_tables(conn, sql_create_table, wipe, json.load(file))
+
         with myzip.open(json_data_name) as file:
             parser = ijson.parse(file)
             db_table_name = None
