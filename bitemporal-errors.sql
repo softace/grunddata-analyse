@@ -1,8 +1,11 @@
-select * from file_extract
-where substr(zip_file_name,1,3) = 'DAR';
-
-select count(*)
+-- Useful for statistics (pivot-table)
+select substr(file_extract.metadata_file_name, 1, 3) as register, table_name, m.value as dato,
+       --file_extract.zip_file_name,
+       violation_type, count(violation_log.id) as antal_bitemporale_fejl
 from violation_log
+         left outer join file_extract on violation_log.file_extract_id = file_extract.id
+         left outer join metadata m on file_extract.id = m.file_extract_id and m.key = 'DatafordelerUdtraekstidspunkt[0].deltavindueSlut'
+group by register, table_name, dato, violation_type
 ;
 
 select violation_log.table_name, count(*)
