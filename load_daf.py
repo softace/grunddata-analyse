@@ -83,7 +83,7 @@ def insert_row(cursor, db_functions, row):
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
         for v in violations:
-            db_functions['Log violation'](cursor, row, "Samtidig virkende forekomst", 'Se bitemporalitet', dict(zip(violation_columns, v)))
+            db_functions['Log violation'](cursor, row, "Bitemporal data-integritet", 'Se bitemporalitet', dict(zip(violation_columns, v)))
     try:
         db_functions['Insert row'](cursor, row)
         return 1
