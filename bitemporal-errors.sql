@@ -15,11 +15,11 @@ group by register, table_name, dato, violation_type
 
 select register,
        table_name,
-       count(*)                                                                          as bitemporal_fejl,
-       count(*) - count(coalesce(registreringTil, virkningTil, NULL))                    as 'aktive',
-       (count(*) - count(coalesce(registreringTil, virkningTil, NULL)) + 0.0) / count(*) as andel
+       count(id) as bitemporal_fejl,
+       count(distinct id_lokalId) as unikke_id_lokalId
 from (
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -37,6 +37,7 @@ from (
          where 'Adresse' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -54,6 +55,7 @@ from (
          where 'Adressepunkt' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -71,6 +73,7 @@ from (
          where 'BBRSag' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -88,6 +91,7 @@ from (
          where 'Bygning' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -105,6 +109,7 @@ from (
          where 'Ejendomsrelation' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -122,6 +127,7 @@ from (
          where 'Enhed' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -139,6 +145,7 @@ from (
          where 'EnhedEjendomsrelation' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -156,6 +163,7 @@ from (
          where 'Etage' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -173,6 +181,7 @@ from (
          where 'FordelingAfFordelingsareal' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -190,6 +199,7 @@ from (
          where 'Fordelingsareal' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -207,6 +217,7 @@ from (
          where 'Grund' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -224,6 +235,7 @@ from (
          where 'Husnummer' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -241,6 +253,7 @@ from (
          where 'GrundJordstykke' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -258,6 +271,7 @@ from (
          where 'NavngivenVej' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -275,6 +289,7 @@ from (
          where 'NavngivenVejKommunedel' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -292,6 +307,7 @@ from (
          where 'NavngivenVejPostnummer' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -309,6 +325,7 @@ from (
          where 'NavngivenVejSupplerendeBynavn' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -326,6 +343,7 @@ from (
          where 'Opgang' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -343,6 +361,7 @@ from (
          where 'Sagsniveau' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
@@ -360,6 +379,7 @@ from (
          where 'SupplerendeBynavn' = violation_log.table_name
          union
          select substr(file_extract.metadata_file_name, 1, 3) as register,
+                violation_log.id,
                 violation_log.table_name,
                 violation_log.violation_type,
                 violation_log.conflicting_registreringFra_UTC,
