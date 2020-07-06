@@ -13,7 +13,8 @@ group by register, table_name, dato, violation_type
 order by register desc, bitemporale_fejl desc
 ;
 
--- Even more Useful for statistics (pivot-table)
+-- Useful for statistics (pivot-table)
+-- Bitemporal errors
 select substr(file_extract.metadata_file_name, 1, 3) as register,
        table_name,
        deltavindueSlut.value                         as dato,
