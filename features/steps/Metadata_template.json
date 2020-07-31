@@ -1,0 +1,72 @@
+{
+  "leveranceNavn": "{{file_extract_file_name}}.json",
+  "miljoe": "PROD01",
+  "fortroligData": "Nej",
+  "dataOmfattetAfPersondataloven": "Nej",
+  "MD5CheckSum": "{{mD5CheckSum}}",
+  "DatafordelerUdtraekstidspunkt": [
+    {
+      "deltavindueStart": "2020-01-01T01:01:01.111+02:00",
+      "deltavindueSlut": "2020-02-01T01:01:01.111+02:00"
+    }
+  ],
+  "tilgaengelighedsperiode": 30,
+  "AbonnementsOplysninger": [
+    {
+      "webBrugernavn": "webBrugernavn",
+      "tjenesteBrugernavn": "tjenesteBrugernavn",
+      "abonnementnavn": "{{file_extract_file_name}}",
+      "tjenestenavn": "{{registry}}-Totaludtraek",
+      "tjenesteversion": "1",
+      "oprettelsesdato": "2020-01-01T01:01:01.111+01:00",
+      "senesteAbonnementRedigeringsdato": "2020-01-01T01:01:01.111+01:00",
+      "gentagelsesinterval": "Dagligt"
+    }
+  ],
+  "BrugerUdfyldteParametre": [
+    {
+      "parameternavn": "Status",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "DAFTimestampTil",
+      "parametervaerdi": "2020-01-01T01:01:01.111+01:00"
+    },
+    {
+      "parameternavn": "executionTimestamp",
+      "parametervaerdi": "2020-01-01T01:01:01.111+01:00"
+    },
+    {
+      "parameternavn": "VirkningFra",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "RegistreringFra",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "VirkningTil",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "SincePrevious",
+      "parametervaerdi": "true"
+    },
+    {
+      "parameternavn": "DAFTimestampFra",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "output_format",
+      "parametervaerdi": "json"
+    },
+    {
+      "parameternavn": "RegistreringTil",
+      "parametervaerdi": "NULL"
+    },
+    {
+      "parameternavn": "lastExecutedTimestamp",
+      "parametervaerdi": "2020-01-01T01:01:01.111+01:00"
+    }
+  ]
+}

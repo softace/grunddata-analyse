@@ -9,6 +9,7 @@ The postgres backend is currently not working. Only sqlite backed is maintained 
 Initialise python venv:
 ```shell script
 . venv/bin/activate
+pip install wheel
 pip install -r requirements.txt
 ```
 
