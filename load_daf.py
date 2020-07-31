@@ -438,11 +438,6 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         'password': db_password
     }
 
-    if not data_package[-4:] == '.zip':
-        raise ValueError("data_package must be a zip file and end with '.zip'")
-    package_name = data_package[:-4]
-    print(f'Loading data from {package_name}')
-
     if database_options['backend'] == SQLITE:
         sqlite3.register_adapter(decimal.Decimal, decimal2text)
         sqlite3.register_converter('NUMERIC', text2decimal)  # It is most efficient to use storage class NUMERIC
@@ -463,6 +458,16 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
             f"Unknown database backend '{database_options['backend']}'.")
 
     initialise_db(conn, sql_create_table, initialise)
+
+    if not data_package:
+        conn.commit()
+        conn.close()
+        return
+
+    if not data_package[-4:] == '.zip':
+        raise ValueError("data_package must be a zip file and end with '.zip'")
+    package_name = data_package[:-4]
+    print(f'Loading data from {package_name}')
 
     cursor = conn.cursor()
     with ZipFile(data_package, 'r') as myzip:

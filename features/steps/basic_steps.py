@@ -33,6 +33,21 @@ dummy_data = {'Postnummer': {
                             }
 }
 
+@given('I initialize the DAF database')
+def step_impl(context):
+    context.behave_db=f'behave_DAF'
+    if os.path.isfile(f'behave_DAF.db'):
+        os.remove(f'behave_DAF.db')
+    load_daf.main(initialise=True,
+                  wipe=False,
+                  db_backend='sqlite',
+                  db_host=None,
+                  db_port=None,
+                  db_name=context.behave_db,
+                  db_user=None,
+                  db_password=None,
+                  data_package=None)
+
 @given(u'a {registry} file extract zip file with metadata')
 def step_impl(context, registry):
     context.registry = registry
@@ -50,25 +65,24 @@ def step_impl(context, table_name):
             context.data_file[table_name+'List'] = []
         context.data_file[table_name+'List'].append({**dummy_data[table_name], **dict(zip(row.headings, row.cells))})
 
-@when(u'file extract is loaded')
+@when(u'file extract is loaded in the DAF database')
+@given(u'file extract is loaded in the DAF database')
 def step_impl(context):
     context.file_extract_name = f"{context.file_extract_file_name}.zip"
     ##    file_like_object = io.BytesIO(my_zip_data)
     context.file_extract = ZipFile(context.file_extract_name, 'w')
     with context.file_extract as f:
         f.writestr(f'{context.file_extract_file_name}_Metadata.json', context.metadata_content)
-        print(json.dumps(context.data_file))
         f.writestr(f'{context.file_extract_file_name}.json', json.dumps(context.data_file))
-    context.behave_db=f'behave_{context.registry}'
-    load_daf.main(initialise=True,
-                  wipe=True,
+    load_daf.main(initialise=False,
+                  wipe=False,
                   db_backend='sqlite',
                   db_host=None,
                   db_port=None,
                   db_name=context.behave_db,
                   db_user=None,
                   db_password=None,
-                  data_package=context.file_extract_name);
+                  data_package=context.file_extract_name)
 
 @then(u'the database table {table_name} should contain rows with the following entries')
 def step_impl(context, table_name):
