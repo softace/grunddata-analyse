@@ -11,4 +11,3 @@ Feature: Basic stuff
     Then the database table Postnummer should contain rows with the following entries:
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
       | guid-1     | 2020-01-01T01:01:01.111111+01:00 |                                  | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
-    

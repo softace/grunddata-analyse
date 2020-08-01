@@ -45,41 +45,34 @@ def insert_row(cursor, db_functions, row):
         db_functions['Log violation'](cursor, row, 'Negativt registreringsinterval', f"{row['registreringTil']} < {row['registreringFra']}", None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Negativt virkningsinterval', f"{row['virkningTil']} < {row['virkningFra']}", None)
-    if row['registreringTil']:  # This might be an update
-        db_functions['Find row'](cursor, row)
-        rows = cursor.fetchall()
-        if len(rows) > 1:  # Integrity error
-            raise ValueError(
-                "Forventet at opdatere een forekomst for "
-                f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
-                f" fandt {len(rows)} forekomster")
-        elif len(rows) == 1:
-            if rows[0][[d[0] for d in cursor.description].index('registreringTil')]:
-                raise ValueError(
-                    "Forventet at opdatere registreringTil for "
-                    f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}),"
-                    f" men den er allerede sat")
-            assert rows[0][-1] == None
-            assert sorted([x[0] for x in cursor.description]) == sorted([*row.keys(), 'update_file_extract_id'])
-            def invalid_update_columns(desc, existing, new_row):
-                result = []
-                for i, d in enumerate(desc):
-                    if d[0] in ['registreringTil', 'file_extract_id', 'update_file_extract_id', # Allowed edits
-                                'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC' # Ignore synthetic edits
-                                ]:
-                        continue
-                    if existing[i] != new_row[d[0]]:
-                        result.append((d[0], existing[i]))
-                return result
-            invalid_update_cols = invalid_update_columns(cursor.description, rows[0], row)
-            if invalid_update_cols:
-                db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier',
-                                              f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
-                                              " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
-                                              None)
-            db_functions['Update DAF row'](cursor, row)
-            return 0
-        # else this is just a normal insert
+    db_functions['Find row'](cursor, row)
+    rows = cursor.fetchall()
+    if(len(rows)) > 1:
+        raise ValueError(
+            "Fundet mere end een række for "
+            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}).")
+    elif len(rows) == 1:
+        assert sorted([x[0] for x in cursor.description]) == sorted([*row.keys(), 'update_file_extract_id'])
+        def invalid_update_columns(desc, existing, new_row):
+            result = []
+            for i, d in enumerate(desc):
+                if d[0] == 'registreringTil' and not existing[i]:
+                    continue # Allowed
+                if d[0] in ['file_extract_id', 'update_file_extract_id', # Allowed edits
+                            'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC' # Ignore synthetic edits
+                            ]:
+                    continue
+                if existing[i] != new_row[d[0]]:
+                    result.append((d[0], existing[i]))
+            return result
+        invalid_update_cols = invalid_update_columns(cursor.description, rows[0], row)
+        if invalid_update_cols:
+            db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier',
+                                          f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
+                                          " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
+                                          None)
+        db_functions['Update DAF row'](cursor, row)
+        return 0
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
