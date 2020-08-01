@@ -6,7 +6,7 @@
   "MD5CheckSum": "{{mD5CheckSum}}",
   "DatafordelerUdtraekstidspunkt": [
     {
-      "deltavindueStart": "2020-01-01T01:01:01.111+02:00",
+      "deltavindueStart": "{{deltavindue_start}}",
       "deltavindueSlut": "2020-02-01T01:01:01.111+02:00"
     }
   ],

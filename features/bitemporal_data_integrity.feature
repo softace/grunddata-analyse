@@ -1,7 +1,7 @@
 Feature: Bitemporal data integrity
   Background: A DAF database with one entry for a closed rectangle
     Given I initialize the DAF database
-    Given a DAR file extract zip file with metadata
+    Given a DAR file extract zip file with metadata for day 0
     Given the file extract contains data for Postnummer with dummy data and:
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
       | guid-0     | 2020-01-12T01:01:01.111111+00:00 | 2020-01-15T01:01:01.111111+00:00 | 2000-01-12T01:01:01.111111+00:00 | 2000-01-15T01:01:01.111111+00:00 |
@@ -9,7 +9,7 @@ Feature: Bitemporal data integrity
     And file extract is loaded in the DAF database
 
   Scenario: 8 different bitemporal integrity issues on a closed rectangle
-    Given a DAR file extract zip file with metadata
+    Given a DAR file extract zip file with metadata for day 1
     Given the file extract contains data for Postnummer with dummy data and:
     # positive circular direction, starting at left-bottom.
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
@@ -34,7 +34,7 @@ Feature: Bitemporal data integrity
       | Postnummer | guid-0     | 2020-01-11T01:01:01.111111+00:00 | 2000-01-13T01:01:01.111111+00:00 | Bitemporal data-integritet | 2020-01-12T01:01:01.111111+00:00 | 2000-01-12T01:01:01.111111+00:00 |
 
   Scenario: 4 different bitemporal integrity issues on an double open rectangle
-    Given a DAR file extract zip file with metadata
+    Given a DAR file extract zip file with metadata for day 1
     Given the file extract contains data for Postnummer with dummy data and:
     # positive circular direction, starting at left-bottom.
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |

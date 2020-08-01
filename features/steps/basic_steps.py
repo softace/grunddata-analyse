@@ -51,14 +51,17 @@ def step_impl(context):
                   db_password=None,
                   data_package=None)
 
-@given(u'a (?P<registry>.*?) file extract zip file with metadata')
-def step_impl(context, registry):
+@given(u'a (?P<registry>.*?) file extract zip file with metadata for day (?P<start_day>\d+)')
+def step_impl(context, registry, start_day):
     context.registry = registry
     context.data_file = {}
     start_datetime = '202001010400'
+    deltavindue_start = f'1900-01-{int(start_day)+1:0>2}T00:00:00.000+00:00'
     context.file_extract_file_name = f'{context.registry}_Totaludtræk_1_abonnement_{start_datetime}'
     context.metadata_content = temp_env.get_template('Metadata_template.json').render({'file_extract_file_name':context.file_extract_file_name,
-                                                                                   'registry':context.registry,
+                                                                                       'registry':context.registry,
+                                                                                       'deltavindue_start':deltavindue_start
+
                                                                                })
 
 @given(u'the file extract contains data for (?P<table_name>.*?) with dummy data and')
