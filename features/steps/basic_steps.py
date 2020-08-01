@@ -5,9 +5,12 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from expects import *
 
 import sqlite3
+import sqlite3paramstyle
 import load_daf
 
 from behave import *
+
+use_step_matcher('re') # Use regularexpression
 
 temp_env = Environment(
     loader=PackageLoader('load_daf', 'features/steps'),
@@ -48,7 +51,7 @@ def step_impl(context):
                   db_password=None,
                   data_package=None)
 
-@given(u'a {registry} file extract zip file with metadata')
+@given(u'a (?P<registry>.*?) file extract zip file with metadata')
 def step_impl(context, registry):
     context.registry = registry
     context.data_file = {}
@@ -58,12 +61,16 @@ def step_impl(context, registry):
                                                                                    'registry':context.registry,
                                                                                })
 
-@given(u'the file extract contains data for {table_name} with dummy data and')
+@given(u'the file extract contains data for (?P<table_name>.*?) with dummy data and')
 def step_impl(context, table_name):
+    listName = table_name + 'List'
     for row in context.table:
-        if table_name not in context.data_file.keys():
-            context.data_file[table_name+'List'] = []
-        context.data_file[table_name+'List'].append({**dummy_data[table_name], **dict(zip(row.headings, row.cells))})
+        if listName not in context.data_file.keys():
+            context.data_file[listName] = []
+        context.data_file[listName].append({**dummy_data[table_name], **dict(zip(row.headings, row.cells))})
+        pass
+    pass
+
 
 @when(u'file extract is loaded in the DAF database')
 @given(u'file extract is loaded in the DAF database')
@@ -84,20 +91,24 @@ def step_impl(context):
                   db_password=None,
                   data_package=context.file_extract_name)
 
-@then(u'the database table {table_name} should contain rows with the following entries')
-def step_impl(context, table_name):
+@then(u'the database table (?P<table_name>.*?) should contain rows with the following entries(?P<no_more> and no more)?')
+def step_impl(context, table_name, no_more):
 #    context.behave_db
-    conn = sqlite3.connect(context.behave_db + '.db')
+    conn = sqlite3paramstyle.connect(context.behave_db + '.db')
     conn.execute("PRAGMA encoding = 'UTF-8';")
     result = conn.execute(f'select * from {table_name}')
     for expected_row in context.table:
-        cursor = conn.execute(f'select * from {table_name} where id_lokalId = ? and registreringFra = ? and virkningFra = ?',
-                              [expected_row['id_lokalId'], expected_row['registreringFra'], expected_row['virkningFra']])
+        sql = f'select * from {table_name} where ' + "and ".join([f"{h} = %({h})s " for h in context.table.headings])
+        cursor = conn.execute(f'select * from {table_name} where ' + "and ".join([f"{h} = %({h})s " for h in context.table.headings]),
+                              expected_row)
         rows = cursor.fetchall()
         expect(len(rows)).to(equal(1))
         actual = dict(zip([x[0] for x in cursor.description], rows[0]))
         for i, col_name in enumerate(context.table.headings):
             expect(actual[col_name]).to(equal(expected_row.cells[i]))
-    if os.path.isfile(f'behave_{context.registry}.db'):
-        os.remove(f'behave_{context.registry}.db')
+    if no_more:
+        rows = conn.execute(f'select * from {table_name}').fetchall()
+        expect(len(rows)).to(equal(len(context.table.rows)))
+#    if os.path.isfile(f'behave_{context.registry}.db'):
+#        os.remove(f'behave_{context.registry}.db')
 
