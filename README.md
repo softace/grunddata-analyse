@@ -6,16 +6,22 @@ Currently it only support DAR, BBR
 The postgres backend is currently not working. Only sqlite backed is maintained for now.
 # Getting started
 
-Initialise python venv:
+Initialise python venv and open a shell:
 ```shell script
-. venv/bin/activate
-pip install wheel
-pip install -r requirements.txt
+pipenv --three
+pipenv install
+pipenv shell
 ```
 
 # Sample run
 ```shell script
 python load_daf.py -i -b sqlite DAR_Totaludtraek_1_0_1_abonnement_20200626040000.zip
+```
+
+# Development
+There is a minimialistic test-suite that should be run with
+```shell script
+behave
 ```
 
 # Handy shell tips
