@@ -64,7 +64,9 @@ def insert_row(cursor, db_functions, row):
             def invalid_update_columns(desc, existing, new_row):
                 result = []
                 for i, d in enumerate(desc):
-                    if d[0] in ['registreringTil', 'registreringTil_UTC', 'file_extract_id', 'update_file_extract_id']:
+                    if d[0] in ['registreringTil', 'file_extract_id', 'update_file_extract_id', # Allowed edits
+                                'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC' # Ignore synthetic edits
+                                ]:
                         continue
                     if existing[i] != new_row[d[0]]:
                         result.append((d[0], existing[i]))
