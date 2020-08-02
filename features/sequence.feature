@@ -12,6 +12,11 @@ Feature: On a non-empty database the sequence shall be in date order
   Scenario: in-sequnce file-extract on incomplete earlier load should fail
 
   Scenario: in-sequnce file-extract on correct order will load
+    Given a DAR file extract zip file with metadata for day 1
+    Given the file extract contains data for Postnummer with dummy data and:
+      | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
+      | guid-1     | 2020-01-01T01:01:01.111111+01:00 |                                  | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
+    Then file extract is loaded in the DAF database
 
   Scenario: Initial file-extract on non-empty DB should fail
     Given a DAR file extract zip file with metadata for day 0
