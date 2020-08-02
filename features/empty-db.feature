@@ -22,3 +22,10 @@ Feature: Loading on empty DB
       | DatafordelerUdtraekstidspunkt[0].deltavindueStart | 1900-01-01T00:00:00.000+00:00 |
 
       Scenario: in-sequnce file-extract on empty DB should fail
+
+  Scenario: Another initial file extract from another registry is loaded into the DB
+    Given a BBR file extract zip file with metadata for day 0
+    Given the file extract contains data for Grund with dummy data and:
+      | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
+      | guid-0     | 2020-01-01T01:01:01.111111+01:00 |                                  | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
+    And file extract is loaded in the DAF database

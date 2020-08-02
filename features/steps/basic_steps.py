@@ -17,23 +17,54 @@ temp_env = Environment(
     autoescape=select_autoescape(['json'])
 )
 
-dummy_data = {'Postnummer': {
-                                "forretningshændelse": "4",
-                                "forretningsområde": "54.15.10.25",
-                                "forretningsproces": "0",
-                                "id_namespace": "http://data.gov.dk/dar/postnummer",
-                                "id_lokalId": "INSERT",
-                                "registreringFra": "",  # "YYYY-MM-DDTHH:mm:ss:SSSSSS+01:00",
-                                "registreringsaktør": "DAR",
-                                "registreringTil": "INSERT",
-                                "status": "3",
-                                "virkningFra": "INSERT",
-                                "virkningsaktør": "Konvertering2017",
-                                "virkningTil": "INSERT",
-                                "navn": "København K",
-                                "postnr": "1407",
-                                "postnummerinddeling": "191407"
-                            }
+dummy_data = {
+    'Postnummer': {
+        "forretningshændelse": "4",
+        "forretningsområde": "54.15.10.25",
+        "forretningsproces": "0",
+        "id_namespace": "http://data.gov.dk/dar/postnummer",
+        #        "id_lokalId": "INSERT",
+        #        "registreringFra": "",  # "YYYY-MM-DDTHH:mm:ss:SSSSSS+01:00",
+        "registreringsaktør": "DAR",
+        #        "registreringTil": "INSERT",
+        "status": "3",
+        #        "virkningFra": "INSERT",
+        "virkningsaktør": "Konvertering2017",
+        #        "virkningTil": "INSERT",
+        "navn": "København K",
+        "postnr": "1407",
+        "postnummerinddeling": "191407"
+    },
+    'Grund': {
+        "forretningshændelse": "Grund",
+        "forretningsområde": "54.15.05.05",
+        "forretningsproces": "11",
+        "id_namespace": "http://data.gov.dk/bbr/grund",
+        #"id_lokalId": "",
+        "kommunekode": "0101",
+        #"registreringFra": "",
+        "registreringsaktør": "BBR",
+        #"registreringTil": None,
+        #"virkningFra": "",
+        "virkningsaktør": "Registerfører",
+        #"virkningTil": None,
+        "status": "4",
+        "gru009Vandforsyning": None,
+        "gru010Afløbsforhold": None,
+        "gru021Udledningstilladelse": None,
+        "gru022MedlemskabAfSpildevandsforsyning": None,
+        "gru023PåbudVedrSpildevandsafledning": None,
+        "gru024FristVedrSpildevandsafledning": None,
+        "gru025TilladelseTilUdtræden": None,
+        "gru026DatoForTilladelseTilUdtræden": None,
+        "gru027TilladelseTilAlternativBortskaffelseEllerAfledning": None,
+        "gru028DatoForTilladelseTilAlternativBortskaffelseEllerAfledning": None,
+        "gru029DispensationFritagelseIftKollektivVarmeforsyning": None,
+        "gru030DatoForDispensationFritagelseIftKollektivVarmeforsyning": None,
+        "gru500Notatlinjer": None,
+        "husnummer": "0a3f507b-380d-32b8-e044-0003ba298018",
+        "bestemtFastEjendom": "2d40bbc8-90ea-4be1-b1c1-f8893133d61a"
+    }
 }
 
 @given('I initialize the DAF database')
