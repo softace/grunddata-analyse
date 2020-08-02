@@ -421,7 +421,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
          data_package: 'file path to the zip datapackage'):
-    """Loads a DAF data file into database
+    """Loads DAF data files into database
     """
 
     database_options = {
@@ -501,20 +501,45 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                 return dict(items())
 
             values = flatten_dict(metadata)
+            registry = metadata['AbonnementsOplysninger'][0]['tjenestenavn'][:3]
+            abonnementnavn = values['AbonnementsOplysninger[0].abonnementnavn']
+            deltavindue_start = values['DatafordelerUdtraekstidspunkt[0].deltavindueStart']
+
+            latest_deltavindue_slut_SQL = """
+            select max(value) latest_deltavindue_slut from metadata
+            join (select file_extract.*
+                from file_extract
+                         join metadata on file_extract.id = file_extract_id
+                where key = 'AbonnementsOplysninger[0].abonnementnavn'
+                  and value = %(abonnementnavn)s
+               ) sub_file_extract on metadata.file_extract_id = sub_file_extract.id
+            where key = 'DatafordelerUdtraekstidspunkt[0].deltavindueSlut';
+            """
+            rows = cursor.execute(latest_deltavindue_slut_SQL, {'abonnementnavn': abonnementnavn}).fetchall()
+            if (len(rows) != 1):
+                raise ValueError("More than one row!")
+            latest_deltavindue_slut = rows[0][0]
+            if latest_deltavindue_slut is None:
+                if deltavindue_start != '1900-01-01T00:00:00.000+00:00':
+                    raise ValueError(
+                        f"deltavindueStart ({deltavindue_start}) skal '1900-01-01T00:00:00.000+00:00' på en tom DB")
+            elif latest_deltavindue_slut > deltavindue_start:
+                raise ValueError(
+                    f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut ({latest_deltavindue_slut})")
+
             for key, value in values.items():
                 table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value, 'file_extract_id': file_extract_id})
-            registry = metadata['AbonnementsOplysninger'][0]['tjenestenavn'][:3]
             if registry == 'DAR':
                 json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
             elif registry == 'BBR':
                 json_schema_file_name = 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
             else:
                 raise ValueError(f"Ukendt register '{registry}'.")
-            with open(json_schema_file_name, 'rb') as file:
-                initialise_registry_tables(conn, sql_create_table, wipe, json.load(file))
+            with open(json_schema_file_name, 'rb') as json_schema_file:
+                initialise_registry_tables(conn, sql_create_table, wipe, json.load(json_schema_file))
 
-        with myzip.open(json_data_name) as file:
-            parser = ijson.parse(file)
+        with myzip.open(json_data_name) as data_file:
+            parser = ijson.parse(data_file)
             db_table_name = None
             db_row = None
             db_column = None

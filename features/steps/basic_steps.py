@@ -56,13 +56,14 @@ def step_impl(context, registry, start_day):
     context.registry = registry
     context.data_file = {}
     start_datetime = '202001010400'
-    deltavindue_start = f'1900-01-{int(start_day)+1:0>2}T00:00:00.000+00:00'
+    deltavindue_start = '1900-01-01T00:00:00.000+00:00' if start_day == '0' else f'2020-01-{int(start_day)+1:0>2}T00:00:00.000+00:00'
+    deltavindue_slut = f'2020-01-{int(start_day)+2:0>2}T00:00:00.000+00:00'
     context.file_extract_file_name = f'{context.registry}_Totaludtræk_1_abonnement_{start_datetime}'
     context.metadata_content = temp_env.get_template('Metadata_template.json').render({'file_extract_file_name':context.file_extract_file_name,
                                                                                        'registry':context.registry,
-                                                                                       'deltavindue_start':deltavindue_start
-
-                                                                               })
+                                                                                       'deltavindue_start':deltavindue_start,
+                                                                                       'deltavindue_slut': deltavindue_slut
+                                                                                       })
 
 @given(u'the file extract contains data for (?P<table_name>.*?) with dummy data and')
 def step_impl(context, table_name):
@@ -75,16 +76,17 @@ def step_impl(context, table_name):
     pass
 
 
-@when(u'file extract is loaded in the DAF database')
-@given(u'file extract is loaded in the DAF database')
-def step_impl(context):
+@when(u'file extract is loaded in the DAF database(?P<fails> fails)?')
+@given(u'file extract is loaded in the DAF database(?P<fails> fails)?')
+@then(u'file extract is loaded in the DAF database(?P<fails> fails)?')
+def step_impl(context, fails):
     context.file_extract_name = f"{context.file_extract_file_name}.zip"
     ##    file_like_object = io.BytesIO(my_zip_data)
     context.file_extract = ZipFile(context.file_extract_name, 'w')
     with context.file_extract as f:
         f.writestr(f'{context.file_extract_file_name}_Metadata.json', context.metadata_content)
         f.writestr(f'{context.file_extract_file_name}.json', json.dumps(context.data_file))
-    load_daf.main(initialise=False,
+    load = lambda : load_daf.main(initialise=False,
                   wipe=False,
                   db_backend='sqlite',
                   db_host=None,
@@ -93,6 +95,10 @@ def step_impl(context):
                   db_user=None,
                   db_password=None,
                   data_package=context.file_extract_name)
+    if not fails:
+        expect(load).not_to(raise_error)
+    else:
+        expect(load).to(raise_error)
 
 @then(u'the database table (?P<table_name>.*?) should contain rows with the following entries(?P<no_more> and no more)?')
 def step_impl(context, table_name, no_more):

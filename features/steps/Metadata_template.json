@@ -7,7 +7,7 @@
   "DatafordelerUdtraekstidspunkt": [
     {
       "deltavindueStart": "{{deltavindue_start}}",
-      "deltavindueSlut": "2020-02-01T01:01:01.111+02:00"
+      "deltavindueSlut": "{{deltavindue_slut}}"
     }
   ],
   "tilgaengelighedsperiode": 30,
