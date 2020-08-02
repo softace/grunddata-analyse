@@ -118,14 +118,14 @@ def step_impl(context, fails):
         f.writestr(f'{context.file_extract_file_name}_Metadata.json', context.metadata_content)
         f.writestr(f'{context.file_extract_file_name}.json', json.dumps(context.data_file))
     load = lambda : load_daf.main(initialise=False,
-                  wipe=False,
-                  db_backend='sqlite',
-                  db_host=None,
-                  db_port=None,
-                  db_name=context.behave_db,
-                  db_user=None,
-                  db_password=None,
-                  data_package=context.file_extract_name)
+                                  wipe=False,
+                                  db_backend='sqlite',
+                                  db_host=None,
+                                  db_port=None,
+                                  db_name=context.behave_db,
+                                  db_user=None,
+                                  db_password=None,
+                                  data_package=context.file_extract_name)
     if not fails:
         expect(load).not_to(raise_error)
     else:

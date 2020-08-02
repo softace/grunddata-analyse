@@ -420,7 +420,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         data_package: 'file path to the zip datapackage'):
+         data_package: 'file path to the zip datapackage' = None):
     """Loads DAF data files into database
     """
 
