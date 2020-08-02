@@ -1,4 +1,7 @@
-select * from violation_log;
+select * from file_extract
+where job_end is null;
+;
+
 
 -- Adresse,
 -- Adressepunkt,
