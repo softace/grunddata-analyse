@@ -393,7 +393,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         conn.commit()
 
 
-def initialise_registry_tables(conn, sql_create_table, wipe, jsonschema):
+def initialise_registry_tables(conn, sql_create_table, jsonschema):
     tables = []
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_name[-4:] == 'List')
@@ -402,9 +402,6 @@ def initialise_registry_tables(conn, sql_create_table, wipe, jsonschema):
         prepare_table(tables[-1])
     cur = conn.cursor()
     for table in tables:
-        if wipe:
-            cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-            print(f"Table {table['name']} maybe droped.")
         for sql in sql_create_table(table, False):
             # print(sql)
             cur.execute(sql)
@@ -413,14 +410,13 @@ def initialise_registry_tables(conn, sql_create_table, wipe, jsonschema):
 
 
 def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 'i'),
-         wipe: ("Wipe DAF registry data before loading (dangerous)", 'flag', 'W'),
          db_backend: ("DB backend. Supported is 'sqlite', 'psql'", 'option', 'b'),
          db_host: ("Database host", 'option', 'H'),
          db_port: ("Database port", 'option', 'p'),
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         *data_package: ('file path to the zip datapackage', 'positional', None, list)):
+         *data_package: ('file path to the zip datapackage')):
     """Loads DAF data files into database
     """
 
@@ -550,7 +546,7 @@ def load_data_package(database_options, data_package, sql_create_table):
             else:
                 raise ValueError(f"Ukendt register '{registry}'.")
             with open(json_schema_file_name, 'rb') as json_schema_file:
-                initialise_registry_tables(conn, sql_create_table, False, json.load(json_schema_file))
+                initialise_registry_tables(conn, sql_create_table, json.load(json_schema_file))
 
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)

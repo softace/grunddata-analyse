@@ -73,7 +73,6 @@ def step_impl(context):
     if os.path.isfile(f'behave_DAF.db'):
         os.remove(f'behave_DAF.db')
     load_daf.main(initialise=True,
-                  wipe=False,
                   db_backend='sqlite',
                   db_host=None,
                   db_port=None,
@@ -128,7 +127,6 @@ def generate_file_extract(file_extract_name, metadata_content, data_json):
 def step_impl(context, fails):
     generate_file_extract(context.leveranceNavn, context.metadata_content, context.data_file)
     load = lambda : load_daf.main(False,
-                                  False,
                                   'sqlite',
                                   None,
                                   None,
@@ -196,7 +194,6 @@ def step_impl(context):
 @when(u'file extracts is loaded in the DAF database')
 def step_impl(context):
     load_daf.main(False,
-                  False,
                   'sqlite',
                   None,
                   None,
