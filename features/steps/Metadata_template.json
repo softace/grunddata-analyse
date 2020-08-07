@@ -6,8 +6,8 @@
   "MD5CheckSum": "{{mD5CheckSum}}",
   "DatafordelerUdtraekstidspunkt": [
     {
-      "deltavindueStart": "{{deltavindue_start}}",
-      "deltavindueSlut": "{{deltavindue_slut}}"
+      "deltavindueStart": "{{deltavindueStart}}",
+      "deltavindueSlut": "{{deltavindueSlut}}"
     }
   ],
   "tilgaengelighedsperiode": 30,

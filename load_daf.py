@@ -1,6 +1,7 @@
 #!/usr/bin/env/python
 import datetime
 import decimal
+import hashlib
 import os
 import ijson
 import json
@@ -340,6 +341,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
                     {'name': 'zip_file_size', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'zip_file_md5', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'metadata_file_name', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
                     {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
@@ -420,7 +422,6 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     """Loads DAF data files into database
     """
 
-    pprint(data_package)
     database_options = {
         'backend': db_backend,
         'host': db_host,
@@ -458,6 +459,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     database_options['connection'] = conn
 
     data_package = sorted(list(data_package), key=lambda x:x[-18:-4]+x[:-18])
+    print(f"File extracts to load")
+    print("\n".join(data_package))
     for dp in data_package:
         load_data_package(database_options, dp, sql_create_table)
     conn.close()
@@ -467,10 +470,20 @@ def load_data_package(database_options, data_package, sql_create_table):
     conn = database_options['connection']
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
-    package_name = data_package[:-4]
-    print(f'Loading data from {package_name}')
 
     cursor = conn.cursor()
+
+    md5 = hashlib.md5()
+    with open(data_package, 'rb') as content_file:
+        while( buf := content_file.read(md5.block_size)):
+            md5.update(buf)
+    zip_file_md5 = md5.hexdigest()
+    rows = cursor.execute('select * from file_extract where zip_file_md5 = %(zip_file_md5)s', {'zip_file_md5': zip_file_md5}).fetchall()
+    if len(rows) != 0:
+        print(f"This file ({data_package}) with md5 ({zip_file_md5}) has already been loaded. Ignoring")
+        return
+
+    print(f'Loading data from {data_package[:-4]}')
     with ZipFile(data_package, 'r') as myzip:
         # for info in myzip.infolist():
         #    print(info.filename)
@@ -483,6 +496,7 @@ def load_data_package(database_options, data_package, sql_create_table):
             'zip_file_timestamp': datetime.datetime.fromtimestamp(
                 os.path.getmtime(data_package)).astimezone().isoformat(),
             'zip_file_size': os.path.getsize(data_package),
+            'zip_file_md5': zip_file_md5,
             'metadata_file_name': meta_data_name,
             'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
             'data_file_timestamp': zip2iso(data_file_zipinfo.date_time),
@@ -531,7 +545,7 @@ def load_data_package(database_options, data_package, sql_create_table):
             if latest_deltavindue_slut is None:
                 if deltavindue_start != '1900-01-01T00:00:00.000+00:00':
                     raise ValueError(
-                        f"deltavindueStart ({deltavindue_start}) skal '1900-01-01T00:00:00.000+00:00' på en tom DB")
+                        f"deltavindueStart ({deltavindue_start}) skal være '1900-01-01T00:00:00.000+00:00' på en tom DB")
             elif latest_deltavindue_slut > deltavindue_start:
                 raise ValueError(
                     f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut ({latest_deltavindue_slut})")
@@ -547,7 +561,6 @@ def load_data_package(database_options, data_package, sql_create_table):
                 raise ValueError(f"Ukendt register '{registry}'.")
             with open(json_schema_file_name, 'rb') as json_schema_file:
                 initialise_registry_tables(conn, sql_create_table, json.load(json_schema_file))
-
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None

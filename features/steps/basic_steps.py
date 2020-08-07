@@ -87,18 +87,14 @@ def deltavindue_from_day(day):
 
 @given(u'a (?P<registry>.*?) file extract zip file with metadata for day (?P<start_day>\d+)')
 def step_impl(context, registry, start_day):
-    context.registry = registry
+    (deltavindueStart, deltavindueSlut) = deltavindue_from_day(start_day)
+    context.meta_data = {'registry': registry,
+                         'abonnementnavn': f'{registry}_Totaludtræk_1_abonnement',
+                         'deltavindueStart': deltavindueStart,
+                         'deltavindueSlut': deltavindueSlut
+                         }
+    context.meta_data['leveranceNavn'] = f"{context.meta_data['abonnementnavn']}_202001010400"
     context.data_file = {}
-    start_datetime = '202001010400'
-    (deltavindue_start, deltavindue_slut) = deltavindue_from_day(start_day)
-    context.abonnementnavn = f'{context.registry}_Totaludtræk_1_abonnement'
-    context.leveranceNavn = f'{context.abonnementnavn}_{start_datetime}'
-    context.metadata_content = temp_env.get_template('Metadata_template.json').render({'leverancenavn':context.leveranceNavn,
-                                                                                       'abonnementnavn':context.abonnementnavn,
-                                                                                       'registry':context.registry,
-                                                                                       'deltavindue_start':deltavindue_start,
-                                                                                       'deltavindue_slut': deltavindue_slut
-                                                                                       })
 
 @given(u'the file extract contains data for (?P<table_name>.*?) with dummy data and')
 def step_impl(context, table_name):
@@ -111,13 +107,13 @@ def step_impl(context, table_name):
     pass
 
 
-def generate_file_extract(file_extract_name, metadata_content, data_json):
-    zip_file_extract_name = f"{file_extract_name}.zip"
+def generate_file_extract(meta_data, data_json):
+    zip_file_extract_name = f"{meta_data['leveranceNavn']}.zip"
     ##    file_like_object = io.BytesIO(my_zip_data)
     file_extract = ZipFile(zip_file_extract_name, 'w')
     with file_extract as f:
-        f.writestr(f'{file_extract_name}_Metadata.json', metadata_content)
-        f.writestr(f'{file_extract_name}.json', json.dumps(data_json))
+        f.writestr(f"{meta_data['leveranceNavn']}.json", json.dumps(data_json))
+        f.writestr(f"{meta_data['leveranceNavn']}_Metadata.json", temp_env.get_template('Metadata_template.json').render(meta_data))
 
 
 
@@ -125,7 +121,7 @@ def generate_file_extract(file_extract_name, metadata_content, data_json):
 @given(u'file extract is loaded in the DAF database(?P<fails> fails)?')
 @then(u'file extract is loaded in the DAF database(?P<fails> fails)?')
 def step_impl(context, fails):
-    generate_file_extract(context.leveranceNavn, context.metadata_content, context.data_file)
+    generate_file_extract(context.meta_data, context.data_file)
     load = lambda : load_daf.main(False,
                                   'sqlite',
                                   None,
@@ -133,7 +129,7 @@ def step_impl(context, fails):
                                   context.behave_db,
                                   None,
                                   None,
-                                  f"{context.leveranceNavn}.zip")
+                                  f"{context.meta_data['leveranceNavn']}.zip")
     if not fails:
         load()
 #        expect(load).not_to(raise_error)
@@ -165,17 +161,17 @@ def step_impl(context, table_name, no_more):
 def step_impl(context):
     context.file_extract_list = []
     for row in context.table:
-        (deltavindue_start, deltavindue_slut) = deltavindue_from_day(row['day'])
+        (deltavindueStart, deltavindueSlut) = deltavindue_from_day(row['day'])
 #        file_datetime = row['file_name'][-18:-4]
         assert row['registry'] == row['file_name'][:3]
-        leverancenavn = f"{row['file_name'][:-4]}"
-        abonnementNavn = leverancenavn[:-14]
-        metadata_content = temp_env.get_template('Metadata_template.json').render({'leverancenavn':leverancenavn,
+        leveranceNavn = f"{row['file_name'][:-4]}"
+        abonnementNavn = leveranceNavn[:-14]
+        meta_data = {'leveranceNavn':leveranceNavn,
                                                                                    'abonnementnavn':abonnementNavn,
                                                                                    'registry':row['registry'],
-                                                                                   'deltavindue_start':deltavindue_start,
-                                                                                   'deltavindue_slut': deltavindue_slut
-                                                                                   })
+                                                                                   'deltavindueStart':deltavindueStart,
+                                                                                   'deltavindueSlut': deltavindueSlut
+                                                                                   }
         data_file = {}
         table_name = None
         if row['registry'] == 'DAR':
@@ -187,7 +183,7 @@ def step_impl(context):
         list_name = table_name + 'List'
         data_file[list_name] = []
         data_file[list_name].append({**dummy_data[table_name]})
-        generate_file_extract(leverancenavn, metadata_content, data_file)
+        generate_file_extract(meta_data, data_file)
         context.file_extract_list.append(row['file_name'])
 
 
