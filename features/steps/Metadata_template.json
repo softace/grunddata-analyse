@@ -1,5 +1,5 @@
 {
-  "leveranceNavn": "{{file_extract_file_name}}.json",
+  "leveranceNavn": "{{leveranceNavn}}.json",
   "miljoe": "PROD01",
   "fortroligData": "Nej",
   "dataOmfattetAfPersondataloven": "Nej",
@@ -15,7 +15,7 @@
     {
       "webBrugernavn": "webBrugernavn",
       "tjenesteBrugernavn": "tjenesteBrugernavn",
-      "abonnementnavn": "{{file_extract_file_name}}",
+      "abonnementnavn": "{{abonnementnavn}}",
       "tjenestenavn": "{{registry}}-Totaludtraek",
       "tjenesteversion": "1",
       "oprettelsesdato": "2020-01-01T01:01:01.111+01:00",

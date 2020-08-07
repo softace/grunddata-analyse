@@ -23,14 +23,14 @@ dummy_data = {
         "forretningsområde": "54.15.10.25",
         "forretningsproces": "0",
         "id_namespace": "http://data.gov.dk/dar/postnummer",
-        #        "id_lokalId": "INSERT",
-        #        "registreringFra": "",  # "YYYY-MM-DDTHH:mm:ss:SSSSSS+01:00",
+        "id_lokalId": "GUID-DAR-ZERO",
+        "registreringFra": "2001-01-01T01:01:01.123456+01:00",  # "YYYY-MM-DDTHH:mm:ss:SSSSSS+01:00",
         "registreringsaktør": "DAR",
-        #        "registreringTil": "INSERT",
+        "registreringTil": None,
         "status": "3",
-        #        "virkningFra": "INSERT",
+        "virkningFra": "2001-01-01T01:01:01.123456+01:00",
         "virkningsaktør": "Konvertering2017",
-        #        "virkningTil": "INSERT",
+        "virkningTil": None,
         "navn": "København K",
         "postnr": "1407",
         "postnummerinddeling": "191407"
@@ -40,14 +40,14 @@ dummy_data = {
         "forretningsområde": "54.15.05.05",
         "forretningsproces": "11",
         "id_namespace": "http://data.gov.dk/bbr/grund",
-        #"id_lokalId": "",
+        "id_lokalId": "Guid_BBR-ZERO",
         "kommunekode": "0101",
-        #"registreringFra": "",
+        "registreringFra": "2001-01-01T01:01:01.123456+01:00",
         "registreringsaktør": "BBR",
-        #"registreringTil": None,
-        #"virkningFra": "",
+        "registreringTil": None,
+        "virkningFra": "2001-01-01T01:01:01.123456+01:00",
         "virkningsaktør": "Registerfører",
-        #"virkningTil": None,
+        "virkningTil": None,
         "status": "4",
         "gru009Vandforsyning": None,
         "gru010Afløbsforhold": None,
@@ -79,18 +79,23 @@ def step_impl(context):
                   db_port=None,
                   db_name=context.behave_db,
                   db_user=None,
-                  db_password=None,
-                  data_package=None)
+                  db_password=None)
+
+def deltavindue_from_day(day):
+    deltavindue_start = '1900-01-01T00:00:00.000+00:00' if day == '0' else f'2020-01-{int(day)+1:0>2}T00:00:00.000+00:00'
+    deltavindue_slut = f'2020-01-{int(day)+2:0>2}T00:00:00.000+00:00'
+    return (deltavindue_start, deltavindue_slut)
 
 @given(u'a (?P<registry>.*?) file extract zip file with metadata for day (?P<start_day>\d+)')
 def step_impl(context, registry, start_day):
     context.registry = registry
     context.data_file = {}
     start_datetime = '202001010400'
-    deltavindue_start = '1900-01-01T00:00:00.000+00:00' if start_day == '0' else f'2020-01-{int(start_day)+1:0>2}T00:00:00.000+00:00'
-    deltavindue_slut = f'2020-01-{int(start_day)+2:0>2}T00:00:00.000+00:00'
-    context.file_extract_file_name = f'{context.registry}_Totaludtræk_1_abonnement_{start_datetime}'
-    context.metadata_content = temp_env.get_template('Metadata_template.json').render({'file_extract_file_name':context.file_extract_file_name,
+    (deltavindue_start, deltavindue_slut) = deltavindue_from_day(start_day)
+    context.abonnementnavn = f'{context.registry}_Totaludtræk_1_abonnement'
+    context.leveranceNavn = f'{context.abonnementnavn}_{start_datetime}'
+    context.metadata_content = temp_env.get_template('Metadata_template.json').render({'leverancenavn':context.leveranceNavn,
+                                                                                       'abonnementnavn':context.abonnementnavn,
                                                                                        'registry':context.registry,
                                                                                        'deltavindue_start':deltavindue_start,
                                                                                        'deltavindue_slut': deltavindue_slut
@@ -107,27 +112,33 @@ def step_impl(context, table_name):
     pass
 
 
+def generate_file_extract(file_extract_name, metadata_content, data_json):
+    zip_file_extract_name = f"{file_extract_name}.zip"
+    ##    file_like_object = io.BytesIO(my_zip_data)
+    file_extract = ZipFile(zip_file_extract_name, 'w')
+    with file_extract as f:
+        f.writestr(f'{file_extract_name}_Metadata.json', metadata_content)
+        f.writestr(f'{file_extract_name}.json', json.dumps(data_json))
+
+
+
 @when(u'file extract is loaded in the DAF database(?P<fails> fails)?')
 @given(u'file extract is loaded in the DAF database(?P<fails> fails)?')
 @then(u'file extract is loaded in the DAF database(?P<fails> fails)?')
 def step_impl(context, fails):
-    context.file_extract_name = f"{context.file_extract_file_name}.zip"
-    ##    file_like_object = io.BytesIO(my_zip_data)
-    context.file_extract = ZipFile(context.file_extract_name, 'w')
-    with context.file_extract as f:
-        f.writestr(f'{context.file_extract_file_name}_Metadata.json', context.metadata_content)
-        f.writestr(f'{context.file_extract_file_name}.json', json.dumps(context.data_file))
-    load = lambda : load_daf.main(initialise=False,
-                                  wipe=False,
-                                  db_backend='sqlite',
-                                  db_host=None,
-                                  db_port=None,
-                                  db_name=context.behave_db,
-                                  db_user=None,
-                                  db_password=None,
-                                  data_package=context.file_extract_name)
+    generate_file_extract(context.leveranceNavn, context.metadata_content, context.data_file)
+    load = lambda : load_daf.main(False,
+                                  False,
+                                  'sqlite',
+                                  None,
+                                  None,
+                                  context.behave_db,
+                                  None,
+                                  None,
+                                  f"{context.leveranceNavn}.zip")
     if not fails:
-        expect(load).not_to(raise_error)
+        load()
+#        expect(load).not_to(raise_error)
     else:
         expect(load).to(raise_error)
 
@@ -145,10 +156,52 @@ def step_impl(context, table_name, no_more):
         expect(len(rows)).to(equal(1))
         actual = dict(zip([x[0] for x in cursor.description], rows[0]))
         for i, col_name in enumerate(context.table.headings):
-            expect(actual[col_name]).to(equal(expected_row.cells[i]))
+            expect(str(actual[col_name])).to(equal(expected_row.cells[i]))
     if no_more:
         rows = conn.execute(f'select * from {table_name}').fetchall()
         expect(len(rows)).to(equal(len(context.table.rows)))
 #    if os.path.isfile(f'behave_{context.registry}.db'):
 #        os.remove(f'behave_{context.registry}.db')
 
+@given(u'this list of file extracts')
+def step_impl(context):
+    context.file_extract_list = []
+    for row in context.table:
+        (deltavindue_start, deltavindue_slut) = deltavindue_from_day(row['day'])
+#        file_datetime = row['file_name'][-18:-4]
+        assert row['registry'] == row['file_name'][:3]
+        leverancenavn = f"{row['file_name'][:-4]}"
+        abonnementNavn = leverancenavn[:-14]
+        metadata_content = temp_env.get_template('Metadata_template.json').render({'leverancenavn':leverancenavn,
+                                                                                   'abonnementnavn':abonnementNavn,
+                                                                                   'registry':row['registry'],
+                                                                                   'deltavindue_start':deltavindue_start,
+                                                                                   'deltavindue_slut': deltavindue_slut
+                                                                                   })
+        data_file = {}
+        table_name = None
+        if row['registry'] == 'DAR':
+            table_name = 'Postnummer'
+        elif row['registry'] == 'BBR':
+            table_name = 'Grund'
+        else:
+            raise NotImplementedError
+        list_name = table_name + 'List'
+        data_file[list_name] = []
+        data_file[list_name].append({**dummy_data[table_name]})
+        generate_file_extract(leverancenavn, metadata_content, data_file)
+        context.file_extract_list.append(row['file_name'])
+
+
+@when(u'file extracts is loaded in the DAF database')
+def step_impl(context):
+    load_daf.main(False,
+                  False,
+                  'sqlite',
+                  None,
+                  None,
+                  context.behave_db,
+                  None,
+                  None,
+                  *context.file_extract_list
+                  )

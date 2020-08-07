@@ -420,10 +420,11 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         data_package: 'file path to the zip datapackage' = None):
+         *data_package: ('file path to the zip datapackage', 'positional', None, list)):
     """Loads DAF data files into database
     """
 
+    pprint(data_package)
     database_options = {
         'backend': db_backend,
         'host': db_host,
@@ -458,7 +459,16 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         conn.commit()
         conn.close()
         return
+    database_options['connection'] = conn
 
+    data_package = sorted(list(data_package), key=lambda x:x[-18:-4]+x[:-18])
+    for dp in data_package:
+        load_data_package(database_options, dp, sql_create_table)
+    conn.close()
+
+
+def load_data_package(database_options, data_package, sql_create_table):
+    conn = database_options['connection']
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
     package_name = data_package[:-4]
@@ -474,7 +484,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         data_file_zipinfo = myzip.getinfo(json_data_name)
         file_extract = {
             'zip_file_name': os.path.basename(data_package),
-            'zip_file_timestamp': datetime.datetime.fromtimestamp(os.path.getmtime(data_package)).astimezone().isoformat(),
+            'zip_file_timestamp': datetime.datetime.fromtimestamp(
+                os.path.getmtime(data_package)).astimezone().isoformat(),
             'zip_file_size': os.path.getsize(data_package),
             'metadata_file_name': meta_data_name,
             'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
@@ -482,9 +493,11 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
             'data_file_size': data_file_zipinfo.file_size,
             'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
         }
-        file_extract_id = table_names['file_extract'][database_options['backend']]['Insert row'](cursor, file_extract).lastrowid
+        file_extract_id = table_names['file_extract'][database_options['backend']]['Insert row'](cursor,
+                                                                                                 file_extract).lastrowid
         with myzip.open(meta_data_name) as file:
             metadata = json.load(file)
+
             def flatten_dict(d):
                 def items():
                     for key, value in d.items():
@@ -492,9 +505,9 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                             for subkey, subvalue in flatten_dict(value).items():
                                 yield key + "." + subkey, subvalue
                         elif isinstance(value, list):
-                                    for idx, item in enumerate(value):
-                                        for subkey, subvalue in flatten_dict(item).items():
-                                            yield key + f"[{idx}]." + subkey, subvalue
+                            for idx, item in enumerate(value):
+                                for subkey, subvalue in flatten_dict(item).items():
+                                    yield key + f"[{idx}]." + subkey, subvalue
                         else:
                             yield key, value
 
@@ -528,7 +541,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                     f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut ({latest_deltavindue_slut})")
 
             for key, value in values.items():
-                table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value, 'file_extract_id': file_extract_id})
+                table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value,
+                                                                                            'file_extract_id': file_extract_id})
             if registry == 'DAR':
                 json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
             elif registry == 'BBR':
@@ -536,7 +550,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
             else:
                 raise ValueError(f"Ukendt register '{registry}'.")
             with open(json_schema_file_name, 'rb') as json_schema_file:
-                initialise_registry_tables(conn, sql_create_table, wipe, json.load(json_schema_file))
+                initialise_registry_tables(conn, sql_create_table, False, json.load(json_schema_file))
 
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
@@ -567,7 +581,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                 if '.' in prefix and event == 'start_map':
                     db_row = dict(table_names[db_table_name]['row'])
                 if '.' in prefix and event == 'end_map':
-                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']], {**db_row, 'file_extract_id': file_extract_id})
+                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']],
+                                     {**db_row, 'file_extract_id': file_extract_id})
                     db_row = None
                     if ret == 0:
                         row_updates += 1
@@ -585,9 +600,8 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
                     db_row[db_column] = value
                     db_column = None
         table_names['file_extract'][database_options['backend']]['Update row'](
-            cursor,{'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+            cursor, {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()
-    conn.close()
 
 
 if __name__ == '__main__':
