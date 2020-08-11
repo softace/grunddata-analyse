@@ -2,37 +2,33 @@ select * from file_extract
 where job_end is null;
 ;
 
+-- This takes around 20 minutes:
+-- Antal forretningsobjekter og forekomster
+select 'BBR' as register, 'BBRSag' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from BBRSag
+union select 'BBR' as register, 'Bygning' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Bygning
+union select 'BBR' as register, 'BygningEjendomsrelation' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from BygningEjendomsrelation
+union select 'BBR' as register, 'Ejendomsrelation' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Ejendomsrelation
+union select 'BBR' as register, 'Enhed' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Enhed
+union select 'BBR' as register, 'EnhedEjendomsrelation' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from EnhedEjendomsrelation
+union select 'BBR' as register, 'Etage' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Etage
+union select 'BBR' as register, 'FordelingAfFordelingsareal' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from FordelingAfFordelingsareal
+union select 'BBR' as register, 'Fordelingsareal' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Fordelingsareal
+union select 'BBR' as register, 'Grund' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Grund
+union select 'BBR' as register, 'GrundJordstykke' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from GrundJordstykke
+union select 'BBR' as register, 'Opgang' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Opgang
+union select 'BBR' as register, 'Sagsniveau' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Sagsniveau
+union select 'BBR' as register, 'TekniskAnlæg' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from TekniskAnlæg
 
--- Adresse,
--- Adressepunkt,
--- BBRSag,
--- Bygning,
--- Ejendomsrelation,
--- Enhed,
--- EnhedEjendomsrelation,
--- Etage,
--- FordelingAfFordelingsareal,
--- Fordelingsareal,
--- Grund,
--- GrundJordstykke,
--- Husnummer,
--- NavngivenVej,
--- NavngivenVejKommunedel,
--- NavngivenVejPostnummer,
--- NavngivenVejSupplerendeBynavn,
--- Opgang,
--- Sagsniveau,
--- SupplerendeBynavn,
--- TekniskAnlæg,
-
--- Optælling af fejl
-select substr(file_extract.metadata_file_name, 1, 3) as register, violation_log.table_name, violation_log.violation_type, count(*) as antal_fejl
-from file_extract
-join violation_log on file_extract.id = file_extract_id
-group by register, violation_log.table_name, violation_log.violation_type
-order by register, violation_type, table_name
+union select 'DAR' as register, 'Adresse' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Adresse
+union select 'DAR' as register, 'Adressepunkt' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Adressepunkt
+union select 'DAR' as register, 'Husnummer' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Husnummer
+union select 'DAR' as register, 'NavngivenVej' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from NavngivenVej
+union select 'DAR' as register, 'NavngivenVejKommunedel' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from NavngivenVejKommunedel
+union select 'DAR' as register, 'NavngivenVejPostnummer' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from NavngivenVejPostnummer
+union select 'DAR' as register, 'NavngivenVejSupplerendeBynavn' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from NavngivenVejSupplerendeBynavn
+union select 'DAR' as register, 'Postnummer' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from Postnummer
+union select 'DAR' as register, 'SupplerendeBynavn' as table_name, count(distinct id_lokalId) as forretningsobjekter, count(*) as forekomster from SupplerendeBynavn
 ;
-
 
 -- Overlappende forekomster
 select ent1.id_lokalId, ent1.registreringFra as ent1_registreringFra, ent1.registreringTil as ent1_registreringTil,
