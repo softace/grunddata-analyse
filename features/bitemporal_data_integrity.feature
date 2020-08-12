@@ -93,6 +93,9 @@ Feature: Bitemporal data integrity
       |  4 | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal entitets-integritet    | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
       |  5 | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier     |                                  |                                  |
       |  6 | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Bitemporal entitets-integritet    | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+    And the database table data_integrity_violation should contain rows with the following entries and no more
+      | table_name | id_lokalId | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
+      | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
 
   Scenario: Zero and negative intervals should never a bitemporal conflict
     Given a DAR file extract zip file with metadata for day 1

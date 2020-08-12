@@ -95,11 +95,11 @@ def insert_row(cursor, db_functions, row):
 
 
 def update_data_integrity(cursor, db_functions, row):
+    db_functions['Clear data integrity violation'](cursor, row)
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
-        db_functions['Clear data integrity violation'](cursor, row)
         if 'file_extract_id' not in row.keys():
             row['file_extract_id'] = row['update_file_extract_id']
         for v in violations:
