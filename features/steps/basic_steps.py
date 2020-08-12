@@ -70,8 +70,8 @@ dummy_data = {
 @given('I initialize the DAF database')
 def step_impl(context):
     context.behave_db=f'behave_DAF'
-    if os.path.isfile(f'behave_DAF.db'):
-        os.remove(f'behave_DAF.db')
+    if os.path.isfile(f'{context.behave_db}.db'):
+        os.remove(f'{context.behave_db}.db')
     load_daf.main(initialise=True,
                   db_backend='sqlite',
                   db_host=None,
@@ -142,15 +142,16 @@ def step_impl(context, table_name, no_more):
     conn = sqlite3paramstyle.connect(context.behave_db + '.db')
     conn.execute("PRAGMA encoding = 'UTF-8';")
     result = conn.execute(f'select * from {table_name}')
-    for expected_row in context.table:
+    for e_row in context.table:
+        expected_row = dict([(k,v) for k, v in e_row.items() if v != ''])
         sql = f'select * from {table_name} where ' + "and ".join([f"{h} = %({h})s " for h in context.table.headings])
-        cursor = conn.execute(f'select * from {table_name} where ' + "and ".join([f"{h} = %({h})s " for h in context.table.headings]),
+        cursor = conn.execute(f'select * from {table_name} where ' + "and ".join([f"{k} = %({k})s " for k in expected_row.keys()]),
                               expected_row)
         rows = cursor.fetchall()
         expect(len(rows)).to(equal(1))
         actual = dict(zip([x[0] for x in cursor.description], rows[0]))
-        for i, col_name in enumerate(context.table.headings):
-            expect(str(actual[col_name])).to(equal(expected_row.cells[i]))
+        for col_name in expected_row.keys():
+            expect(str(actual[col_name])).to(equal(expected_row[col_name]))
     if no_more:
         rows = conn.execute(f'select * from {table_name}').fetchall()
         expect(len(rows)).to(equal(len(context.table.rows)))

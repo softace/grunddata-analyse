@@ -48,6 +48,7 @@ def insert_row(cursor, db_functions, row):
         db_functions['Log violation'](cursor, row, 'Negativt virkningsinterval', f"{row['virkningTil']} < {row['virkningFra']}", None)
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
+    check_bitemporal_data_integrity = False
     if(len(rows)) > 1:
         raise ValueError(
             "Fundet mere end een række for "
@@ -73,26 +74,25 @@ def insert_row(cursor, db_functions, row):
                                           " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
                                           None)
             if set([n for (n,v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
-                update_data_integrity(cursor, row)
-        db_functions['Update DAF row'](cursor, db_functions, row)
-        return 0
-    update_data_integrity(cursor, db_functions, row)
-    try:
+                check_bitemporal_data_integrity = True
+        db_functions['Update DAF row'](cursor, row)
+        result = 0
+    else:
+        check_bitemporal_data_integrity = True
         db_functions['Insert row'](cursor, row)
-        return 1
-    except sqlite3.Error as e:
-        print(
-            f"FAIL ({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}) -> "
-            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
-        pprint(row)
-        raise e
+        result = 1
+    if check_bitemporal_data_integrity:
+        update_data_integrity(cursor, db_functions, row)
+    return result
 
 def update_data_integrity(cursor, db_functions, row):
+    # Eventually Clear data integrity violation
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
-        # Eventually Clear data integrity violation
+        if 'file_extract_id' not in row.keys():
+            row['file_extract_id'] = row['update_file_extract_id']
         for v in violations:
             db_functions['Log violation'](cursor, row, "Bitemporal data-integritet", 'Se bitemporalitet',
                                           dict(zip(violation_columns, v)))
@@ -145,6 +145,7 @@ def prepare_table(table):
         cursor.execute("select id_lokalId, registreringFra_UTC, virkningFra_UTC "
                        f"from {table_name} where true "
                        "AND id_lokalId = %(id_lokalId)s "
+                       "AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC   != %(virkningFra_UTC)s) " # another primary key
                        "AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
                        "      AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
                        "  OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
