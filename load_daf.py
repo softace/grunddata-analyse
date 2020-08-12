@@ -95,17 +95,17 @@ def insert_row(cursor, db_functions, row):
 
 
 def update_data_integrity(cursor, db_functions, row):
-    # Eventually Clear entity integrity violation
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
         violation_columns = [des[0] for des in cursor.description]
+        db_functions['Clear data integrity violation'](cursor, row)
         if 'file_extract_id' not in row.keys():
             row['file_extract_id'] = row['update_file_extract_id']
         for v in violations:
             db_functions['Log violation'](cursor, row, "Bitemporal entitets-integritet", 'Se bitemporalitet',
                                           dict(zip(violation_columns, v)))
-            # Eventually Register entity integrity violation
+            db_functions['Register data integrity violation'](cursor, row, dict(zip(violation_columns, v)))
 
 
 def prepare_bitemp_table(table, registry, reg_spec):
@@ -187,6 +187,26 @@ def prepare_bitemp_table(table, registry, reg_spec):
     table_names[table_name][SQLITE]['Log violation'] = log_violation
     table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
+    def clear_dataintegrity_violation(cursor, row):
+        cursor.execute("delete from data_integrity_violation"
+                       f" where table_name = '{table_name}' AND id_lokalId = %(id_lokalId)s"
+                       " AND ((ent1_registreringFra_UTC = %(registreringFra_UTC)s AND ent1_virkningFra_UTC = %(virkningFra_UTC)s) OR"
+                       "      (ent2_registreringFra_UTC = %(registreringFra_UTC)s AND ent2_virkningFra_UTC = %(virkningFra_UTC)s)) ",
+                       row)
+    table_names[table_name][SQLITE]['Clear data integrity violation'] = clear_dataintegrity_violation
+    table_names[table_name][POSTGRESQL]['Clear data integrity violation'] = clear_dataintegrity_violation
+
+    def register_dataintegrity_violation(cursor, row, vio):
+        ent1 = min(row, vio, key = lambda x: x['registreringFra_UTC']+x['virkningFra_UTC'])
+        ent2 = max(row, vio, key = lambda x: x['registreringFra_UTC']+x['virkningFra_UTC'])
+        cursor.execute("insert into data_integrity_violation (table_name, id_lokalId,"
+                       " ent1_registreringFra_UTC, ent1_virkningFra_UTC,"
+                       " ent2_registreringFra_UTC, ent2_virkningFra_UTC) "
+                       " VALUES(?, ?,  ?, ?, ?,  ?)",
+                       (table_name, ent1['id_lokalId'], ent1['registreringFra_UTC'], ent1['virkningFra_UTC'],
+                        ent2['registreringFra_UTC'], ent2['virkningFra_UTC']))
+    table_names[table_name][SQLITE]['Register data integrity violation'] = register_dataintegrity_violation
+    table_names[table_name][POSTGRESQL]['Register data integrity violation'] = register_dataintegrity_violation
 
 def insert_db_row(cursor, table_name, row):
     return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
@@ -445,6 +465,23 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'extra_columns': [],
         'primary_keys': ['id'],
         'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
+    })
+    #  Consider prepare_table(tables[-1])
+    tables.append({
+        'name': 'data_integrity_violation',
+        'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent1_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent1_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent2_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent2_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['id'],
+        'unique': ['table_name', 'id_lokalId',
+                   'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC',
+                   'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC'],
     })
     #  Consider prepare_table(tables[-1])
     if initialise_tables:
