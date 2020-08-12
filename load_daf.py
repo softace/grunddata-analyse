@@ -72,14 +72,11 @@ def insert_row(cursor, db_functions, row):
                                           f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
                                           " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
                                           None)
-        db_functions['Update DAF row'](cursor, row)
+            if set([n for (n,v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
+                update_data_integrity(cursor, row)
+        db_functions['Update DAF row'](cursor, db_functions, row)
         return 0
-    db_functions['Find overlaps'](cursor, row)
-    violations = cursor.fetchall()
-    if len(violations) > 0:
-        violation_columns = [des[0] for des in cursor.description]
-        for v in violations:
-            db_functions['Log violation'](cursor, row, "Bitemporal data-integritet", 'Se bitemporalitet', dict(zip(violation_columns, v)))
+    update_data_integrity(cursor, db_functions, row)
     try:
         db_functions['Insert row'](cursor, row)
         return 1
@@ -89,6 +86,17 @@ def insert_row(cursor, db_functions, row):
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
         pprint(row)
         raise e
+
+def update_data_integrity(cursor, db_functions, row):
+    db_functions['Find overlaps'](cursor, row)
+    violations = cursor.fetchall()
+    if len(violations) > 0:
+        violation_columns = [des[0] for des in cursor.description]
+        # Eventually Clear data integrity violation
+        for v in violations:
+            db_functions['Log violation'](cursor, row, "Bitemporal data-integritet", 'Se bitemporalitet',
+                                          dict(zip(violation_columns, v)))
+            # Eventually Register data integrity violation
 
 
 def prepare_table(table):
@@ -389,7 +397,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
             # cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
             # print(f"Table {table['name']} droped.")
             for sql in sql_create_table(table, True):
-                # print(sql)
+                print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
         conn.commit()
