@@ -43,9 +43,9 @@ def insert_row(cursor, db_functions, row):
             f" har egentlig værdier, men fandt "
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] <= row['registreringFra_UTC']:
-        db_functions['Log violation'](cursor, row, 'Negativt registreringsinterval', f"{row['registreringTil']} < {row['registreringFra']}", None)
+        db_functions['Log violation'](cursor, row, 'Ikke-positivt registreringsinterval', f"{row['registreringTil']} <= {row['registreringFra']}", None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] <= row['virkningFra_UTC']:
-        db_functions['Log violation'](cursor, row, 'Negativt virkningsinterval', f"{row['virkningTil']} < {row['virkningFra']}", None)
+        db_functions['Log violation'](cursor, row, 'Ikke-positivt virkningsinterval', f"{row['virkningTil']} <= {row['virkningFra']}", None)
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
     check_bitemporal_data_integrity = False
@@ -144,8 +144,16 @@ def prepare_table(table):
     def find_overlaps_sqlite(cursor, row):
         cursor.execute("select id_lokalId, registreringFra_UTC, virkningFra_UTC "
                        f"from {table_name} where true "
+                       # Same bitemporal primary key:
                        "AND id_lokalId = %(id_lokalId)s "
-                       "AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC   != %(virkningFra_UTC)s) " # another primary key
+                       # Ensure another (instance) primary key:
+                       "AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC != %(virkningFra_UTC)s) "
+                       # Ignoring/compensating for non-positive intervals:
+                       "AND (registreringFra_UTC < registreringTil_UTC OR registreringTil_UTC is NULL) "
+                       "AND (%(registreringFra_UTC)s < %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) "
+                       "AND (virkningFra_UTC < virkningTil_UTC OR virkningTil_UTC is NULL) "
+                       "AND (%(virkningFra_UTC)s < %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL) "
+                       # The actual bitemporal intersection:
                        "AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
                        "      AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
                        "  OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "

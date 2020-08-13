@@ -57,7 +57,7 @@ Feature: Bitemporal data integrity
       |  4 | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal data-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
     Given a DAR file extract zip file with metadata for day 2
     Given the file extract contains data for Postnummer with dummy data and
-    # Updating with a minimal bitemporal area.
+      # The original open is closed with a minimal positive registrering interval
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
       | guid-1     | 2020-01-01T00:12:01.111111-01:00 | 2020-01-01T00:12:01.111112-01:00 | 2000-01-01T00:12:01.111111-01:00 | 2000-01-01T00:12:01.111112-01:00 |
     Then file extract is loaded in the DAF database
@@ -77,3 +77,23 @@ Feature: Bitemporal data integrity
       |  4 | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal data-integritet    | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
       |  5 | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |                                  |                                  |
       |  6 | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Bitemporal data-integritet    | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+
+  Scenario: Zero and negative intervals should never a bitemporal conflict
+    Given a DAR file extract zip file with metadata for day 1
+    Given the file extract contains data for Postnummer with dummy data and
+      | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
+      # A zero registreringstid
+      | guid-0     | 2020-01-01T01:13:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |                                  |
+      # A zero virkningstid
+      | guid-0     | 2020-01-01T01:11:01.111111+00:00 |                                  | 2000-01-01T01:13:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 |
+      # A negative registreringstid
+      | guid-0     | 2020-01-01T01:14:01.111111+00:00 | 2020-01-01T01:14:00.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |                                  |
+      # A negative virkningstid
+      | guid-0     | 2020-01-01T01:11:01.111111+00:00 |                                  | 2000-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:00.111111+00:00 |
+    When file extract is loaded in the DAF database
+    Then the database table violation_log should contain rows with the following entries and no more
+      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                      |
+      |  1 | Postnummer | guid-0     | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Ikke-positivt registreringsinterval |
+      |  2 | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Ikke-positivt virkningsinterval     |
+      |  3 | Postnummer | guid-0     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Ikke-positivt registreringsinterval |
+      |  4 | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Ikke-positivt virkningsinterval     |
