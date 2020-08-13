@@ -42,9 +42,9 @@ def insert_row(cursor, db_functions, row):
             "Forventet primær nøgle (id_lokalId, registreringFra, virkningFra)"
             f" har egentlig værdier, men fandt "
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
-    if row['registreringTil_UTC'] and row['registreringTil_UTC'] < row['registreringFra_UTC']:
+    if row['registreringTil_UTC'] and row['registreringTil_UTC'] <= row['registreringFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Negativt registreringsinterval', f"{row['registreringTil']} < {row['registreringFra']}", None)
-    if row['virkningTil_UTC'] and row['virkningTil_UTC'] < row['virkningFra_UTC']:
+    if row['virkningTil_UTC'] and row['virkningTil_UTC'] <= row['virkningFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Negativt virkningsinterval', f"{row['virkningTil']} < {row['virkningFra']}", None)
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
