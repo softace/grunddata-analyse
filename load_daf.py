@@ -430,6 +430,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'data_file_size', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'job_begin', 'type': 'datetimetz', 'nullable': 'notnull'},
                     {'name': 'job_end', 'type': 'datetimetz', 'nullable': 'null'},
+                    {'name': 'stats_end', 'type': 'datetimetz', 'nullable': 'null'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
@@ -482,6 +483,21 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'unique': ['table_name', 'id_lokalId',
                    'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC',
                    'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC'],
+    })
+    #  Consider prepare_table(tables[-1])
+    tables.append({
+        'name': 'status_report',
+        'columns': [{'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'bitemporal_data_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'bitemporal_data_integrity_instances', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'bitemporal_data_integrity_objects', 'type': 'integer', 'nullable': 'notnull'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['table_name', 'file_extract_id'],
+        'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
     })
     #  Consider prepare_table(tables[-1])
     if initialise_tables:
@@ -815,6 +831,42 @@ def load_data_package(database_options, registry_spec, data_package):
                         raise NotImplementedError(f"What situation is this? prefix = '{prefix}', event = '{event}', value = '{value}'")
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+        SQL = f"""
+            insert into status_report
+    --(table_name, bitemporal_data_integrity_count,
+    --       bitemporal_data_integrity_objects,
+    --       bitemporal_data_integrity_instances)
+    select {file_extract_id} as file_extract_id,
+           simple_stats.table_name as table_name,
+           0 as non_positive_interval_registrering,
+           0 as non_positive_interval_virkning,
+           bitemporal_data_integrity_count,
+           bitemporal_data_integrity_objects,
+           bitemporal_data_integrity_instances
+    from (
+             select table_name,
+                    count(*)                   as bitemporal_data_integrity_count,
+                    count(distinct id_lokalId) as bitemporal_data_integrity_objects
+             from data_integrity_violation
+             group by table_name
+         ) simple_stats
+             join (
+        select table_name, count(*) as bitemporal_data_integrity_instances
+        from (
+                 select distinct table_name,
+                                 id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
+                 from data_integrity_violation
+                 union
+                 select distinct table_name,
+                                 id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
+                 from data_integrity_violation
+             )
+        group by table_name
+    ) instance_stats on simple_stats.table_name = instance_stats.table_name;
+            """
+        cursor.execute(SQL)
+        update_db_row(cursor, 'file_extract',
+                      {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()
 
 
