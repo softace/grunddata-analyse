@@ -57,26 +57,10 @@ Feature: Bitemporal data integrity
       | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
       | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
       | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-    And the database table status_report should contain rows with the following entries and no more
+    And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name                    | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
-      | 1               | Adresse                       | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | Adressepunkt                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | Husnummer                     | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | NavngivenVej                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | NavngivenVejKommunedel        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | NavngivenVejPostnummer        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | NavngivenVejSupplerendeBynavn | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
       | 1               | Postnummer                    | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 1               | SupplerendeBynavn             | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | Adresse                       | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | Adressepunkt                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | Husnummer                     | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | NavngivenVej                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | NavngivenVejKommunedel        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | NavngivenVejPostnummer        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
-      | 2               | NavngivenVejSupplerendeBynavn | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
       | 2               | Postnummer                    | 0                                  | 0                              | 8                               | 9                                   | 1                                 |
-      | 2               | SupplerendeBynavn             | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
 
   Scenario: 4 different bitemporal integrity issues on an double open rectangle
     Bitemporal integrity is resolved in 3/4 on invalid update
@@ -102,6 +86,10 @@ Feature: Bitemporal data integrity
       | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
       | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
       | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+    And the database table status_report should contain rows with the following entries
+      | file_extract_id | table_name                    | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
+      | 1               | Postnummer                    | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Postnummer                    | 0                                  | 0                              | 4                               | 5                                   | 1                                 |
     Given a DAR file extract zip file with metadata for day 2
     Given the file extract contains data for Postnummer with dummy data and
       # The original open is closed with a minimal positive registrering interval
@@ -127,6 +115,11 @@ Feature: Bitemporal data integrity
     And the database table data_integrity_violation should contain rows with the following entries and no more
       | table_name | id_lokalId | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+    And the database table status_report should contain rows with the following entries
+      | file_extract_id | table_name                    | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
+      | 1               | Postnummer                    | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Postnummer                    | 0                                  | 0                              | 4                               | 5                                   | 1                                 |
+      | 3               | Postnummer                    | 0                                  | 0                              | 1                               | 2                                   | 1                                 |
 
   Scenario: Zero and negative intervals should never a bitemporal conflict
     Given a DAR file extract zip file with metadata for day 1
