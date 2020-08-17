@@ -99,13 +99,14 @@ def update_data_integrity(cursor, db_functions, row):
             # Eventually Register data integrity violation
 
 
-def prepare_table(table):
+def prepare_table(table, is_registry = None):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
     table_names[table_name] = {POSTGRESQL: {},
                                SQLITE: {}}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
+    table_names[table_name]['registry'] = is_registry
 
     #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
@@ -403,29 +404,31 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     if initialise_tables:
         cur = conn.cursor()
         for table in tables:
-            # cur.execute(f"DROP TABLE IF EXISTS {table['name']}")
-            # print(f"Table {table['name']} droped.")
             for sql in sql_create_table(table, True):
-                print(sql)
+                # print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
-        conn.commit()
+        if True: # Workaround
+            try:
+                conn.execute('insert into file_extract (id) values(10)')
+            except:
+                pass
+#        conn.commit()
 
 
-def initialise_registry_tables(conn, sql_create_table, jsonschema):
-    tables = []
+def initialise_registry_tables(conn, sql_create_table, jsonschema, initialise_tables):
     for (table_name, table_content) in jsonschema['properties'].items():
         assert (table_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
-        tables.append(jsonschema2table(table_name[:-4], table_content))
-        prepare_table(tables[-1])
-    cur = conn.cursor()
-    for table in tables:
-        for sql in sql_create_table(table, False):
-            # print(sql)
-            cur.execute(sql)
-        print(f"Table {table['name']} maybe created.")
-    conn.commit()
+        table_spec = jsonschema2table(table_name[:-4], table_content)
+        prepare_table(table_spec, True)
+        if initialise_tables:
+            sqls = sql_create_table(table_spec, True)
+            for sql in sqls:
+                # print(sql)
+                conn.execute(sql)
+            print(f"Table {table_spec['name']} created.")
+#    conn.commit()
 
 
 def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 'i'),
@@ -467,7 +470,14 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         raise NotImplementedError(
             f"Unknown database backend '{database_options['backend']}'.")
 
+    jsonschemas = {
+        'DAR': "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json",
+        'BBR': 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
+    }
     initialise_db(conn, sql_create_table, initialise)
+    for registry, json_schema_file_name in jsonschemas.items():
+        with open(json_schema_file_name, 'rb') as json_schema_file:
+            initialise_registry_tables(conn, sql_create_table, json.load(json_schema_file), initialise)
 
     if not data_package:
         conn.commit()
@@ -570,14 +580,6 @@ def load_data_package(database_options, data_package, sql_create_table):
             for key, value in values.items():
                 table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value,
                                                                                             'file_extract_id': file_extract_id})
-            if registry == 'DAR':
-                json_schema_file_name = "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json"
-            elif registry == 'BBR':
-                json_schema_file_name = 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
-            else:
-                raise ValueError(f"Ukendt register '{registry}'.")
-            with open(json_schema_file_name, 'rb') as json_schema_file:
-                initialise_registry_tables(conn, sql_create_table, json.load(json_schema_file))
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None
