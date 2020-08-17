@@ -13,7 +13,15 @@ Feature: Bitemporal data integrity
       | guid-1     | 2020-01-01T01:12:01.111111+00:00 |                                  | 2000-01-01T01:12:01.111111+00:00 |                                  |
     And the database table status_report should contain rows with the following entries and no more
       | file_extract_id | table_name | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
-      | 1               | Postnummer | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | Adresse                       | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | Adressepunkt                  | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | Husnummer                     | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | NavngivenVejKommunedel        | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | NavngivenVej                  | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | NavngivenVejPostnummer        | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | NavngivenVejSupplerendeBynavn | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | Postnummer                    | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
+      | 1               | SupplerendeBynavn             | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
 
   Scenario: 8 different bitemporal integrity issues on a closed rectangle
     Given a DAR file extract zip file with metadata for day 1
@@ -50,9 +58,25 @@ Feature: Bitemporal data integrity
       | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
       | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
     And the database table status_report should contain rows with the following entries and no more
-      | file_extract_id | table_name | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
-      | 1               | Postnummer | 0                                  | 0                              | 0                               |                                   0 |                                 0 |
-      | 2               | Postnummer | 0                                  | 0                              | 8                               |                                   9 |                                 1 |
+      | file_extract_id | table_name                    | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_data_integrity_count | bitemporal_data_integrity_instances | bitemporal_data_integrity_objects |
+      | 1               | Adresse                       | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | Adressepunkt                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | Husnummer                     | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | NavngivenVej                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | NavngivenVejKommunedel        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | NavngivenVejPostnummer        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | NavngivenVejSupplerendeBynavn | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | Postnummer                    | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 1               | SupplerendeBynavn             | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Adresse                       | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Adressepunkt                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Husnummer                     | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | NavngivenVej                  | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | NavngivenVejKommunedel        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | NavngivenVejPostnummer        | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | NavngivenVejSupplerendeBynavn | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
+      | 2               | Postnummer                    | 0                                  | 0                              | 8                               | 9                                   | 1                                 |
+      | 2               | SupplerendeBynavn             | 0                                  | 0                              | 0                               | 0                                   | 0                                 |
 
   Scenario: 4 different bitemporal integrity issues on an double open rectangle
     Bitemporal integrity is resolved in 3/4 on invalid update

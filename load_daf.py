@@ -420,6 +420,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     tables.append({
         'name': 'file_extract',
         'columns': [{'name': 'id', 'type': 'integer'},
+                    {'name': 'subscription_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'zip_file_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
                     {'name': 'zip_file_size', 'type': 'integer', 'nullable': 'notnull'},
@@ -434,6 +435,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
+        'foreign_keys': [(['subscription_name'], 'subscription', ['subscription_name'])],
     })
 #    prepare_bitemp_table(tables[-1])
     tables.append({
@@ -488,6 +490,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     tables.append({
         'name': 'status_report',
         'columns': [{'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'registry', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
@@ -629,19 +632,6 @@ def load_data_package(database_options, registry_spec, data_package):
         json_data_name = next(x for x in myzip.namelist() if 'Metadata' not in x)
         zip2iso = lambda ts: datetime.datetime(*ts).isoformat()
         data_file_zipinfo = myzip.getinfo(json_data_name)
-        file_extract = {
-            'zip_file_name': os.path.basename(data_package),
-            'zip_file_timestamp': datetime.datetime.fromtimestamp(
-                os.path.getmtime(data_package)).astimezone().isoformat(),
-            'zip_file_size': os.path.getsize(data_package),
-            'zip_file_md5': zip_file_md5,
-            'metadata_file_name': meta_data_name,
-            'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
-            'data_file_timestamp': zip2iso(data_file_zipinfo.date_time),
-            'data_file_size': data_file_zipinfo.file_size,
-            'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
-        }
-        file_extract_id = insert_db_row(cursor, 'file_extract', file_extract).lastrowid
         with myzip.open(meta_data_name) as file:
             metadata = json.load(file)
 
@@ -704,6 +694,20 @@ def load_data_package(database_options, registry_spec, data_package):
                         f"deltavindueStart (Abonnement '{abonnementnavn}' er registreret som abonnement på {reg_name},"
                         " men filen hører til {registry}. ")
 
+            file_extract = {
+                'subscription_name': abonnementnavn,
+                'zip_file_name': os.path.basename(data_package),
+                'zip_file_timestamp': datetime.datetime.fromtimestamp(
+                    os.path.getmtime(data_package)).astimezone().isoformat(),
+                'zip_file_size': os.path.getsize(data_package),
+                'zip_file_md5': zip_file_md5,
+                'metadata_file_name': meta_data_name,
+                'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
+                'data_file_timestamp': zip2iso(data_file_zipinfo.date_time),
+                'data_file_size': data_file_zipinfo.file_size,
+                'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
+            }
+            file_extract_id = insert_db_row(cursor, 'file_extract', file_extract).lastrowid
             for key, value in values.items():
                 insert_db_row(cursor, 'metadata', {'key': key,
                                                    'value': value,
@@ -832,39 +836,43 @@ def load_data_package(database_options, registry_spec, data_package):
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
         SQL = f"""
-            insert into status_report
-    --(table_name, bitemporal_data_integrity_count,
-    --       bitemporal_data_integrity_objects,
-    --       bitemporal_data_integrity_instances)
-    select {file_extract_id} as file_extract_id,
-           simple_stats.table_name as table_name,
-           0 as non_positive_interval_registrering,
-           0 as non_positive_interval_virkning,
-           bitemporal_data_integrity_count,
-           bitemporal_data_integrity_objects,
-           bitemporal_data_integrity_instances
+        insert into status_report
+--(table_name, bitemporal_data_integrity_count,
+--       bitemporal_data_integrity_objects,
+--       bitemporal_data_integrity_instances)
+select %(file_extract_id)s as file_extract_id,
+       registry_table.registry,
+       registry_table.table_name as table_name,
+       0 as non_positive_interval_registrering,
+       0 as non_positive_interval_virkning,
+       COALESCE(bitemporal_data_integrity_count,0),
+       COALESCE(bitemporal_data_integrity_instances,0),
+       COALESCE(bitemporal_data_integrity_objects,0)
+from registry_table
+ left join
+    (
+         select table_name,
+                count(*)                   as bitemporal_data_integrity_count,
+                count(distinct id_lokalId) as bitemporal_data_integrity_objects
+         from data_integrity_violation
+         group by table_name
+     ) simple_stats on simple_stats.table_name = registry_table.table_name
+         left join (
+    select table_name, count(*) as bitemporal_data_integrity_instances
     from (
-             select table_name,
-                    count(*)                   as bitemporal_data_integrity_count,
-                    count(distinct id_lokalId) as bitemporal_data_integrity_objects
+             select distinct table_name,
+                             id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
              from data_integrity_violation
-             group by table_name
-         ) simple_stats
-             join (
-        select table_name, count(*) as bitemporal_data_integrity_instances
-        from (
-                 select distinct table_name,
-                                 id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
-                 from data_integrity_violation
-                 union
-                 select distinct table_name,
-                                 id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
-                 from data_integrity_violation
-             )
-        group by table_name
-    ) instance_stats on simple_stats.table_name = instance_stats.table_name;
-            """
-        cursor.execute(SQL)
+             union
+             select distinct table_name,
+                             id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
+             from data_integrity_violation
+         )
+    group by table_name
+) instance_stats on instance_stats.table_name = registry_table.table_name
+where registry_table.registry = %(registry)s;
+        """
+        cursor.execute(SQL,{'file_extract_id': file_extract_id,'registry':registry})
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()
