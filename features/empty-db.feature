@@ -4,6 +4,31 @@ Feature: Loading on empty DB
 
   Background: An initial file extract is loaded into the DB
     Given I initialize the DAF database
+    Then the database table registry_tables should contain rows with the following entries and no more
+      | registry | table_name                        |
+      | BBR      | BBRSag                        |
+      | BBR      | BygningEjendomsrelation       |
+      | BBR      | Bygning                       |
+      | BBR      | Ejendomsrelation              |
+      | BBR      | EnhedEjendomsrelation         |
+      | BBR      | Enhed                         |
+      | BBR      | Etage                         |
+      | BBR      | FordelingAfFordelingsareal    |
+      | BBR      | Fordelingsareal               |
+      | BBR      | GrundJordstykke               |
+      | BBR      | Grund                         |
+      | BBR      | Opgang                        |
+      | BBR      | Sagsniveau                    |
+      | BBR      | TekniskAnlæg                  |
+      | DAR      | Adresse                       |
+      | DAR      | Adressepunkt                  |
+      | DAR      | Husnummer                     |
+      | DAR      | NavngivenVejKommunedel        |
+      | DAR      | NavngivenVej                  |
+      | DAR      | NavngivenVejPostnummer        |
+      | DAR      | NavngivenVejSupplerendeBynavn |
+      | DAR      | Postnummer                    |
+      | DAR      | SupplerendeBynavn             |
     Given a DAR file extract zip file with metadata for day 0
     Given the file extract contains data for Postnummer with dummy data and:
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |

@@ -99,14 +99,14 @@ def update_data_integrity(cursor, db_functions, row):
             # Eventually Register data integrity violation
 
 
-def prepare_table(table, is_registry = None):
+def prepare_table(table, registry = None):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
     table_names[table_name] = {POSTGRESQL: {},
                                SQLITE: {}}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
-    table_names[table_name]['registry'] = is_registry
+    table_names[table_name]['registry'] = registry
 
     #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
@@ -354,6 +354,15 @@ def jsonschema2table(table_name, table_content):
 def initialise_db(conn, sql_create_table, initialise_tables):
     tables = []
     tables.append({
+        'name': 'registry_tables',
+        'columns': [{'name': 'registry', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['registry', 'table_name'],
+    })
+    # prepare_table(tables[-1])
+    tables.append({
         'name': 'file_extract',
         'columns': [{'name': 'id', 'type': 'integer'},
                     {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
@@ -416,18 +425,21 @@ def initialise_db(conn, sql_create_table, initialise_tables):
 #        conn.commit()
 
 
-def initialise_registry_tables(conn, sql_create_table, jsonschema, initialise_tables):
-    for (table_name, table_content) in jsonschema['properties'].items():
-        assert (table_name[-4:] == 'List')
+def initialise_registry_tables(conn, sql_create_table, registry, jsonschema, initialise_tables):
+    assert sorted(jsonschema['required']) == sorted(jsonschema['properties'].keys())
+    for (list_name, table_content) in jsonschema['properties'].items():
+        assert (list_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
-        table_spec = jsonschema2table(table_name[:-4], table_content)
-        prepare_table(table_spec, True)
+        table_name = list_name[:-4]
+        table_spec = jsonschema2table(table_name, table_content)
+        prepare_table(table_spec, registry)
         if initialise_tables:
             sqls = sql_create_table(table_spec, True)
             for sql in sqls:
                 # print(sql)
                 conn.execute(sql)
             print(f"Table {table_spec['name']} created.")
+            conn.execute("insert into registry_tables ('registry', 'table_name') values (?,?)", [registry, table_name])
 #    conn.commit()
 
 
@@ -477,8 +489,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     initialise_db(conn, sql_create_table, initialise)
     for registry, json_schema_file_name in jsonschemas.items():
         with open(json_schema_file_name, 'rb') as json_schema_file:
-            initialise_registry_tables(conn, sql_create_table, json.load(json_schema_file), initialise)
-
+            initialise_registry_tables(conn, sql_create_table, registry, json.load(json_schema_file), initialise)
     if not data_package:
         conn.commit()
         conn.close()
