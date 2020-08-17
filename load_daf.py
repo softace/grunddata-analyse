@@ -492,7 +492,8 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'columns': [{'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'registry', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
-                    {'name': 'total_rows', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'instance_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'object_count', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'bitemporal_data_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
@@ -844,7 +845,8 @@ def load_data_package(database_options, registry_spec, data_package):
 select %(file_extract_id)s as file_extract_id,
        registry_table.registry,
        registry_table.table_name as table_name,
-       total_rows,
+       instance_count,
+       object_count,
        COALESCE(non_positive_interval_registrering,0),
        COALESCE(non_positive_interval_virkning,0),
        COALESCE(bitemporal_data_integrity_count,0),
@@ -876,9 +878,11 @@ left join ("""
         tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
         SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
+count(*) as instance_count,
+count(distinct id_lokalId) as object_count,
 SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
-SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning,
-count(*) as total_rows from {t_name}
+SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
+from {t_name}
         """,tables))
         SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
         SQL += "where registry_table.registry = %(registry)s;"
