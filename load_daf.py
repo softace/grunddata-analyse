@@ -354,12 +354,31 @@ def jsonschema2table(table_name, table_content):
 def initialise_db(conn, sql_create_table, initialise_tables):
     tables = []
     tables.append({
-        'name': 'registry_tables',
+        'name': 'registry',
+        'columns': [{'name': 'short_name', 'type': 'string', 'nullspec': 'notnull'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['short_name'],
+    })
+    # prepare_table(tables[-1])
+    tables.append({
+        'name': 'registry_table',
         'columns': [{'name': 'registry', 'type': 'string', 'nullspec': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['registry', 'table_name'],
+        'foreign_keys': [(['registry'], 'registry', ['short_name'])],
+    })
+    # prepare_table(tables[-1])
+    tables.append({
+        'name': 'subscription',
+        'columns': [{'name': 'subscription_name', 'type': 'string', 'nullspec': 'notnull'},
+                    {'name': 'registry', 'type': 'string', 'nullspec': 'notnull'},
+                    ],
+        'extra_columns': [],
+        'primary_keys': ['subscription_name'],
+        'foreign_keys': [(['registry'], 'registry', ['short_name'])],
     })
     # prepare_table(tables[-1])
     tables.append({
@@ -427,6 +446,8 @@ def initialise_db(conn, sql_create_table, initialise_tables):
 
 def initialise_registry_tables(conn, sql_create_table, registry, jsonschema, initialise_tables):
     assert sorted(jsonschema['required']) == sorted(jsonschema['properties'].keys())
+    if initialise_tables:
+        conn.execute("insert into registry ('short_name') values (?)", [registry])
     for (list_name, table_content) in jsonschema['properties'].items():
         assert (list_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
@@ -439,7 +460,7 @@ def initialise_registry_tables(conn, sql_create_table, registry, jsonschema, ini
                 # print(sql)
                 conn.execute(sql)
             print(f"Table {table_spec['name']} created.")
-            conn.execute("insert into registry_tables ('registry', 'table_name') values (?,?)", [registry, table_name])
+            conn.execute("insert into registry_table ('registry', 'table_name') values (?,?)", [registry, table_name])
 #    conn.commit()
 
 
@@ -581,12 +602,19 @@ def load_data_package(database_options, data_package, sql_create_table):
                 raise ValueError("More than one row!")
             latest_deltavindue_slut = rows[0][0]
             if latest_deltavindue_slut is None:
+                # This is the first file of a subscription:
                 if deltavindue_start != '1900-01-01T00:00:00.000+00:00':
                     raise ValueError(
                         f"deltavindueStart ({deltavindue_start}) skal være '1900-01-01T00:00:00.000+00:00' på en tom DB")
+                conn.execute("insert into subscription (subscription_name, registry) VALUES(?,?)",[abonnementnavn,registry])
             elif latest_deltavindue_slut > deltavindue_start:
                 raise ValueError(
                     f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut ({latest_deltavindue_slut})")
+            else:
+                (reg_name,) = conn.execute("select registry from subscription where subscription_name = ?",[abonnementnavn]).fetchone();
+                if reg_name != registry:
+                    raise ValueError(
+                        f"deltavindueStart (Abonnement '{abonnementnavn}' er registreret som abonnement på {reg_name}, men filen hører til {registry}. ")
 
             for key, value in values.items():
                 table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value,

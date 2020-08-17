@@ -4,7 +4,11 @@ Feature: Loading on empty DB
 
   Background: An initial file extract is loaded into the DB
     Given I initialize the DAF database
-    Then the database table registry_tables should contain rows with the following entries and no more
+    Then the database table registry should contain rows with the following entries and no more
+      | short_name |
+      | BBR        |
+      | DAR        |
+    Then the database table registry_table should contain rows with the following entries and no more
       | registry | table_name                        |
       | BBR      | BBRSag                        |
       | BBR      | BygningEjendomsrelation       |
@@ -30,10 +34,13 @@ Feature: Loading on empty DB
       | DAR      | Postnummer                    |
       | DAR      | SupplerendeBynavn             |
     Given a DAR file extract zip file with metadata for day 0
-    Given the file extract contains data for Postnummer with dummy data and:
+    Given the file extract contains data for Postnummer with dummy data and
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |
       | guid-0     | 2020-01-01T01:01:01.111111+01:00 |                                  | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
     And file extract is loaded in the DAF database
+    Then the database table subscription should contain rows with the following entries and no more
+      | subscription_name            | registry |
+      | DAR_Totaludtræk_1_abonnement | DAR      |
 
   Scenario: The initial file-extract is loaded correctly
     Then the database table Postnummer should contain rows with the following entries:
