@@ -1,4 +1,5 @@
 -- Useful for statistics (pivot-table)
+-- Bitemporal errors
 select substr(file_extract.metadata_file_name, 1, 3) as register,
        table_name,
        deltavindueSlut.value                         as dato,
@@ -14,7 +15,7 @@ order by register desc, bitemporale_fejl desc
 ;
 
 -- Useful for statistics (pivot-table)
--- Bitemporal errors
+-- Bitemporal errors detail
 select substr(file_extract.metadata_file_name, 1, 3) as register,
        table_name,
        deltavindueSlut.value                         as dato,
