@@ -429,8 +429,8 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
                     {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
                     {'name': 'data_file_size', 'type': 'integer', 'nullable': 'notnull'},
-                    {'name': 'job_begin', 'type': 'datetimetz', 'nullable': 'notnull'},
-                    {'name': 'job_end', 'type': 'datetimetz', 'nullable': 'null'},
+                    {'name': 'load_begin', 'type': 'datetimetz', 'nullable': 'notnull'},
+                    {'name': 'load_end', 'type': 'datetimetz', 'nullable': 'null'},
                     {'name': 'stats_end', 'type': 'datetimetz', 'nullable': 'null'},
                     ],
         'extra_columns': [],
@@ -492,6 +492,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'columns': [{'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'registry', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'total_rows', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'bitemporal_data_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
@@ -705,7 +706,7 @@ def load_data_package(database_options, registry_spec, data_package):
                 'metadata_file_timestamp': zip2iso(myzip.getinfo(meta_data_name).date_time),
                 'data_file_timestamp': zip2iso(data_file_zipinfo.date_time),
                 'data_file_size': data_file_zipinfo.file_size,
-                'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
+                'load_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
             }
             file_extract_id = insert_db_row(cursor, 'file_extract', file_extract).lastrowid
             for key, value in values.items():
@@ -834,7 +835,7 @@ def load_data_package(database_options, registry_spec, data_package):
                     else:
                         raise NotImplementedError(f"What situation is this? prefix = '{prefix}', event = '{event}', value = '{value}'")
         update_db_row(cursor, 'file_extract',
-                      {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+                      {'id': file_extract_id, 'load_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
         SQL = f"""
         insert into status_report
 --(table_name, bitemporal_data_integrity_count,
@@ -843,8 +844,9 @@ def load_data_package(database_options, registry_spec, data_package):
 select %(file_extract_id)s as file_extract_id,
        registry_table.registry,
        registry_table.table_name as table_name,
-       0 as non_positive_interval_registrering,
-       0 as non_positive_interval_virkning,
+       total_rows,
+       COALESCE(non_positive_interval_registrering,0),
+       COALESCE(non_positive_interval_virkning,0),
        COALESCE(bitemporal_data_integrity_count,0),
        COALESCE(bitemporal_data_integrity_instances,0),
        COALESCE(bitemporal_data_integrity_objects,0)
@@ -870,8 +872,16 @@ from registry_table
          )
     group by table_name
 ) instance_stats on instance_stats.table_name = registry_table.table_name
-where registry_table.registry = %(registry)s;
-        """
+left join ("""
+        tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
+        SQL += " union ".join(map(lambda t_name: f"""
+select '{t_name}' as table_name,
+SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
+SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning,
+count(*) as total_rows from {t_name}
+        """,tables))
+        SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
+        SQL += "where registry_table.registry = %(registry)s;"
         cursor.execute(SQL,{'file_extract_id': file_extract_id,'registry':registry})
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
