@@ -576,6 +576,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         conn = sqlite3paramstyle.connect(database_options['database'] + '.db', detect_types=sqlite3.PARSE_DECLTYPES)
         conn.execute("PRAGMA encoding = 'UTF-8';")
         conn.execute("PRAGMA foreign_keys = ON;")
+        conn.execute("PRAGMA secure_delete = OFF")
         conn.commit()
         sql_create_table = sqlite3_create_table
     elif database_options['backend'] == POSTGRESQL:
