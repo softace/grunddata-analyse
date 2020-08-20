@@ -95,7 +95,7 @@ def insert_row(cursor, db_functions, row):
 
 
 def update_data_integrity(cursor, db_functions, row):
-    db_functions['Clear data integrity violation'](cursor, row)
+    # db_functions['Clear data integrity violation'](cursor, row)
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
@@ -105,7 +105,7 @@ def update_data_integrity(cursor, db_functions, row):
         for v in violations:
             db_functions['Log violation'](cursor, row, "Bitemporal entitets-integritet", 'Se bitemporalitet',
                                           dict(zip(violation_columns, v)))
-            db_functions['Register data integrity violation'](cursor, row, dict(zip(violation_columns, v)))
+            # db_functions['Register data integrity violation'](cursor, row, dict(zip(violation_columns, v)))
 
 
 def prepare_bitemp_table(table, registry, reg_spec):
