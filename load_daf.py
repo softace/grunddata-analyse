@@ -274,6 +274,8 @@ def sqlite3_create_table(table, fail):
     if 'foreign_keys' in table.keys():
         for fk in table['foreign_keys']:
             sql += f",\n  FOREIGN KEY({', '.join(fk[0])}) REFERENCES {fk[1]}({', '.join(fk[2])})"
+    # for index in table['indexes']:
+    #     sql += f"CREATE INDEX"
     sql += "\n);\n"
     return [sql] + indexes
 
@@ -475,16 +477,19 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
+                    # {'name': 'ent1_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    # {'name': 'ent2_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent2_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent2_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
-        'unique': ['table_name', 'id_lokalId',
+        'indexes': [['table_name', 'id_lokalId']],
+        'uniques': [['table_name', 'id_lokalId',
                    'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC',
-                   'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC'],
+                   'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']],
     })
     #  Consider prepare_table(tables[-1])
     tables.append({
@@ -716,6 +721,7 @@ def load_data_package(database_options, registry_spec, data_package):
                                                    'value': value,
                                                    'file_extract_id': file_extract_id})
         plain_schema = registry_spec[registry]['schema_style'] == 'plain'
+        dirty_table_names = []
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None
@@ -758,6 +764,7 @@ def load_data_package(database_options, registry_spec, data_package):
                             db_table_name = value[:-4]
                             step_time = time.time()
                             if db_table_name in table_names:  # Ignoring obsolete tables
+                                dirty_table_names.append(db_table_name)
                                 print(f"Inserting into {db_table_name}")
                             else:
                                 print(f"Ignoring obsolete table {db_table_name}")
@@ -835,10 +842,61 @@ def load_data_package(database_options, registry_spec, data_package):
                     elif prefix == '' and event == 'end_map':
                         pass  # The top level
                     else:
-                        raise NotImplementedError(f"What situation is this? prefix = '{prefix}', event = '{event}', value = '{value}'")
+                        raise NotImplementedError
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'load_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
-        SQL = f"""
+        create_status_report(cursor, file_extract_id, registry, dirty_table_names)
+        update_db_row(cursor, 'file_extract',
+                      {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+    conn.commit()
+
+def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
+    cursor.execute("delete from entity_integrity_violation where table_name in (" +
+                   ",".join([f"'{t}'" for t in dirty_table_names]) +
+                   ");")
+
+    for table_name in dirty_table_names:
+        sql_entity = f"""
+    insert into entity_integrity_violation (table_name, id_lokalId, ent1_registreringFra_UTC, ent1_virkningFra_UTC, ent2_registreringFra_UTC, ent2_virkningFra_UTC)
+    -- Overlappende forekomster
+    select '{table_name}' as table_name,
+           ent1.id_lokalId,
+           ent1.registreringFra_UTC as ent1_registreringFra_UTC,
+    --       ent1.registreringTil_UTC as ent1_registreringTil_UTC,
+           ent1.virkningFra_UTC as ent1_virkningFra_UTC,
+    --       ent1.virkningTil_UTC as ent1_virkningTil_UTC,
+           ent2.registreringFra_UTC as ent2_registreringFra_UTC,
+    --       ent2.registreringTil_UTC as ent2_registreringTil_UTC,
+           ent2.virkningFra_UTC as ent2_virkningFra_UTC
+    --       ent2.virkningTil_UTC as ent2_virkningTil_UTC
+    from {table_name} ent1
+    -- Same bitemporal primary key:
+    join {table_name} ent2 on ent1.id_lokalId = ent2.id_lokalId
+    -- Ensure another (instance) primary key:
+    AND (ent1.registreringFra_UTC != ent2.registreringFra_UTC OR ent1.virkningFra_UTC != ent2.virkningFra_UTC)
+    -- Ignoring/compensating for non-positive intervals:
+    AND (ent1.registreringFra_UTC < ent1.registreringTil_UTC OR ent1.registreringTil_UTC is NULL)
+    AND (ent2.registreringFra_UTC < ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL)
+    AND (ent1.virkningFra_UTC < ent1.virkningTil_UTC OR ent1.virkningTil_UTC is NULL)
+    AND (ent2.virkningFra_UTC < ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL)
+    -- order
+    -- and ( ent1.file_extract_id < ent2.file_extract_id OR (ent1.file_extract_id = ent2.file_extract_id AND ((ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC))))
+    and (ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC)
+    -- The actual bitemporal intersection:
+                           AND ((       ent1.registreringFra_UTC   <= ent2.registreringFra_UTC
+                                 AND (ent2.registreringFra_UTC <    ent1.registreringTil_UTC   OR   ent1.registreringTil_UTC is NULL))
+                             OR (     ent2.registreringFra_UTC <=   ent1.registreringFra_UTC
+                                 AND (  ent1.registreringFra_UTC   <  ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL))
+                               )
+                           AND ((       ent1.virkningFra_UTC   <= ent2.virkningFra_UTC
+                                 AND (ent2.virkningFra_UTC <    ent1.virkningTil_UTC   OR   ent1.virkningTil_UTC is NULL))
+                             OR (     ent2.virkningFra_UTC <=   ent1.virkningFra_UTC
+                                 AND (  ent1.virkningFra_UTC   <  ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL))
+                               )
+    """
+        cursor.execute(sql_entity)
+
+    SQL = f"""
         insert into status_report
 --(table_name, bitemporal_entity_integrity_count,
 --       bitemporal_entity_integrity_objects,
@@ -876,21 +934,18 @@ from registry_table
     group by table_name
 ) instance_stats on instance_stats.table_name = registry_table.table_name
 left join ("""
-        tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
-        SQL += " union ".join(map(lambda t_name: f"""
+    tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
+    SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
 count(*) as instance_count,
 count(distinct id_lokalId) as object_count,
 SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
 SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
 from {t_name}
-        """,tables))
-        SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
-        SQL += "where registry_table.registry = %(registry)s;"
-        cursor.execute(SQL,{'file_extract_id': file_extract_id,'registry':registry})
-        update_db_row(cursor, 'file_extract',
-                      {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
-    conn.commit()
+            """,tables))
+    SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
+    SQL += "where registry_table.registry = %(registry)s;"
+    cursor.execute(SQL,{'file_extract_id': file_extract_id,'registry':registry})
 
 
 if __name__ == '__main__':
