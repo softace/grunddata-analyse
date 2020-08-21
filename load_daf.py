@@ -49,7 +49,7 @@ def insert_row(cursor, db_functions, row):
                                       f"{row['virkningTil']} <= {row['virkningFra']}", None)
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
-    check_bitemporal_data_integrity = False
+    check_bitemporal_entity_integrity = False
     if(len(rows)) > 1:
         raise ValueError(
             "Fundet mere end een række for "
@@ -80,21 +80,21 @@ def insert_row(cursor, db_functions, row):
                                           ','.join([f"'{v}'" for (n, v) in invalid_update_cols]) +
                                           ")",
                                           None)
-            if set([n for (n, v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
-                check_bitemporal_data_integrity = True
+            if set([n for (n,v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
+                check_bitemporal_entity_integrity = True
         db_functions['Update DAF row'](cursor, row)
         result = 0
     else:
-        check_bitemporal_data_integrity = True
+        check_bitemporal_entity_integrity = True
         db_functions['Insert row'](cursor, row)
         result = 1
-    if check_bitemporal_data_integrity:
+    if check_bitemporal_entity_integrity:
         update_data_integrity(cursor, db_functions, row)
     return result
 
 
 def update_data_integrity(cursor, db_functions, row):
-    # Eventually Clear data integrity violation
+    # Eventually Clear entity integrity violation
     db_functions['Find overlaps'](cursor, row)
     violations = cursor.fetchall()
     if len(violations) > 0:
@@ -102,9 +102,9 @@ def update_data_integrity(cursor, db_functions, row):
         if 'file_extract_id' not in row.keys():
             row['file_extract_id'] = row['update_file_extract_id']
         for v in violations:
-            db_functions['Log violation'](cursor, row, "Bitemporal data-integritet", 'Se bitemporalitet',
+            db_functions['Log violation'](cursor, row, "Bitemporal entitets-integritet", 'Se bitemporalitet',
                                           dict(zip(violation_columns, v)))
-            # Eventually Register data integrity violation
+            # Eventually Register entity integrity violation
 
 
 def prepare_bitemp_table(table, registry, reg_spec):

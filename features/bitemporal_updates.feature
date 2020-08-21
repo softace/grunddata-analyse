@@ -1,4 +1,4 @@
-Feature: Bitemporal data integrity
+Feature: Bitemporal entity integrity
   Background: A DAF database with an un-final and a final instance
     Given I initialize the DAF database
     Given a DAR file extract zip file with metadata for day 0
