@@ -636,6 +636,7 @@ def load_data_package(database_options, data_package, sql_create_table):
                     else:
                         assert value[-4:] == 'List'
                         db_table_name = value[:-4]
+                        step_time = time.time()
                         print(f"Inserting into {db_table_name}")
                 if event == 'end_array':
                     print(f"{row_inserts:>10} rows inserted into  {db_table_name}")
