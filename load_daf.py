@@ -277,6 +277,10 @@ def sqlite3_create_table(table, fail):
     # for index in table['indexes']:
     #     sql += f"CREATE INDEX"
     sql += "\n);\n"
+    if 'indexes' in table.keys():
+        for index in table['indexes']:
+            idx_name = table['name'] + '_' + "_".join(index) + '_idx'
+            indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} {idx_name} ON {table['name']} (" + ",".join(index) + ");"]
     return [sql] + indexes
 
 
@@ -486,7 +490,11 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
-        'indexes': [['table_name', 'id_lokalId']],
+        'indexes': [['table_name'],
+                    ['table_name', 'id_lokalId'],
+                    ['table_name', 'id_lokalId', 'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC'],
+                    ['table_name', 'id_lokalId', 'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']
+                    ],
         'uniques': [['table_name', 'id_lokalId',
                    'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC',
                    'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']],
@@ -848,9 +856,11 @@ def load_data_package(database_options, registry_spec, data_package):
         create_status_report(cursor, file_extract_id, registry, dirty_table_names)
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+    print("Done...")
     conn.commit()
 
 def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
+    print("Updating entity integrity status...")
     cursor.execute("delete from entity_integrity_violation where table_name in (" +
                    ",".join([f"'{t}'" for t in dirty_table_names]) +
                    ");")
@@ -896,6 +906,7 @@ def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
     """
         cursor.execute(sql_entity)
 
+    print("Creating status report...")
     SQL = f"""
         insert into status_report
 --(table_name, bitemporal_entity_integrity_count,
