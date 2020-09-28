@@ -6,7 +6,6 @@ import os
 import ijson
 import json
 from zipfile import ZipFile
-from pprint import pprint
 import sqlite3
 import sqlite3paramstyle
 import psycopg2
@@ -39,13 +38,15 @@ def insert_row(cursor, db_functions, row):
         timezone.utc).isoformat() if row['virkningTil'] else None
     if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
         raise ValueError(
-            "Forventet primær nøgle (id_lokalId, registreringFra, virkningFra)"
+            "Forventet primærnøgle (id_lokalId, registreringFra, virkningFra)"
             f" har egentlig værdier, men fandt "
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] <= row['registreringFra_UTC']:
-        db_functions['Log violation'](cursor, row, 'Ikke-positivt registreringsinterval', f"{row['registreringTil']} <= {row['registreringFra']}", None)
+        db_functions['Log violation'](cursor, row, 'Ikke-positivt registreringsinterval',
+                                      f"{row['registreringTil']} <= {row['registreringFra']}", None)
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] <= row['virkningFra_UTC']:
-        db_functions['Log violation'](cursor, row, 'Ikke-positivt virkningsinterval', f"{row['virkningTil']} <= {row['virkningFra']}", None)
+        db_functions['Log violation'](cursor, row, 'Ikke-positivt virkningsinterval',
+                                      f"{row['virkningTil']} <= {row['virkningFra']}", None)
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
     check_bitemporal_data_integrity = False
@@ -55,25 +56,31 @@ def insert_row(cursor, db_functions, row):
             f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}).")
     elif len(rows) == 1:
         assert sorted([x[0] for x in cursor.description]) == sorted([*row.keys(), 'update_file_extract_id'])
+
         def invalid_update_columns(desc, existing, new_row):
-            result = []
+            cols = []
             for i, d in enumerate(desc):
                 if d[0] == 'registreringTil' and not existing[i]:
-                    continue # Allowed
-                if d[0] in ['file_extract_id', 'update_file_extract_id', # Allowed edits
-                            'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC' # Ignore synthetic edits
+                    continue  # Allowed
+                if d[0] in ['file_extract_id',
+                            # Allowed edits:
+                            'update_file_extract_id',
+                            # Ignore synthetic edits:
+                            'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC'
                             ]:
                     continue
                 if existing[i] != new_row[d[0]]:
-                    result.append((d[0], existing[i]))
-            return result
+                    cols.append((d[0], existing[i]))
+            return cols
         invalid_update_cols = invalid_update_columns(cursor.description, rows[0], row)
         if invalid_update_cols:
             db_functions['Log violation'](cursor, row, 'Ugyldig opdatering af værdier',
                                           f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
-                                          " Tidligere værdi(er): ("+ ','.join([f"'{v}'" for (n,v) in invalid_update_cols]) + ")",
+                                          " Tidligere værdi(er): (" +
+                                          ','.join([f"'{v}'" for (n, v) in invalid_update_cols]) +
+                                          ")",
                                           None)
-            if set([n for (n,v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
+            if set([n for (n, v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
                 check_bitemporal_data_integrity = True
         db_functions['Update DAF row'](cursor, row)
         result = 0
@@ -84,6 +91,7 @@ def insert_row(cursor, db_functions, row):
     if check_bitemporal_data_integrity:
         update_data_integrity(cursor, db_functions, row)
     return result
+
 
 def update_data_integrity(cursor, db_functions, row):
     # Eventually Clear data integrity violation
@@ -99,7 +107,7 @@ def update_data_integrity(cursor, db_functions, row):
             # Eventually Register data integrity violation
 
 
-def prepare_table(table, registry = None):
+def prepare_table(table, registry=None):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
@@ -134,8 +142,8 @@ def prepare_table(table, registry = None):
         cursor.execute(f"update {table_name} set " +
                        ", ".join([f"{c} = %({c})s " for c in row.keys() if c != 'id']) +
                        " where true "
-                       "AND id = %(id)s "
-                       , row)
+                       "AND id = %(id)s ",
+                       row)
     table_names[table_name][SQLITE]['Update row'] = update_row
 
     violation_columns = ['id_lokalId',
@@ -156,15 +164,15 @@ def prepare_table(table, registry = None):
                        "AND (%(virkningFra_UTC)s < %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL) "
                        # The actual bitemporal intersection:
                        "AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
-                       "      AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
-                       "  OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
-                       "      AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
-                       "    )"
+                       "  AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
+                       " OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
+                       "  AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
+                       ")"
                        "AND ((       virkningFra_UTC   <= %(virkningFra_UTC)s "
-                       "      AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
-                       "  OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
-                       "      AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
-                       "    ) ", {k: row[k] for k in violation_columns})
+                       "  AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
+                       " OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
+                       "  AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
+                       ") ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
     # FIXME: use ranges
@@ -178,20 +186,21 @@ def prepare_table(table, registry = None):
     table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
 
     def log_violation(cursor, row, violation_type, message, vio):
-        if vio == None:
+        if vio is None:
             vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
         cursor.execute("insert into violation_log (table_name, file_extract_id, id_lokalId,"
                        " registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
                        " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
                        " VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
-                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'], row['virkningFra_UTC'], violation_type, message,
+                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'],
+                        row['virkningFra_UTC'], violation_type, message,
                         vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     table_names[table_name][SQLITE]['Log violation'] = log_violation
     table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
     def insert_row_sqlite(cursor, row):
         return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
-                       " VALUES(" + ', '.join([f"%({c})s" for c in row.keys()]) + ");", row)
+                              " VALUES(" + ', '.join([f"%({c})s" for c in row.keys()]) + ");", row)
     table_names[table_name][SQLITE]['Insert row'] = insert_row_sqlite
 
     def insert_row_psql(cursor, row):
@@ -207,7 +216,7 @@ SQLITE_TYPE_MAPPING = {
     'string': 'TEXT',
     'datetimetz': 'TEXT',  # TODO: This could be improved
     'datetime': 'TEXT',  # TODO: This could be improved
-    'integer': 'INTEGER', #  This is important, so that integer primary key becomes rowid.
+    'integer': 'INTEGER',  # This is important, so that integer primary key becomes rowid.
     'tsrange': None,
     'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
 }
@@ -224,10 +233,11 @@ def sqlite3_create_table(table, fail):
                 col_name = column['name'].replace('Tid', ex)
                 extra_columns += [{'name': col_name,
                                    'type': 'datetime',
-                                   'nullspec': 'null',  # column['nullspec'],
+                                   'nullable': 'null',  # column['nullable'],
                                    'description': f"Expansion of '{column['name']}. {column['description']}"
                                    }]
-                indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} {table['name']}_{col_name}_idx ON {table['name']} ({col_name});"]
+                indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} "
+                            f"{table['name']}_{col_name}_idx ON {table['name']} ({col_name});"]
         else:
             extra_columns.append(column)
     table['extra_columns'] = extra_columns
@@ -237,18 +247,18 @@ def sqlite3_create_table(table, fail):
         if column['type'] not in SQLITE_TYPE_MAPPING:
             raise NotImplementedError(f"Unknown columns type '{column['type']}' on column {repr(column)}.")
         type_spec += SQLITE_TYPE_MAPPING[column['type']]
-        if 'nullspec' in column:
-            if column['nullspec'] == 'null':
+        if 'nullable' in column:
+            if column['nullable'] == 'null':
                 type_spec += ' NULL'
-            elif column['nullspec'] == 'notnull':
+            elif column['nullable'] == 'notnull':
                 type_spec += ' NOT NULL'
             else:
                 raise NotImplementedError(
-                    f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
+                    f"Unknown column nullification '{column['nullable']}' on column {repr(column)}.")
         comment = f"  --  {column['description']}" if 'description' in column else ''
         sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
     sql += "\n"
-    table['primary_keys'] = [ (x + '_UTC') if x[-3:] == 'Fra' else x for x in table['primary_keys']]
+    table['primary_keys'] = [(x + '_UTC') if x[-3:] == 'Fra' else x for x in table['primary_keys']]
     sql += "  PRIMARY KEY(" + ','.join(table['primary_keys']) + ")"
     if 'foreign_keys' in table.keys():
         for fk in table['foreign_keys']:
@@ -278,14 +288,14 @@ def psql_create_table(table, fail):
         if type_spec == 'tsrange':
             indexes += [f"CREATE INDEX{'' if fail else ' IF NOT EXISTS'} {table['name']}_{column['name']}_idx "
                         f"ON {table['name']} USING GIST ({column['name']});"]
-        if 'nullspec' in column:
-            if column['nullspec'] == 'null':
+        if 'nullable' in column:
+            if column['nullable'] == 'null':
                 type_spec += ' null'
-            elif column['nullspec'] == 'notnull':
+            elif column['nullable'] == 'notnull':
                 type_spec += ' not null'
             else:
                 raise NotImplementedError(
-                    f"Unknown column nullification '{column['nullspec']}' on column {repr(column)}.")
+                    f"Unknown column nullification '{column['nullable']}' on column {repr(column)}.")
         comment = f"  --  {column['description']}" if 'description' in column else ''
         sql += f"  {column['name']: <20} {type_spec: <10},{comment}\n"
     sql += "\n"
@@ -319,13 +329,13 @@ def jsonschema2table(table_name, table_content):
         else:
             raise NotImplementedError(f"Unknown attribute type '{att_content['type'][0]}' on attribute {att_name}.")
         if att_content['type'][1] == 'null':
-            nullspec = 'null'
+            nullable = 'null'
         else:
             raise NotImplementedError(
                 f"Unknown attribute nullification '{att_content['type'][1]}' on attribute {att_name}.")
         column = {'name': att_name,
                   'type': column_type,
-                  'nullspec': nullspec,
+                  'nullable': nullable,
                   'description': att_content['description'] if 'description' in att_content else None
                   }
         table['columns'] += [column]
@@ -335,15 +345,15 @@ def jsonschema2table(table_name, table_content):
         table['extra_columns'] += [{'name': f'{tid}Tid_UTC',
                                     'type': 'tsrange',
                                     'description': f'({tid}Fra, {tid}Til) i UTC',
-                                    'nullspec': 'notnull'
+                                    'nullable': 'notnull'
                                     }]
     table['extra_columns'] += [{'name': 'file_extract_id',
                                 'type': 'integer',
-                                'nullspec': 'notnull'
+                                'nullable': 'notnull'
                                 },
                                {'name': 'update_file_extract_id',
                                 'type': 'integer',
-                                'nullspec': 'null'
+                                'nullable': 'null'
                                 }]
     table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
     table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id']),
@@ -352,10 +362,10 @@ def jsonschema2table(table_name, table_content):
 
 
 def initialise_db(conn, sql_create_table, initialise_tables):
-    tables = []
+    tables = list()
     tables.append({
         'name': 'registry',
-        'columns': [{'name': 'short_name', 'type': 'string', 'nullspec': 'notnull'},
+        'columns': [{'name': 'short_name', 'type': 'string', 'nullable': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['short_name'],
@@ -363,8 +373,8 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     # prepare_table(tables[-1])
     tables.append({
         'name': 'registry_table',
-        'columns': [{'name': 'registry', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
+        'columns': [{'name': 'registry', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['registry', 'table_name'],
@@ -373,8 +383,8 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     # prepare_table(tables[-1])
     tables.append({
         'name': 'subscription',
-        'columns': [{'name': 'subscription_name', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'registry', 'type': 'string', 'nullspec': 'notnull'},
+        'columns': [{'name': 'subscription_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'registry', 'type': 'string', 'nullable': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['subscription_name'],
@@ -384,16 +394,16 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     tables.append({
         'name': 'file_extract',
         'columns': [{'name': 'id', 'type': 'integer'},
-                    {'name': 'zip_file_name', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
-                    {'name': 'zip_file_size', 'type': 'integer', 'nullspec': 'notnull'},
-                    {'name': 'zip_file_md5', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'metadata_file_name', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
-                    {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullspec': 'notnull'},
-                    {'name': 'data_file_size', 'type': 'integer', 'nullspec': 'notnull'},
-                    {'name': 'job_begin', 'type': 'datetimetz', 'nullspec': 'notnull'},
-                    {'name': 'job_end', 'type': 'datetimetz', 'nullspec': 'null'},
+                    {'name': 'zip_file_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'zip_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
+                    {'name': 'zip_file_size', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'zip_file_md5', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'metadata_file_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'metadata_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
+                    {'name': 'data_file_timestamp', 'type': 'datetimetz', 'nullable': 'notnull'},
+                    {'name': 'data_file_size', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'job_begin', 'type': 'datetimetz', 'nullable': 'notnull'},
+                    {'name': 'job_end', 'type': 'datetimetz', 'nullable': 'null'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
@@ -402,27 +412,27 @@ def initialise_db(conn, sql_create_table, initialise_tables):
     tables.append({
         'name': 'metadata',
         'columns': [{'name': 'id', 'type': 'integer'},
-                    {'name': 'file_extract_id', 'type': 'integer', 'nullspec': 'notnull'},
+                    {'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'key', 'type': 'string'},
                     {'name': 'value', 'type': 'string'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
-        'foreign_keys': [(['file_extract_id'], 'file_extract',['id'])],
+        'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
     })
     prepare_table(tables[-1])
     tables.append({
         'name': 'violation_log',
-        'columns': [{'name': 'id', 'type': 'integer', 'nullspec': 'notnull'},
-                    {'name': 'file_extract_id', 'type': 'integer', 'nullspec': 'notnull'},
-                    {'name': 'table_name', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'id_lokalId', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'registreringFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'virkningFra_UTC', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'violation_type', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'violation_text', 'type': 'string', 'nullspec': 'notnull'},
-                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullspec': 'null'},
-                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullspec': 'null'},
+        'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'violation_type', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'violation_text', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullable': 'null'},
+                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullable': 'null'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
@@ -436,7 +446,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                 # print(sql)
                 cur.execute(sql)
             print(f"Table {table['name']} created.")
-        if True: # Workaround
+        if True:  # Workaround
             try:
                 conn.execute('insert into file_extract (id) values(10)')
             except:
@@ -471,7 +481,7 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
          db_name: ('Database name, defaults to DAF', 'option', 'd'),
          db_user: ("Database user", 'option', 'u'),
          db_password: ("Database password", 'option', 'X'),
-         *data_package: ('file path to the zip datapackage')):
+         *data_package: 'file path to the zip datapackage'):
     """Loads DAF data files into database
     """
 
@@ -517,15 +527,15 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         return
     database_options['connection'] = conn
 
-    data_package = sorted(list(data_package), key=lambda x:x[-18:-4]+x[:-18])
+    data_package = sorted(list(data_package), key=lambda x: x[-18:-4]+x[:-18])
     print(f"File extracts to load")
     print("\n".join(data_package))
     for dp in data_package:
-        load_data_package(database_options, dp, sql_create_table)
+        load_data_package(database_options, dp)
     conn.close()
 
 
-def load_data_package(database_options, data_package, sql_create_table):
+def load_data_package(database_options, data_package):
     conn = database_options['connection']
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
@@ -534,10 +544,11 @@ def load_data_package(database_options, data_package, sql_create_table):
 
     md5 = hashlib.md5()
     with open(data_package, 'rb') as content_file:
-        while( buf := content_file.read(md5.block_size)):
+        while buf := content_file.read(md5.block_size):
             md5.update(buf)
     zip_file_md5 = md5.hexdigest()
-    rows = cursor.execute('select * from file_extract where zip_file_md5 = %(zip_file_md5)s', {'zip_file_md5': zip_file_md5}).fetchall()
+    rows = cursor.execute('select * from file_extract where zip_file_md5 = %(zip_file_md5)s',
+                          {'zip_file_md5': zip_file_md5}).fetchall()
     if len(rows) != 0:
         print(f"This file ({data_package}) with md5 ({zip_file_md5}) has already been loaded. Ignoring")
         return
@@ -569,16 +580,16 @@ def load_data_package(database_options, data_package, sql_create_table):
 
             def flatten_dict(d):
                 def items():
-                    for key, value in d.items():
-                        if isinstance(value, dict):
-                            for subkey, subvalue in flatten_dict(value).items():
-                                yield key + "." + subkey, subvalue
-                        elif isinstance(value, list):
-                            for idx, item in enumerate(value):
+                    for k, v in d.items():
+                        if isinstance(v, dict):
+                            for subkey, subvalue in flatten_dict(v).items():
+                                yield k + "." + subkey, subvalue
+                        elif isinstance(v, list):
+                            for idx, item in enumerate(v):
                                 for subkey, subvalue in flatten_dict(item).items():
-                                    yield key + f"[{idx}]." + subkey, subvalue
+                                    yield k + f"[{idx}]." + subkey, subvalue
                         else:
-                            yield key, value
+                            yield k, v
 
                 return dict(items())
 
@@ -587,7 +598,7 @@ def load_data_package(database_options, data_package, sql_create_table):
             abonnementnavn = values['AbonnementsOplysninger[0].abonnementnavn']
             deltavindue_start = values['DatafordelerUdtraekstidspunkt[0].deltavindueStart']
 
-            latest_deltavindue_slut_SQL = """
+            latest_deltavindue_slut_sql = """
             select max(value) latest_deltavindue_slut from metadata
             join (select file_extract.*
                 from file_extract
@@ -597,28 +608,35 @@ def load_data_package(database_options, data_package, sql_create_table):
                ) sub_file_extract on metadata.file_extract_id = sub_file_extract.id
             where key = 'DatafordelerUdtraekstidspunkt[0].deltavindueSlut';
             """
-            rows = cursor.execute(latest_deltavindue_slut_SQL, {'abonnementnavn': abonnementnavn}).fetchall()
-            if (len(rows) != 1):
+            rows = cursor.execute(latest_deltavindue_slut_sql, {'abonnementnavn': abonnementnavn}).fetchall()
+            if len(rows) != 1:
                 raise ValueError("More than one row!")
             latest_deltavindue_slut = rows[0][0]
             if latest_deltavindue_slut is None:
                 # This is the first file of a subscription:
                 if deltavindue_start != '1900-01-01T00:00:00.000+00:00':
                     raise ValueError(
-                        f"deltavindueStart ({deltavindue_start}) skal være '1900-01-01T00:00:00.000+00:00' på en tom DB")
-                conn.execute("insert into subscription (subscription_name, registry) VALUES(?,?)",[abonnementnavn,registry])
+                        f"deltavindueStart ({deltavindue_start}) "
+                        "skal være '1900-01-01T00:00:00.000+00:00' på en tom DB")
+                conn.execute("insert into subscription (subscription_name, registry) VALUES(?,?)",
+                             [abonnementnavn, registry])
             elif latest_deltavindue_slut > deltavindue_start:
                 raise ValueError(
-                    f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut ({latest_deltavindue_slut})")
+                    f"deltavindueStart ({deltavindue_start}) skal være efter seneste deltavindueSlut "
+                    "({latest_deltavindue_slut})")
             else:
-                (reg_name,) = conn.execute("select registry from subscription where subscription_name = ?",[abonnementnavn]).fetchone();
+                (reg_name,) = conn.execute("select registry from subscription where subscription_name = ?",
+                                           [abonnementnavn]).fetchone()
                 if reg_name != registry:
                     raise ValueError(
-                        f"deltavindueStart (Abonnement '{abonnementnavn}' er registreret som abonnement på {reg_name}, men filen hører til {registry}. ")
+                        f"deltavindueStart (Abonnement '{abonnementnavn}' er registreret som abonnement på {reg_name},"
+                        " men filen hører til {registry}. ")
 
             for key, value in values.items():
-                table_names['metadata'][database_options['backend']]['Insert row'](cursor, {'key': key, 'value': value,
-                                                                                            'file_extract_id': file_extract_id})
+                table_names['metadata'][database_options['backend']]['Insert row'](cursor, 
+                                                                                   {'key': key,
+                                                                                    'value': value,
+                                                                                    'file_extract_id': file_extract_id})
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None
@@ -627,7 +645,6 @@ def load_data_package(database_options, data_package, sql_create_table):
             row_inserts = 0
             row_updates = 0
             data_errors = 0
-            start_time = time.time()
             step_time = time.time()
             for prefix, event, value in parser:
                 if event == 'map_key':
