@@ -1,0 +1,704 @@
+{
+	"type": "array",
+	"items": {
+		"description": "EAID_D0A626FC_CCAE_4209_B2F6_AC919B74A528",
+		"type": "object",
+		"properties": {
+			"datafordelerOpdateringstid": {
+				"title": "datafordelerOpdateringstid",
+				"type": "string",
+				"description": "UpdateTimestamp()",
+				"format": "date-time"
+			},
+			"adgangsadressebetegnelse": {
+				"description": "EAID_EDCC14FC_63ED_4ebe_8B52_3E406831A148",
+				"type": ["string",
+				"null"]
+			},
+			"adgangTilBygning": {
+				"description": "EAID_dst3E4349_6115_4191_AF4F_243CCE561C41",
+				"type": ["string",
+				"null"]
+			},
+			"adgangTilTekniskAnlæg": {
+				"description": "EAID_dst79A4C1_23B2_4c0c_85CC_60C6E2EA5AE0",
+				"type": ["string",
+				"null"]
+			},
+			"afstemningsområde": {
+				"description": "EAID_38545A1D_2A85_4020_A332_A0195A41310C",
+				"type": "object",
+				"properties": {
+					"id_lokalId": {
+						"description": "EAID_CA8F829A_498B_454b_86AE_9E929FD024BC.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"afstemningsområdenummer": {
+						"description": "EAID_60BC8063_FE94_401b_97AD_E1D1E7CD79A7",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_E32FAD22_7B6E_4d9c_AB1D_43AA2F3E4BD2",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"forretningshændelse": {
+				"description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+				"type": ["string",
+				"null"]
+			},
+			"forretningsområde": {
+				"description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+				"type": ["string",
+				"null"]
+			},
+			"forretningsproces": {
+				"description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+				"type": ["string",
+				"null"]
+			},
+			"geoDanmarkBygning": {
+				"description": "EAID_dst3C28C5_D640_4bc0_9014_FDC7CBF30581",
+				"type": ["string",
+				"null"]
+			},
+			"husnummerretning": {
+				"description": "EAID_1A906922_EFAC_4182_AA8C_08332D52C6EE",
+				"type": ["string",
+				"null"]
+			},
+			"husnummertekst": {
+				"description": "EAID_83A4C230_5C5A_4ffb_B136_0315DD9F8DBE",
+				"type": ["string",
+				"null"]
+			},
+			"id_lokalId": {
+				"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+				"type": ["string",
+				"null"]
+			},
+			"id_namespace": {
+				"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+				"type": ["string",
+				"null"]
+			},
+			"jordstykke": {
+				"description": "EAID_dst052F4B_D60C_4ccd_BAE5_6BCED78FE40C",
+				"type": ["string",
+				"null"]
+			},
+			"kommuneinddeling": {
+				"description": "EAID_25AE826A_41DD_40a6_9AF4_3D347B1DA89F",
+				"type": "object",
+				"properties": {
+					"id_lokalId": {
+						"description": "EAID_CA8F829A_498B_454b_86AE_9E929FD024BC.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"kommunekode": {
+						"description": "EAID_A7825EC7_D579_401e_B49C_777BC4A39A2F",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_E32FAD22_7B6E_4d9c_AB1D_43AA2F3E4BD2",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"menighedsrådsafstemningsområde": {
+				"description": "EAID_29CD703F_24CC_4479_B620_1F3D544702AD",
+				"type": "object",
+				"properties": {
+					"id_lokalId": {
+						"description": "EAID_CA8F829A_498B_454b_86AE_9E929FD024BC.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"mrafstemningsområdenummer": {
+						"description": "EAID_7BDEA159_0764_4a03_8D1B_94EAE2E044E2",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_E32FAD22_7B6E_4d9c_AB1D_43AA2F3E4BD2",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"placeretPåForeløbigtJordstykke": {
+				"description": "EAID_dstC82C82_CC9D_4d7d_9B8A_8F4A1ADFB5AE",
+				"type": ["string",
+				"null"]
+			},
+			"registreringFra": {
+				"description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+				"type": ["string",
+				"null"],
+				"format": "date-time"
+			},
+			"registreringsaktør": {
+				"description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+				"type": ["string",
+				"null"]
+			},
+			"registreringTil": {
+				"description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+				"type": ["string",
+				"null"],
+				"format": "date-time"
+			},
+			"sogneinddeling": {
+				"description": "EAID_B2A1A022_22C1_47f3_89CB_DA180694F9C0",
+				"type": "object",
+				"properties": {
+					"id_lokalId": {
+						"description": "EAID_CA8F829A_498B_454b_86AE_9E929FD024BC.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"sognekode": {
+						"description": "EAID_E50C6E75_C1CD_4c5a_9C67_3A6463514D0E",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_E32FAD22_7B6E_4d9c_AB1D_43AA2F3E4BD2",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"status": {
+				"description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+				"type": ["string",
+				"null"]
+			},
+			"vejmidte": {
+				"description": "EAID_dstC9842D_CF82_4dc5_8114_3FF7AEF90C17",
+				"type": ["string",
+				"null"]
+			},
+			"virkningFra": {
+				"description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+				"type": ["string",
+				"null"],
+				"format": "date-time"
+			},
+			"virkningsaktør": {
+				"description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+				"type": ["string",
+				"null"]
+			},
+			"virkningTil": {
+				"description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+				"type": ["string",
+				"null"],
+				"format": "date-time"
+			},
+			"navngivenVej": {
+				"description": "EAID_0CB629B5_8D1F_486c_A319_717EDF879B82",
+				"type": "object",
+				"properties": {
+					"datafordelerOpdateringstid": {
+						"title": "datafordelerOpdateringstid",
+						"type": "string",
+						"description": "UpdateTimestamp()",
+						"format": "date-time"
+					},
+					"administreresAfKommune": {
+						"description": "EAID_31D3BE04_2F70_4092_8381_5517A5543634",
+						"type": ["string",
+						"null"]
+					},
+					"beskrivelse": {
+						"description": "EAID_C132D872_7F07_4ebf_BC6B_37049F2E5EB8",
+						"type": ["string",
+						"null"]
+					},
+					"forretningshændelse": {
+						"description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsområde": {
+						"description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsproces": {
+						"description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+						"type": ["string",
+						"null"]
+					},
+					"id_lokalId": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"id_namespace": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+						"type": ["string",
+						"null"]
+					},
+					"registreringFra": {
+						"description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"registreringsaktør": {
+						"description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+						"type": ["string",
+						"null"]
+					},
+					"registreringTil": {
+						"description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"status": {
+						"description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+						"type": ["string",
+						"null"]
+					},
+					"udtaltVejnavn": {
+						"description": "EAID_788F8478_A747_412d_9DE6_FEE0DB4C1BFA",
+						"type": ["string",
+						"null"]
+					},
+					"vejadresseringsnavn": {
+						"description": "EAID_9621DD9D_50E3_4426_AB5A_A5E43DED4B05",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavn": {
+						"description": "EAID_CA00150C_5B5C_4c32_AE72_A7EE5AEDE015",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_oprindelse_kilde": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_FD77FC95_714B_4779_B7FA_F9BBAB41758D",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_B8A27494_DF27_4aa9_B1F4_EBD68D2479A5",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_oprindelse_registrering": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_10DCC555_0BE9_4991_AD8C_DEA595CB08A0",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"vejnavnebeliggenhed_oprindelse_tekniskStandard": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_7F8EB510_AD02_4fd5_844B_C9AB17FB1798.EAID_181528AD_2DA3_4e9d_BF38_81916A924D2A",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_vejnavnelinje": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_93C24B4D_0641_4073_B260_1EC7F2024CF4",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_vejnavneområde": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_1C496CD9_4541_4574_974D_B641F186077F",
+						"type": ["string",
+						"null"]
+					},
+					"vejnavnebeliggenhed_vejtilslutningspunkter": {
+						"description": "EAID_4C594A8E_797B_40bb_B60D_0E5C9159DCD3.EAID_C3E042F2_A66E_40f4_92A1_7C7024A30D16",
+						"type": ["string",
+						"null"]
+					},
+					"virkningFra": {
+						"description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"virkningsaktør": {
+						"description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+						"type": ["string",
+						"null"]
+					},
+					"virkningTil": {
+						"description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"navngivenVejKommunedelList": {
+						"description": "EAID_34D070E5_DD89_4984_8054_16BA70936EA0",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id_lokalId": {
+									"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+									"type": "string"
+								},
+								"navngivenVejKommunedel": {
+									"description": "EAID_34D070E5_DD89_4984_8054_16BA70936EA0",
+									"type": "object",
+									"properties": {
+										"datafordelerOpdateringstid": {
+											"title": "datafordelerOpdateringstid",
+											"type": "string",
+											"description": "UpdateTimestamp()",
+											"format": "date-time"
+										},
+										"forretningshændelse": {
+											"description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+											"type": ["string",
+											"null"]
+										},
+										"forretningsområde": {
+											"description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+											"type": ["string",
+											"null"]
+										},
+										"forretningsproces": {
+											"description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+											"type": ["string",
+											"null"]
+										},
+										"id_lokalId": {
+											"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+											"type": ["string",
+											"null"]
+										},
+										"id_namespace": {
+											"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+											"type": ["string",
+											"null"]
+										},
+										"kommune": {
+											"description": "EAID_0A04B5E9_9F12_49cb_B2AF_AFEE0315AE2B",
+											"type": ["string",
+											"null"]
+										},
+										"navngivenVej": {
+											"description": "EAID_dstE87A3E_ECA3_4f38_A586_117287E4754A",
+											"type": ["string",
+											"null"]
+										},
+										"registreringFra": {
+											"description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+											"type": ["string",
+											"null"],
+											"format": "date-time"
+										},
+										"registreringsaktør": {
+											"description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+											"type": ["string",
+											"null"]
+										},
+										"registreringTil": {
+											"description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+											"type": ["string",
+											"null"],
+											"format": "date-time"
+										},
+										"status": {
+											"description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+											"type": ["string",
+											"null"]
+										},
+										"vejkode": {
+											"description": "EAID_852A683F_3E30_4009_A003_B3C8F6F76930",
+											"type": ["string",
+											"null"]
+										},
+										"virkningFra": {
+											"description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+											"type": ["string",
+											"null"],
+											"format": "date-time"
+										},
+										"virkningsaktør": {
+											"description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+											"type": ["string",
+											"null"]
+										},
+										"virkningTil": {
+											"description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+											"type": ["string",
+											"null"],
+											"format": "date-time"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"adgangspunkt": {
+				"description": "EAID_E3A37E0C_D0D8_4c30_BBD5_2F26F7A24591",
+				"description": "EAID_00A7AF01_C512_4a85_ADB5_98FB15541948",
+				"type": "object",
+				"properties": {
+					"datafordelerOpdateringstid": {
+						"title": "datafordelerOpdateringstid",
+						"type": "string",
+						"description": "UpdateTimestamp()",
+						"format": "date-time"
+					},
+					"oprindelse_kilde": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_FD77FC95_714B_4779_B7FA_F9BBAB41758D",
+						"type": ["string",
+						"null"]
+					},
+					"oprindelse_nøjagtighedsklasse": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_B8A27494_DF27_4aa9_B1F4_EBD68D2479A5",
+						"type": ["string",
+						"null"]
+					},
+					"oprindelse_registrering": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_10DCC555_0BE9_4991_AD8C_DEA595CB08A0",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"oprindelse_tekniskStandard": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_181528AD_2DA3_4e9d_BF38_81916A924D2A",
+						"type": ["string",
+						"null"]
+					},
+					"position": {
+						"description": "EAID_4B062EDE_CE8C_414b_AB85_B5A1FD72AA78",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"vejpunkt": {
+				"description": "EAID_F6BAEBD6_0306_4641_9DEA_C1441D986AFB",
+				"description": "EAID_00A7AF01_C512_4a85_ADB5_98FB15541948",
+				"type": "object",
+				"properties": {
+					"datafordelerOpdateringstid": {
+						"title": "datafordelerOpdateringstid",
+						"type": "string",
+						"description": "UpdateTimestamp()",
+						"format": "date-time"
+					},
+					"oprindelse_kilde": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_FD77FC95_714B_4779_B7FA_F9BBAB41758D",
+						"type": ["string",
+						"null"]
+					},
+					"oprindelse_nøjagtighedsklasse": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_B8A27494_DF27_4aa9_B1F4_EBD68D2479A5",
+						"type": ["string",
+						"null"]
+					},
+					"oprindelse_registrering": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_10DCC555_0BE9_4991_AD8C_DEA595CB08A0",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"oprindelse_tekniskStandard": {
+						"description": "EAID_B9AAE6C5_974D_4d20_BABA_C62874774F4B.EAID_181528AD_2DA3_4e9d_BF38_81916A924D2A",
+						"type": ["string",
+						"null"]
+					},
+					"position": {
+						"description": "EAID_4B062EDE_CE8C_414b_AB85_B5A1FD72AA78",
+						"type": ["string",
+						"null"]
+					}
+				}
+			},
+			"postnummer": {
+				"description": "EAID_449B3570_F0F7_494e_9756_D49E60644CD0",
+				"type": "object",
+				"properties": {
+					"datafordelerOpdateringstid": {
+						"title": "datafordelerOpdateringstid",
+						"type": "string",
+						"description": "UpdateTimestamp()",
+						"format": "date-time"
+					},
+					"forretningshændelse": {
+						"description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsområde": {
+						"description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsproces": {
+						"description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+						"type": ["string",
+						"null"]
+					},
+					"id_lokalId": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"id_namespace": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_9E7FA46D_52D9_4615_B24C_599BB28D1923",
+						"type": ["string",
+						"null"]
+					},
+					"postnr": {
+						"description": "EAID_8F8BACBF_E985_4dc1_BCF4_27F5C3FD0BB1",
+						"type": ["string",
+						"null"]
+					},
+					"postnummerinddeling": {
+						"description": "EAID_E5F5DDF9_3CF4_4304_B02D_E67AB0CDD619",
+						"type": ["string",
+						"null"]
+					},
+					"registreringFra": {
+						"description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"registreringsaktør": {
+						"description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+						"type": ["string",
+						"null"]
+					},
+					"registreringTil": {
+						"description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"status": {
+						"description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+						"type": ["string",
+						"null"]
+					},
+					"virkningFra": {
+						"description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"virkningsaktør": {
+						"description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+						"type": ["string",
+						"null"]
+					},
+					"virkningTil": {
+						"description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					}
+				}
+			},
+			"supplerendeBynavn": {
+				"description": "EAID_9D39B21D_E73C_4f1b_9C6C_B75412DAAD77",
+				"type": "object",
+				"properties": {
+					"datafordelerOpdateringstid": {
+						"title": "datafordelerOpdateringstid",
+						"type": "string",
+						"description": "UpdateTimestamp()",
+						"format": "date-time"
+					},
+					"forretningshændelse": {
+						"description": "EAID_1CE948DD_FC3D_4638_8913_A2D35A00F64D",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsområde": {
+						"description": "EAID_C955CFEC_E2A0_47da_9F76_6452FCC9E4E2",
+						"type": ["string",
+						"null"]
+					},
+					"forretningsproces": {
+						"description": "EAID_A9A40479_E58D_4c7a_A0EA_F8EC4829ECAC",
+						"type": ["string",
+						"null"]
+					},
+					"id_lokalId": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+						"type": ["string",
+						"null"]
+					},
+					"id_namespace": {
+						"description": "EAID_D273E3D8_A3F4_41bc_AF9C_E67B4A29C008.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+						"type": ["string",
+						"null"]
+					},
+					"navn": {
+						"description": "EAID_8359992A_59C4_48c4_981D_7A42F20CA168",
+						"type": ["string",
+						"null"]
+					},
+					"registreringFra": {
+						"description": "EAID_96862BAA_95CA_46aa_A6A0_757327A10BF7",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"registreringsaktør": {
+						"description": "EAID_9F724D2B_7763_4997_8C85_580610BABC1F",
+						"type": ["string",
+						"null"]
+					},
+					"registreringTil": {
+						"description": "EAID_301BF58F_26E7_4d1f_B7B6_3881F8C1B0A5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"status": {
+						"description": "EAID_22AF1E6A_73A8_4c89_96EB_C307235DFD19",
+						"type": ["string",
+						"null"]
+					},
+					"supplerendeBynavn": {
+						"description": "EAID_C6722E9B_EF6C_425d_9373_A933C01A6A64",
+						"type": ["string",
+						"null"]
+					},
+					"virkningFra": {
+						"description": "EAID_AB768062_FD24_4960_8AA1_C6BFF90C00C5",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					},
+					"virkningsaktør": {
+						"description": "EAID_8E60197F_D857_47c6_8611_75B63D0940FD",
+						"type": ["string",
+						"null"]
+					},
+					"virkningTil": {
+						"description": "EAID_3058C5FD_9824_48ba_B62C_C24587BF6537",
+						"type": ["string",
+						"null"],
+						"format": "date-time"
+					}
+				}
+			}
+		}
+	}
+}

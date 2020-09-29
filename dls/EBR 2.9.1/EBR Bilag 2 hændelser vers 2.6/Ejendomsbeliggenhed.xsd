@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://data.gov.dk/schemas/ejendomsbeliggenhed/1/payload/ejendomsbeliggenhed" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ejbelig="http://data.gov.dk/schemas/ejendomsbeliggenhed/1/payload/ejendomsbeliggenhed" elementFormDefault="qualified">
+	<xs:element name="Ejendomsbeliggenhed" type="ejbelig:Ejendomsbeliggenhed"/>
+	<xs:complexType name="Ejendomsbeliggenhed">
+		<xs:sequence>
+			<xs:element name="adresseManueltAngivet" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="betegnelse" type="xs:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="ESDHReferenceKommune" type="xs:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="ESDHReferenceAdresse" type="xs:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="kommuneManueltAngivet" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="id_namespace" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="id_lokalId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="virkningFra" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="virkningTil" type="xs:dateTime" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="virkningsaktoer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="forretningshaendelse" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="registreringFra" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="registreringTil" type="xs:dateTime" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="registreringsaktoer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="forretningsomraade" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="status" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="forretningsproces" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="bestemtFastEjendomBFENr" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="kommuneinddelingKommunekode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="adresseLokalId" type="xs:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+			<xs:element name="husnummerLokalId" type="xs:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

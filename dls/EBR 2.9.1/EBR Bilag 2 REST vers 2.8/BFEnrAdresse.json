@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "BFEnrAdresse",
+  "description": "EAID_580F09CC_77FA_4ec3_8B86_5AF54E94BED4",
+  "type": [
+    "object",
+    "null"
+  ],
+  "required": [
+    "type",
+    "features"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "default": "FeatureCollection",
+      "enum": [
+        "FeatureCollection"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "properties",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "Feature",
+            "enum": [
+              "Feature"
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "required": [
+              "id_namespace",
+              "id_lokalId",
+              "bestemtFastEjendomBFENr",
+              "Ejendomstype",
+              "adresseManueltAngivet",
+              "ESDHReferenceAdresse",
+              "ESDHReferenceKommune",
+              "kommuneManueltAngivet",
+              "kommuneinddelingKommunekode",
+              "betegnelse",
+              "adresseLokalId",
+              "husnummerLokalId",
+              "status",
+              "forretningshaendelse",
+              "forretningsomraade",
+              "forretningsproces",
+              "virkningFra",
+              "virkningTil",
+              "virkningsaktoer",
+              "registreringFra",
+              "registreringTil",
+              "registreringsaktoer"
+            ],
+            "properties": {
+              "id_namespace": {
+                "title": "id_namespace",
+                "description": "EAID_033C3051_F5C6_435a_95BB_4168879EAAB4.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+                "type": "string"
+              },
+              "id_lokalId": {
+                "title": "id_lokalId",
+                "description": "EAID_033C3051_F5C6_435a_95BB_4168879EAAB4.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+                "type": "string"
+              },
+              "bestemtFastEjendomBFENr": {
+                "title": "bestemtFastEjendomBFENr",
+                "description": "EAID_dstF27CCF_AE25_44fb_9CD3_5A709497983A",
+                "type": "string"
+              },
+              "Ejendomstype": {
+                "title": "Ejendomstype",
+                "description": "Der er ikke et UUID til en attribut, kun objekternes UUID",
+                "type": "string",
+                "enum": [
+                  "BygningPaaFremmedGrund",
+                  "Ejerlejlighed",
+                  "SamletFastEjendom"
+                ]
+              },
+              "adresseManueltAngivet": {
+                "title": "adresseManueltAngivet",
+                "description": "EAID_083D2F42_D193_43c8_A9AA_68E5A4835101",
+                "type": "boolean"
+              },
+              "ESDHReferenceAdresse": {
+                "title": "ESDHReferenceAdresse",
+                "description": "EAID_35C158DF_FCEF_4c32_90D9_DBFA6EB55287",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ESDHReferenceKommune": {
+                "title": "ESDHReferenceKommune",
+                "description": "EAID_75A3178C_C05D_40af_96A1_E547059D42AF",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "kommuneManueltAngivet": {
+                "title": "kommuneManueltAngivet",
+                "description": "EAID_AC77530E_590B_4225_B31D_8A698D129E23",
+                "type": "boolean"
+              },
+              "kommuneinddelingKommunekode": {
+                "title": "kommuneinddelingKommunekode",
+                "description": "EAID_dstE46CDC_6416_4a05_A01F_6CF3E337F0FC",
+                "type": "string"
+              },
+              "betegnelse": {
+                "title": "betegnelse",
+                "description": "EAID_DFA7AE10_1BBD_4844_889D_91961BD18AC1",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "adresseLokalId": {
+                "title": "adresseLokalId",
+                "description": "EAID_dstD4A261_DC16_404d_BC3C_7FA91424ACD3",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "husnummerLokalId": {
+                "title": "husnummerLokalId",
+                "description": "EAID_dst83583C_B905_471b_9DDE_D2E75E34CB37",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "title": "status",
+                "description": "EAID_0309F182_1A14_4098_B718_11034C06F679",
+                "type": "string",
+                "enum": [
+                  "gældende",
+                  "historisk"
+                ]
+              },
+              "forretningshaendelse": {
+                "title": "forretningshaendelse",
+                "description": "EAID_84122756_5B71_49d5_B68A_FD77F18EEB00",
+                "type": "string",
+                "enum": [
+                  "adresseændring",
+                  "ejendomsforandring",
+                  "ejerhenvendelse",
+                  "konverteretFraESR"
+                ]
+              },
+              "forretningsomraade": {
+                "title": "forretningsomraade",
+                "description": "EAID_3CAEDE8E_F447_447b_883B_EF794AAAA503",
+                "type": "string",
+                "enum": [
+                  "52.20.05"
+                ]
+              },
+              "forretningsproces": {
+                "title": "forretningsproces",
+                "description": "EAID_7013D39D_BB95_49fd_92DC_48CC909D792B",
+                "type": "string",
+                "enum": [
+                  "automatiskBeregnet",
+                  "manueltOpdateret",
+                  "konverteretFraESR"
+                ]
+              },
+              "virkningFra": {
+                "title": "virkningFra",
+                "description": "EAID_586C3BB8_D2B2_410f_9DA6_DBD9A66BE76E",
+                "type": "string",
+                "format": "date-time"
+              },
+              "virkningTil": {
+                "title": "virkningTil",
+                "description": "EAID_AF4B2D78_EDED_4816_BA07_9C96D4876D17",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "virkningsaktoer": {
+                "title": "virkningsaktoer",
+                "description": "EAID_0751B148_D672_4c1c_94A4_F9441FFFA3A7",
+                "type": "string"
+              },
+              "registreringFra": {
+                "title": "registreringFra",
+                "description": "EAID_DFA31DDB_671D_41d3_B174_4129A6500F08",
+                "type": "string",
+                "format": "date-time"
+              },
+              "registreringTil": {
+                "title": "registreringTil",
+                "description": "EAID_A19BB6FA_289E_4c0b_B11C_39F12A4F3105",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "registreringsaktoer": {
+                "title": "registreringsaktoer",
+                "description": "EAID_C5FE3EFF_05A9_4230_8275_41158CC6F6F5",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

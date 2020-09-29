@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ejendomsbeliggenhed xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://data.gov.dk/schemas/ejendomsbeliggenhed/1/payload/ejendomsbeliggenhed" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<adresseManueltAngivet>Load(adresseManueltAngivet)</adresseManueltAngivet>
+	<betegnelse>Load(betegnelse)</betegnelse>
+	<ESDHReferenceKommune>Load(ESDHReferenceKommune)</ESDHReferenceKommune>
+	<ESDHReferenceAdresse>Load(ESDHReferenceAdresse)</ESDHReferenceAdresse>
+	<kommuneManueltAngivet>Load(kommuneManueltAngivet)</kommuneManueltAngivet>
+	<id_namespace>Load(id_namespace)</id_namespace>
+	<id_lokalId>Load(id_lokalId)</id_lokalId>
+	<virkningFra>Load(virkningFra)</virkningFra>
+	<virkningTil>Load(virkningTil)</virkningTil>
+	<virkningsaktoer>Load(virkningsaktoer)</virkningsaktoer>
+	<forretningshaendelse>Load(forretningshaendelse)</forretningshaendelse>
+	<registreringFra>Load(registreringFra)</registreringFra>
+	<registreringTil>Load(registreringTil)</registreringTil>
+	<registreringsaktoer>Load(registreringsaktoer)</registreringsaktoer>
+	<forretningsomraade>Load(forretningsomraade)</forretningsomraade>
+	<status>Load(status)</status>
+	<forretningsproces>Load(forretningsproces)</forretningsproces>
+	<bestemtFastEjendomBFENr>Load(bestemtFastEjendomBFENr)</bestemtFastEjendomBFENr>
+	<kommuneinddelingKommunekode>Load(kommuneinddelingKommunekode)</kommuneinddelingKommunekode>
+	<adresseLokalId>Load(adresseLokalId)</adresseLokalId>
+	<husnummerLokalId>Load(husnummerLokalId)</husnummerLokalId>
+</Ejendomsbeliggenhed>

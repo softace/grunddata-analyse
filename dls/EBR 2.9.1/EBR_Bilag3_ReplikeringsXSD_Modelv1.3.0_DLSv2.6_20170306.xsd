@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ejen="http://data.gov.dk/schemas/ejendomsbeliggenhed/1/replikering" elementFormDefault="qualified" targetNamespace="http://data.gov.dk/schemas/ejendomsbeliggenhed/1/replikering" version="1.3.0">
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element name="Ejendomsbeliggenhed" type="ejen:EjendomsbeliggenhedType">
+    <annotation>
+      <appinfo>EAID_580F09CC_77FA_4ec3_8B86_5AF54E94BED4</appinfo>
+    </annotation>
+  </element>
+  <complexType name="EjendomsbeliggenhedType">
+    <sequence>
+      <element name="objectid" type="string"/>
+      <element minOccurs="0" name="feltliste" nillable="true" type="string"/>
+      <element minOccurs="0" name="adresseManueltAngivet" type="boolean">
+        <annotation>
+          <appinfo>EAID_083D2F42_D193_43c8_A9AA_68E5A4835101</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="betegnelse" nillable="true" type="string">
+        <annotation>
+          <appinfo>EAID_DFA7AE10_1BBD_4844_889D_91961BD18AC1</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="ESDHReferenceKommune" nillable="true" type="string">
+        <annotation>
+          <appinfo>EAID_75A3178C_C05D_40af_96A1_E547059D42AF</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="ESDHReferenceAdresse" nillable="true" type="string">
+        <annotation>
+          <appinfo>EAID_35C158DF_FCEF_4c32_90D9_DBFA6EB55287</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="kommuneManueltAngivet" type="boolean">
+        <annotation>
+          <appinfo>EAID_AC77530E_590B_4225_B31D_8A698D129E23</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="id_namespace" type="string">
+        <annotation>
+          <appinfo>EAID_033C3051_F5C6_435a_95BB_4168879EAAB4.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="id_lokalId" type="string">
+        <annotation>
+          <appinfo>EAID_033C3051_F5C6_435a_95BB_4168879EAAB4.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="virkningFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_586C3BB8_D2B2_410f_9DA6_DBD9A66BE76E</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="virkningTil" nillable="true" type="dateTime">
+        <annotation>
+          <appinfo>EAID_AF4B2D78_EDED_4816_BA07_9C96D4876D17</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="virkningsaktoer">
+        <annotation>
+          <appinfo>EAID_0751B148_D672_4c1c_94A4_F9441FFFA3A7</appinfo>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="100"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" name="forretningshaendelse" type="ejen:EjendomsbeliggenhedForretningshaendelsesVaerdiType">
+        <annotation>
+          <appinfo>EAID_84122756_5B71_49d5_B68A_FD77F18EEB00</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="registreringFra" type="dateTime">
+        <annotation>
+          <appinfo>EAID_DFA31DDB_671D_41d3_B174_4129A6500F08</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="registreringTil" nillable="true" type="dateTime">
+        <annotation>
+          <appinfo>EAID_A19BB6FA_289E_4c0b_B11C_39F12A4F3105</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="registreringsaktoer">
+        <annotation>
+          <appinfo>EAID_C5FE3EFF_05A9_4230_8275_41158CC6F6F5</appinfo>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="100"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" name="forretningsomraade" type="ejen:EjendomsbeliggenhedForretningsomraadeType">
+        <annotation>
+          <appinfo>EAID_3CAEDE8E_F447_447b_883B_EF794AAAA503</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="status" type="ejen:EjendomsbeliggenhedStatusVaerdiType">
+        <annotation>
+          <appinfo>EAID_0309F182_1A14_4098_B718_11034C06F679</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="forretningsproces" type="ejen:EjendomsbeliggenhedForretningsprocesVaerdiType">
+        <annotation>
+          <appinfo>EAID_7013D39D_BB95_49fd_92DC_48CC909D792B</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="bestemtFastEjendomBFENr" type="string">
+        <annotation>
+          <appinfo>EAID_dstF27CCF_AE25_44fb_9CD3_5A709497983A</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="kommuneinddelingKommunekode" type="string">
+        <annotation>
+          <appinfo>EAID_dstE46CDC_6416_4a05_A01F_6CF3E337F0FC</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="adresseLokalId" nillable="true" type="string">
+        <annotation>
+          <appinfo>EAID_dstD4A261_DC16_404d_BC3C_7FA91424ACD3</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="husnummerLokalId" nillable="true" type="string">
+        <annotation>
+          <appinfo>EAID_dst83583C_B905_471b_9DDE_D2E75E34CB37</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="EjendomsbeliggenhedForretningshaendelsesVaerdiType">
+    <restriction base="string">
+      <enumeration value="adresseændring"/>
+      <enumeration value="ejendomsforandring"/>
+      <enumeration value="ejerhenvendelse"/>
+      <enumeration value="konverteretFraESR"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EjendomsbeliggenhedForretningsomraadeType">
+    <restriction base="string">
+      <enumeration value="52.20.05"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EjendomsbeliggenhedForretningsprocesVaerdiType">
+    <restriction base="string">
+      <enumeration value="automatiskBeregnet"/>
+      <enumeration value="konverteretFraESR"/>
+      <enumeration value="manueltOpdateret"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EjendomsbeliggenhedStatusVaerdiType">
+    <restriction base="string">
+      <enumeration value="gældende"/>
+      <enumeration value="historisk"/>
+    </restriction>
+  </simpleType>
+</schema>

@@ -1,0 +1,26 @@
+{
+  "entityType": "Ejendomsbeliggenhed",
+  "attributes": {
+    "forretningshaendelse": "Load(forretningshaendelse)",
+	"forretningsomraade": "Load(forretningsomraade)",
+	"forretningsproces": "Load(forretningsproces)",
+	"id_namespace": "Load(id_namespace)",
+	"id_lokalId": "Load(id_lokalId)",
+	"registreringFra": "Load(registreringFra)",
+    "registreringTil": "Load(registreringTil)",
+	"registreringsaktoer": "Load(registreringsaktoer)",
+	"status": "Load(status)",
+	"virkningFra": "Load(virkningFra)",
+	"virkningTil": "Load(virkningTil)",
+	"virkningsaktoer": "Load(virkningsaktoer)",
+	"betegnelse": "Load(betegnelse)",
+	"adresseManueltAngivet": "Load(adresseManueltAngivet)",
+	"ESDHReferenceKommune": "Load(ESDHReferenceKommune)",
+	"ESDHReferenceAdresse": "Load(ESDHReferenceAdresse)",	
+	"kommuneManueltAngivet": "Load(kommuneManueltAngivet)",
+	"kommuneinddelingKommunekode": "Load(kommuneinddelingKommunekode)",
+	"adresseLokalId": "Load(adresseLokalId)",
+	"husnummerLokalId": "Load(husnummerLokalId)",
+	"bestemtFastEjendomBFENr": "Load(bestemtFastEjendomBFENr)"
+  }
+}
