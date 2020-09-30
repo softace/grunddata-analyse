@@ -1,0 +1,18 @@
+{
+  "DAR": {
+    "json_schema": "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json",
+    "bitempral_primal_keys": [
+      "id_lokalId"
+    ],
+    "registreing_base_name": "registrering",
+    "virkning_base_name": "virkning"
+  },
+  "BBR": {
+    "json_schema": "dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json",
+    "bitempral_primal_keys": [
+      "id_lokalId"
+    ],
+    "registreing_base_name": "registrering",
+    "virkning_base_name": "virkning"
+  }
+}

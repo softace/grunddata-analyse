@@ -454,7 +454,9 @@ def initialise_db(conn, sql_create_table, initialise_tables):
 #        conn.commit()
 
 
-def initialise_registry_tables(conn, sql_create_table, registry, jsonschema, initialise_tables):
+def initialise_registry_tables(conn, sql_create_table, registry, specification, initialise_tables):
+    with open(specification["json_schema"], 'rb') as json_schema_file:
+        jsonschema = json.load(json_schema_file)
     assert sorted(jsonschema['required']) == sorted(jsonschema['properties'].keys())
     if initialise_tables:
         conn.execute("insert into registry ('short_name') values (?)", [registry])
@@ -513,14 +515,11 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
         raise NotImplementedError(
             f"Unknown database backend '{database_options['backend']}'.")
 
-    jsonschemas = {
-        'DAR': "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json",
-        'BBR': 'dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json'
-    }
     initialise_db(conn, sql_create_table, initialise)
-    for registry, json_schema_file_name in jsonschemas.items():
-        with open(json_schema_file_name, 'rb') as json_schema_file:
-            initialise_registry_tables(conn, sql_create_table, registry, json.load(json_schema_file), initialise)
+    registry_spec = json.load(open('registry_specification.json',"r"));
+    for registry, specification in registry_spec.items():
+        with open(specification["json_schema"], 'rb') as json_schema_file:
+            initialise_registry_tables(conn, sql_create_table, registry, specification, initialise)
     if not data_package:
         conn.commit()
         conn.close()
