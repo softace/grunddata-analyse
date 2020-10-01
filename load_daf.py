@@ -107,7 +107,7 @@ def update_data_integrity(cursor, db_functions, row):
             # Eventually Register data integrity violation
 
 
-def prepare_table(table, registry=None):
+def prepare_bitemp_table(table, registry, reg_spec):
     table_name = table['name']
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
@@ -116,13 +116,15 @@ def prepare_table(table, registry=None):
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     table_names[table_name]['registry'] = registry
 
+    table_names[table_name][SQLITE]['Insert row'] = lambda cursor, row: insert_db_row(cursor, table_name, row)
+
     #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
         cursor.execute("select * "
                        f"from {table_name} where true "
-                       "AND id_lokalId = %(id_lokalId)s "
-                       "AND registreringFra_UTC = %(registreringFra_UTC)s "
-                       "AND virkningFra_UTC = %(virkningFra_UTC)s",  # TODO: ensure timestamps are comparable
+                       f"AND id_lokalId = %(id_lokalId)s "
+                       f"AND registreringFra_UTC = %(registreringFra_UTC)s "
+                       f"AND virkningFra_UTC = %(virkningFra_UTC)s",  # TODO: ensure timestamps are comparable
                        {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
     table_names[table_name][POSTGRESQL]['Find row'] = find_row_psql
     table_names[table_name][SQLITE]['Find row'] = find_row_psql
@@ -132,84 +134,77 @@ def prepare_table(table, registry=None):
         cursor.execute(f"update {table_name} set " +
                        ", ".join([f"{c} = %({c})s " for c in row.keys()]) +
                        " where true "
-                       "AND id_lokalId = %(id_lokalId)s "
-                       "AND registreringFra_UTC = %(registreringFra_UTC)s "
-                       "AND virkningFra_UTC = %(virkningFra_UTC)s", row)
+                       f"AND id_lokalId = %(id_lokalId)s "
+                       f"AND registreringFra_UTC = %(registreringFra_UTC)s "
+                       f"AND virkningFra_UTC = %(virkningFra_UTC)s", row)
     # table_names[table_name][POSTGRESQL]['Update DAF row'] = update_daf_row     # FIXME: update ranges
     table_names[table_name][SQLITE]['Update DAF row'] = update_daf_row
 
-    def update_row(cursor, row):
-        cursor.execute(f"update {table_name} set " +
-                       ", ".join([f"{c} = %({c})s " for c in row.keys() if c != 'id']) +
-                       " where true "
-                       "AND id = %(id)s ",
-                       row)
-    table_names[table_name][SQLITE]['Update row'] = update_row
-
-    violation_columns = ['id_lokalId',
-                         'registreringFra_UTC', 'registreringTil_UTC', 'virkningFra_UTC', 'virkningTil_UTC']
+    violation_columns = [f'id_lokalId',
+                         f'registreringFra_UTC', f'registreringTil_UTC',
+                         f'virkningFra_UTC', f'virkningTil_UTC']
 
     # FIXME: use ranges
     def find_overlaps_sqlite(cursor, row):
-        cursor.execute("select id_lokalId, registreringFra_UTC, virkningFra_UTC "
+        cursor.execute(f"select id_lokalId, registreringFra_UTC, virkningFra_UTC "
                        f"from {table_name} where true "
                        # Same bitemporal primary key:
-                       "AND id_lokalId = %(id_lokalId)s "
+                       f"AND id_lokalId = %(id_lokalId)s "
                        # Ensure another (instance) primary key:
-                       "AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC != %(virkningFra_UTC)s) "
+                       f"AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC != %(virkningFra_UTC)s) "
                        # Ignoring/compensating for non-positive intervals:
-                       "AND (registreringFra_UTC < registreringTil_UTC OR registreringTil_UTC is NULL) "
-                       "AND (%(registreringFra_UTC)s < %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) "
-                       "AND (virkningFra_UTC < virkningTil_UTC OR virkningTil_UTC is NULL) "
-                       "AND (%(virkningFra_UTC)s < %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL) "
+                       f"AND (registreringFra_UTC < registreringTil_UTC OR registreringTil_UTC is NULL) "
+                       f"AND (%(registreringFra_UTC)s < %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL) "
+                       f"AND (virkningFra_UTC < virkningTil_UTC OR virkningTil_UTC is NULL) "
+                       f"AND (%(virkningFra_UTC)s < %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL) "
                        # The actual bitemporal intersection:
-                       "AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
-                       "  AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
-                       " OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
-                       "  AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
-                       ")"
-                       "AND ((       virkningFra_UTC   <= %(virkningFra_UTC)s "
-                       "  AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
-                       " OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
-                       "  AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
-                       ") ", {k: row[k] for k in violation_columns})
+                       f"AND ((       registreringFra_UTC   <= %(registreringFra_UTC)s"
+                       f"  AND (%(registreringFra_UTC)s <    registreringTil_UTC   OR   registreringTil_UTC is NULL)) "
+                       f" OR (     %(registreringFra_UTC)s <=   registreringFra_UTC "
+                       f"  AND (  registreringFra_UTC   <  %(registreringTil_UTC)s OR %(registreringTil_UTC)s is NULL)) " 
+                       f")"
+                       f"AND ((       virkningFra_UTC   <= %(virkningFra_UTC)s "
+                       f"  AND (%(virkningFra_UTC)s <    virkningTil_UTC   OR   virkningTil_UTC is NULL)) " 
+                       f" OR (     %(virkningFra_UTC)s <=   virkningFra_UTC "
+                       f"  AND (  virkningFra_UTC   <  %(virkningTil_UTC)s OR %(virkningTil_UTC)s is NULL))"
+                       f") ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
     # FIXME: use ranges
     def find_overlaps_psql(cursor, row):
-        cursor.execute("select id_lokalId, registreringFra, virkningFra "
+        cursor.execute(f"select id_lokalId, registreringFra, virkningFra "
                        f"from {table_name} where true "
-                       "AND id_lokalId = %(id_lokalId)s "
-                       "AND registreringTid_UTC && tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)')"
-                       "AND virkningTid_UTC     && tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')",
+                       f"AND id_lokalId = %(id_lokalId)s "
+                       f"AND registreringTid_UTC && tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)')"
+                       f"AND virkningTid_UTC     && tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')",
                        {k: row[k] for k in violation_columns})
     table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
 
     def log_violation(cursor, row, violation_type, message, vio):
         if vio is None:
             vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
-        cursor.execute("insert into violation_log (table_name, file_extract_id, id_lokalId,"
-                       " registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
-                       " conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
-                       " VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
+        cursor.execute(f"insert into violation_log (table_name, file_extract_id, id_lokalId,"
+                       f" registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
+                       f" conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
+                       f" VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
                        (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'],
                         row['virkningFra_UTC'], violation_type, message,
                         vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     table_names[table_name][SQLITE]['Log violation'] = log_violation
     table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
-    def insert_row_sqlite(cursor, row):
-        return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
-                              " VALUES(" + ', '.join([f"%({c})s" for c in row.keys()]) + ");", row)
-    table_names[table_name][SQLITE]['Insert row'] = insert_row_sqlite
 
-    def insert_row_psql(cursor, row):
-        cursor.execute(f" INSERT into {table_name} ({', '.join(column_names + extra_column_names)})"
-                       " VALUES(" + ', '.join([f"%({c})s" for c in column_names]) + ', '
-                       "        tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)'), " +
-                       "        tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')" +
-                       ");", row)
-    table_names[table_name][POSTGRESQL]['Insert row'] = insert_row_psql
+def insert_db_row(cursor, table_name, row):
+    return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
+                          f" VALUES(" + ', '.join([f"%({c})s" for c in row.keys()]) + ");", row)
+
+
+def update_db_row(cursor, table_name, row):
+    cursor.execute(f"update {table_name} set " +
+                   ", ".join([f"{c} = %({c})s " for c in row.keys() if c != 'id']) +
+                   " where true "
+                   "AND id = %(id)s ",
+                   row)
 
 
 SQLITE_TYPE_MAPPING = {
@@ -408,7 +403,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'extra_columns': [],
         'primary_keys': ['id'],
     })
-    prepare_table(tables[-1])
+#    prepare_bitemp_table(tables[-1])
     tables.append({
         'name': 'metadata',
         'columns': [{'name': 'id', 'type': 'integer'},
@@ -420,7 +415,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'primary_keys': ['id'],
         'foreign_keys': [(['file_extract_id'], 'file_extract', ['id'])],
     })
-    prepare_table(tables[-1])
+ #   prepare_bitemp_table(tables[-1])
     tables.append({
         'name': 'violation_log',
         'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
@@ -465,7 +460,7 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
         assert (table_content['type'] == 'array')
         table_name = list_name[:-4]
         table_spec = jsonschema2table(table_name, table_content)
-        prepare_table(table_spec, registry)
+        prepare_bitemp_table(table_spec, registry, specification)
         if initialise_tables:
             sqls = sql_create_table(table_spec, True)
             for sql in sqls:
@@ -572,8 +567,7 @@ def load_data_package(database_options, data_package):
             'data_file_size': data_file_zipinfo.file_size,
             'job_begin': datetime.datetime.now(datetime.timezone.utc).isoformat()
         }
-        file_extract_id = table_names['file_extract'][database_options['backend']]['Insert row'](cursor,
-                                                                                                 file_extract).lastrowid
+        file_extract_id = insert_db_row(cursor, 'file_extract', file_extract).lastrowid
         with myzip.open(meta_data_name) as file:
             metadata = json.load(file)
 
@@ -632,10 +626,9 @@ def load_data_package(database_options, data_package):
                         " men filen hører til {registry}. ")
 
             for key, value in values.items():
-                table_names['metadata'][database_options['backend']]['Insert row'](cursor, 
-                                                                                   {'key': key,
-                                                                                    'value': value,
-                                                                                    'file_extract_id': file_extract_id})
+                insert_db_row(cursor, 'metadata', {'key': key,
+                                                   'value': value,
+                                                   'file_extract_id': file_extract_id})
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None
@@ -683,8 +676,8 @@ def load_data_package(database_options, data_package):
                 if event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
                     db_row[db_column] = value
                     db_column = None
-        table_names['file_extract'][database_options['backend']]['Update row'](
-            cursor, {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+        update_db_row(cursor, 'file_extract',
+                      {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()
 
 
