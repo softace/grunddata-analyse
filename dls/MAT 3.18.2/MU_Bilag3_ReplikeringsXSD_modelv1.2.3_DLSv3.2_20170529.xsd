@@ -1,0 +1,2968 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:mat="http://data.gov.dk/schemas/matrikel/1/replikering"
+	elementFormDefault="qualified" targetNamespace="http://data.gov.dk/schemas/matrikel/1/replikering"
+	version="1.2.3">
+	<!--XML Schema document created by ShapeChange - http://shapechange.net/ -->
+	<simpleType name="ArealberegningsmetodeType">
+		<restriction base="string">
+			<enumeration value="Areal beregnet efter opmåling - o" />
+			<enumeration
+				value="Areal beregnet efter konstruktion i større målforhold - s" />
+			<enumeration value="Areal beregnet efter kortet - k" />
+		</restriction>
+	</simpleType>
+	<simpleType name="ArealtypeType">
+		<restriction base="string">
+			<enumeration value="Offentlig vej" />
+			<enumeration value="Privat vej" />
+			<enumeration value="Jernbane" />
+			<enumeration value="Kirke" />
+			<enumeration value="Kirkegård" />
+			<enumeration value="Byens gade" />
+			<enumeration value="Fælles grusgrav" />
+			<enumeration value="DigeDæmning" />
+			<enumeration value="Fælles drift" />
+			<enumeration value="Kanal" />
+			<enumeration value="Strand" />
+			<enumeration value="Fælles vanding" />
+		</restriction>
+	</simpleType>
+	<element name="BygningPaaFremmedGrundFlade" type="mat:BygningPaaFremmedGrundFladeType">
+		<annotation>
+			<appinfo>EAID_A2B9B2EF_86F2_4f1d_87C0_1804A7071486</appinfo>
+		</annotation>
+	</element>
+	<complexType name="BygningPaaFremmedGrundFladeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesReference" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="BFEnummer" type="integer">
+				<annotation>
+					<appinfo>EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="opdeltIEjerlejligheder" type="boolean">
+				<annotation>
+					<appinfo>EAID_9A85F42D_880A_4da7_B739_4D1DC5347851</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelse"
+				type="mat:BygningPaaFremmedGrundOprindelseType">
+				<annotation>
+					<appinfo>EAID_C3DB75D7_E7DD_40fd_97BB_EC3825EF2F5E</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paaHavet" type="boolean">
+				<annotation>
+					<appinfo>EAID_32334A13_953F_4758_9890_1C7EB9C702C5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="rids" nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_92F08742_7171_461e_B9D5_E20403002C00</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_5F17E99D_5AA4_4084_A0BA_192D07C62743</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="samletFastEjendomLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst1F309F_7C8A_4255_BF5E_607106CB6ED3</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/BygningPaaFremmedGrundFlade -->
+		</sequence>
+	</complexType>
+	<simpleType name="BygningPaaFremmedGrundOprindelseType">
+		<restriction base="string">
+			<enumeration value="ESR" />
+			<enumeration value="Matriklen - stedfæstet" />
+			<enumeration value="Matriklen - ikke stedfæstet" />
+		</restriction>
+	</simpleType>
+	<element name="BygningPaaFremmedGrundPunkt" type="mat:BygningPaaFremmedGrundPunktType">
+		<annotation>
+			<appinfo>EAID_1C0A5E2D_83CC_43d5_A7D7_C5B4FABF6109</appinfo>
+		</annotation>
+	</element>
+	<complexType name="BygningPaaFremmedGrundPunktType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesReference" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="BFEnummer" type="integer">
+				<annotation>
+					<appinfo>EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="opdeltIEjerlejligheder" type="boolean">
+				<annotation>
+					<appinfo>EAID_9A85F42D_880A_4da7_B739_4D1DC5347851</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelse"
+				type="mat:BygningPaaFremmedGrundOprindelseType">
+				<annotation>
+					<appinfo>EAID_C3DB75D7_E7DD_40fd_97BB_EC3825EF2F5E</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paaHavet" type="boolean">
+				<annotation>
+					<appinfo>EAID_32334A13_953F_4758_9890_1C7EB9C702C5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="rids" nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_92F08742_7171_461e_B9D5_E20403002C00</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_4A20BC89_2921_4fdd_BC2E_62121C92E68A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="samletFastEjendomLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst1F309F_7C8A_4255_BF5E_607106CB6ED3</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/BygningPaaFremmedGrundPunkt -->
+		</sequence>
+	</complexType>
+	<element name="Centroide" type="mat:CentroideType">
+		<annotation>
+			<appinfo>EAID_20AEBD93_4733_4d30_982E_742A35961F43</appinfo>
+		</annotation>
+	</element>
+	<complexType name="CentroideType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_18E3EBC0_5B73_41cc_890C_D4BD80E0B07B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="jordstykkeLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst645E7C_10A3_4510_BDE9_9E3AC107B228</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Centroide -->
+		</sequence>
+	</complexType>
+	<element name="Ejerlav" type="mat:EjerlavType">
+		<annotation>
+			<appinfo>EAID_D16E1BA2_F38E_4cc4_B59E_F35D4ADEE636</appinfo>
+		</annotation>
+	</element>
+	<complexType name="EjerlavType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_05A5039B_ACFF_4754_BEA9_BD2EBC8F5C6A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_87AA3BFB_DF8C_4e9b_82CC_FA0B61BCD0C6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_6DA20624_44E5_441b_87E4_CDF7765666D7</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_8972BCDE_C722_475d_8E2E_1869DBFAA78D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_E5614463_E808_4491_8205_E30FB93CF3C8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_07B4CFAD_49F2_4e1e_873E_DCF3F656CBA1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_4AE908FA_CBA2_458b_AE3F_C925D5C3A54B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_1F700D1A_547A_4745_980D_DF280F2EB3D2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlavskode" type="integer">
+				<annotation>
+					<appinfo>EAID_157A3B49_F2FC_4dea_B641_19E46367B721</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlavsnavn" type="string">
+				<annotation>
+					<appinfo>EAID_61005553_EC47_4fce_9F14_F3F103648C20</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="sagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst278EFF_588D_479d_B7B0_D1E97BF42FDE</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+		</sequence>
+	</complexType>
+	<element name="Ejerlejlighed" type="mat:EjerlejlighedType">
+		<annotation>
+			<appinfo>EAID_0FD7270E_53D6_445d_9572_2D0AF6D9A83A</appinfo>
+		</annotation>
+	</element>
+	<complexType name="EjerlejlighedType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesGeometri" type="string"/>
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesReference" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="BFEnummer" type="integer">
+				<annotation>
+					<appinfo>EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlejlighedskort" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_41E5CDF2_1A17_48b9_90EA_C2A7F5C0FF4D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlejlighedsnummer" type="string">
+				<annotation>
+					<appinfo>EAID_F33B87C5_ECD5_41d8_879D_53F8B778F32B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="fordelingstalNaevner" type="integer">
+				<annotation>
+					<appinfo>EAID_F14D3F1A_9699_4881_91B7_3507643F7BD6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="fordelingstalTaeller" type="integer">
+				<annotation>
+					<appinfo>EAID_E5163182_6704_492f_9E15_326D01888465</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="iBygningPaaFremmedGrund" type="boolean">
+				<annotation>
+					<appinfo>EAID_62A8798C_7696_48d3_A9C3_05988144BC1A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="samletAreal" type="string">
+				<annotation>
+					<appinfo>EAID_2423BC2E_4C86_4bca_A531_E071C141CAEC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="samletFastEjendomLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dstE4E5EA_AE77_4836_B60B_C540B4055B34</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="b_BygningPaaFremmedGrundFladeLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_src6B97F9_639D_40ef_A32E_8AF1B85CC81F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="b_BygningPaaFremmedGrundPunktLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_src6B97F9_639D_40ef_A32E_8AF1B85CC81F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Ejerlejlighed -->
+		</sequence>
+	</complexType>
+	<element name="Ejerlejlighedslod" type="mat:EjerlejlighedslodType">
+		<annotation>
+			<appinfo>EAID_AE0F4880_729C_4cf7_A58E_F7CCAD504065</appinfo>
+		</annotation>
+	</element>
+	<complexType name="EjerlejlighedslodType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="etagebetegnelse" type="string">
+				<annotation>
+					<appinfo>EAID_5D2B93E9_7A90_440e_9A2F_97782223DD83</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_3A90AA54_658D_4304_8E3C_D7F1C921E413</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="lodAreal" type="string">
+				<annotation>
+					<appinfo>EAID_C4830B27_CB8A_457b_A510_AE0DE445E0CE</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="lodBeliggenhedstekst" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_458E3C66_7E4C_4749_A52D_DD83A9B624DD</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="lodLitra" nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_0E66B05C_AF39_4907_A9AC_8ED439AD9A53</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlejlighedLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst9B148C_5F66_4931_ADD0_A4EDF6EDD65C</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Ejerlejlighedslod -->
+		</sequence>
+	</complexType>
+	<simpleType name="ForloebType">
+		<restriction base="string">
+			<enumeration value="Skal følge skel" />
+			<enumeration value="Skal ikke følge skelbillede" />
+			<enumeration value="Skal følge skelbillede" />
+			<enumeration value="Lukkelinje" />
+		</restriction>
+	</simpleType>
+	<simpleType name="GraensekodeType">
+		<restriction base="string">
+			<enumeration value="Region + kommune + sogn + ejerlav" />
+			<enumeration value="Region + kommune + sogn" />
+			<enumeration value="Region + kommune" />
+			<enumeration value="Region" />
+			<enumeration value="Kommune + sogn + ejerlav" />
+			<enumeration value="Kommune + sogn" />
+			<enumeration value="Kommune + ejerlav" />
+			<enumeration value="Kommune" />
+			<enumeration value="Sogn + ejerlav" />
+			<enumeration value="Sogn" />
+			<enumeration value="Ejerlav" />
+			<enumeration value="Ingen administrativ grænse" />
+		</restriction>
+	</simpleType>
+	<simpleType name="IndlaegningstypeType">
+		<restriction base="string">
+			<enumeration value="Indlagt over fikspunkter - FP" />
+			<enumeration value="Indlagt over fikspunkter og/eller skelkredse - FS" />
+			<enumeration value="Indlagt over støttemateriale - ST" />
+			<enumeration value="Ukendt - UK" />
+		</restriction>
+	</simpleType>
+	<element name="Jordstykke" type="mat:JordstykkeType">
+		<annotation>
+			<appinfo>EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1</appinfo>
+		</annotation>
+	</element>
+	<complexType name="JordstykkeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="arealberegningsmetode" type="mat:ArealberegningsmetodeType">
+				<annotation>
+					<appinfo>EAID_6B45A043_9EB3_4099_B554_94AFC8048204</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="arealbetegnelse" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_B7097689_BD63_43f5_9A29_7A496D49AFD5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="arealtype" nillable="true"
+				type="mat:ArealtypeType">
+				<annotation>
+					<appinfo>EAID_21E8BFE5_EB68_4fd9_A415_4BCE7A66344A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="brugsretsareal" nillable="true"
+				type="boolean">
+				<annotation>
+					<appinfo>EAID_11FCCE34_38CA_4968_B896_AAC7C4438A15</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="delnummer" nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_AABD2266_EDC4_48fd_A726_D54F6636C4CD</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="faelleslod" type="boolean">
+				<annotation>
+					<appinfo>EAID_36AD19AD_817E_4add_A886_318EDAF1605F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="matrikelnummer" type="string">
+				<annotation>
+					<appinfo>EAID_9C0920E3_3534_492a_978A_D6ED7344379B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreretAreal" type="string">
+				<annotation>
+					<appinfo>EAID_4D421096_4DDB_495c_9CD4_5CADF0C9CB3C</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="vandarealinkludering" type="mat:VandarealinkluderingType">
+				<annotation>
+					<appinfo>EAID_21A2A28C_6C11_40cb_8277_D2FD898F903F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="vejareal" nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_1D34F1EC_2A4A_4671_8A0F_A741BAF2FCDB</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="vejarealberegningsstatus"
+				type="mat:VejarealberegningsstatusType">
+				<annotation>
+					<appinfo>EAID_F2B695DC_7929_4c07_B61C_E49B8CDC14D1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="fredskov_fredskovsareal"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_8A74EF00_4E61_453f_BEE4_9E4E410FB386.EAID_F6E62878_D147_4efe_88A1_FFC5535F2125
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="fredskov_omfang" nillable="true"
+				type="mat:OmfangType">
+				<annotation>
+					<appinfo>EAID_8A74EF00_4E61_453f_BEE4_9E4E410FB386.EAID_C2E00FF5_1F49_4b1a_9128_E1B751A3FD3F
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="jordrente_omfang" nillable="true"
+				type="mat:OmfangType">
+				<annotation>
+					<appinfo>EAID_53924590_56E3_4b1f_A241_A86B2B33CB85.EAID_C2F78E9F_A745_4f52_A9E7_5D90D3A471DD
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="klitfredning_klitfredningsarea"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_0A172EF2_2E17_4d86_847A_24DA11F81A44.EAID_B77251E1_E5E8_402f_84E7_8AB7A69C6AA3
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="klitfredning_omfang" nillable="true"
+				type="mat:OmfangType">
+				<annotation>
+					<appinfo>EAID_0A172EF2_2E17_4d86_847A_24DA11F81A44.EAID_09A8A1E7_17BC_40ba_9EC0_4ACD57512DCD
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="majoratsskov_majoratsskovsnumm"
+				nillable="true" type="integer">
+				<annotation>
+					<appinfo>EAID_E17E1EC1_E476_4dcf_B897_8965F50C34D2.EAID_459B33AF_6C50_49da_80FA_275C872A4F40
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="majoratsskov_omfang" nillable="true"
+				type="mat:OmfangType">
+				<annotation>
+					<appinfo>EAID_E17E1EC1_E476_4dcf_B897_8965F50C34D2.EAID_95B15AA8_26EA_4e21_9062_8D2DE06E629E
+					</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="strandbeskyttelse_omfang"
+				nillable="true" type="mat:OmfangType">
+				<annotation>
+					<appinfo>EAID_8CA23EEC_1E1A_43d2_8360_A02084B2BEC2.EAID_B9F19F99_4AFE_40b8_8604_B752F1BE3ABD
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="strandbeskyttelse_strandbeskyt"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_8CA23EEC_1E1A_43d2_8360_A02084B2BEC2.EAID_104C76A0_F515_444d_BD56_3E0888BA4C13
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="samletFastEjendomLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst4D3E5E_84EF_4d87_85F6_8B46883C79F9</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="skelforretningssagsLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst0B3D61_0A61_49ca_92F3_8DC72D4357ED</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="stammerFraJordstykkeLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst6F5F38_6F41_44e6_99E6_A9E22727B446</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="supplerendeMaalingSagLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst6958C9_2DE8_4a3f_A3E0_067F58B5D606</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlavLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst288BF1_5818_49db_A585_5C1023C7B391</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="sognLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst1C708E_15F0_4f57_8B4D_BA2F8BE0D3A9</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="kommuneLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst28DB7F_1A26_4256_9DB0_69BEED67A0AF</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="regionLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst49D5E7_250D_4585_BC44_77E897880EA5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Jordstykke --><!--Removed by minei: stormfald/Jordstykke -->
+		</sequence>
+	</complexType>
+	<element name="JordstykkeTemaflade" type="mat:JordstykkeTemafladeType">
+		<annotation>
+			<appinfo>EAID_B8EC966B_3EA9_499b_841C_F3E24EDDB9EC</appinfo>
+		</annotation>
+	</element>
+	<complexType name="JordstykkeTemafladeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_0E920D8E_E9CB_4a81_9CD9_AE518F9D3D53</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="temaFladeID" type="integer">
+				<annotation>
+					<appinfo>EAID_9B6ECFA7_9FFD_4cac_BDBC_0801D753E90C</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="tematype" type="mat:TematypeType">
+				<annotation>
+					<appinfo>EAID_9D788A58_3830_4b70_AF5E_684F7D55EC85</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="jordstykkeLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dstE6CE7A_7D14_40b7_A78D_A9C825FF4770</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/JordstykkeTemaflade -->
+		</sequence>
+	</complexType>
+	<simpleType name="LandbrugsnoteringType">
+		<restriction base="string">
+			<enumeration value="FamilieBrug" />
+			<enumeration value="Landbrug" />
+			<enumeration value="LandbrugUdenBygning" />
+		</restriction>
+	</simpleType>
+	<element name="Lodflade" type="mat:LodfladeType">
+		<annotation>
+			<appinfo>EAID_7C2C3988_3D69_446c_B5EB_B1979990AAC4</appinfo>
+		</annotation>
+	</element>
+	<complexType name="LodfladeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_C9C1F3E6_1C77_4039_A42B_32786109E46A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="jordstykkeLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dstDC7CA8_E749_495e_81F0_F5079FE44C6B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Lodflade -->
+		</sequence>
+	</complexType>
+	<simpleType name="MatrikelForretningsomraadeType">
+		<restriction base="string">
+			<enumeration value="52.20.05" />
+		</restriction>
+	</simpleType>
+	<element name="MatrikelKommune" type="mat:MatrikelKommuneType">
+		<annotation>
+			<appinfo>EAID_D18B68C2_8EC9_449c_BE43_AB8FC7530417</appinfo>
+		</annotation>
+	</element>
+	<complexType name="MatrikelKommuneType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_05A5039B_ACFF_4754_BEA9_BD2EBC8F5C6A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_87AA3BFB_DF8C_4e9b_82CC_FA0B61BCD0C6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_6DA20624_44E5_441b_87E4_CDF7765666D7</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_8972BCDE_C722_475d_8E2E_1869DBFAA78D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_E5614463_E808_4491_8205_E30FB93CF3C8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_07B4CFAD_49F2_4e1e_873E_DCF3F656CBA1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_4AE908FA_CBA2_458b_AE3F_C925D5C3A54B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_0213FAEC_ED72_4683_8483_A55866F2DECF</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="kommunenavn">
+				<annotation>
+					<appinfo>EAID_CBF5C68F_2889_4104_B423_22B718D1DA8B</appinfo>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="100" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element minOccurs="0" name="kommunekode">
+				<annotation>
+					<appinfo>EAID_A8B32F95_988E_4efb_B3AD_4920B839393B</appinfo>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="4" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element minOccurs="0" name="sagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst278EFF_588D_479d_B7B0_D1E97BF42FDE</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+		</sequence>
+	</complexType>
+	<element name="MatrikelRegion" type="mat:MatrikelRegionType">
+		<annotation>
+			<appinfo>EAID_4A61194E_84F8_4b73_BE48_9CE51D86C7AB</appinfo>
+		</annotation>
+	</element>
+	<complexType name="MatrikelRegionType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_05A5039B_ACFF_4754_BEA9_BD2EBC8F5C6A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_87AA3BFB_DF8C_4e9b_82CC_FA0B61BCD0C6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_6DA20624_44E5_441b_87E4_CDF7765666D7</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_8972BCDE_C722_475d_8E2E_1869DBFAA78D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_E5614463_E808_4491_8205_E30FB93CF3C8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_07B4CFAD_49F2_4e1e_873E_DCF3F656CBA1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_4AE908FA_CBA2_458b_AE3F_C925D5C3A54B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="regionskode">
+				<annotation>
+					<appinfo>EAID_43E7000C_E664_4e6a_A9E5_DF06926F31BA</appinfo>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="4" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element minOccurs="0" name="regionsnavn" type="string">
+				<annotation>
+					<appinfo>EAID_DF806A76_F307_4214_92F4_58DA3DCE32BA</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="sagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst278EFF_588D_479d_B7B0_D1E97BF42FDE</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+		</sequence>
+	</complexType>
+	<element name="MatrikelSogn" type="mat:MatrikelSognType">
+		<annotation>
+			<appinfo>EAID_FF5DDBDB_9330_41cb_B0E5_F0B7B0DC390E</appinfo>
+		</annotation>
+	</element>
+	<complexType name="MatrikelSognType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_5283A023_B40C_437e_8B73_2A949AC9F5CB.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_05A5039B_ACFF_4754_BEA9_BD2EBC8F5C6A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_87AA3BFB_DF8C_4e9b_82CC_FA0B61BCD0C6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_6DA20624_44E5_441b_87E4_CDF7765666D7</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_8972BCDE_C722_475d_8E2E_1869DBFAA78D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_E5614463_E808_4491_8205_E30FB93CF3C8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_07B4CFAD_49F2_4e1e_873E_DCF3F656CBA1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_4AE908FA_CBA2_458b_AE3F_C925D5C3A54B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_C55433A9_8909_4b89_A37F_E7E38F516C92</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="sognenavn">
+				<annotation>
+					<appinfo>EAID_852351AE_7674_4195_97C7_66D2D68B1B54</appinfo>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="100" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element minOccurs="0" name="sognekode">
+				<annotation>
+					<appinfo>EAID_932D7C7F_79BA_4b64_817C_6BA28078DC08</appinfo>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="4" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element minOccurs="0" name="sagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst278EFF_588D_479d_B7B0_D1E97BF42FDE</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+		</sequence>
+	</complexType>
+	<element name="Matrikelskel" type="mat:MatrikelskelType">
+		<annotation>
+			<appinfo>EAID_766A020A_E8DD_409e_BE5D_9B221F3D798F</appinfo>
+		</annotation>
+	</element>
+	<complexType name="MatrikelskelType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="administrativGraenseKode" type="mat:GraensekodeType">
+				<annotation>
+					<appinfo>EAID_EAB1E447_7C4B_4c42_8020_84DFCA2FFC44</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_5D3586D8_1021_4b93_828D_1AF56EFF5B60</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelseJournalnummer" type="string">
+				<annotation>
+					<appinfo>EAID_523E267A_8CA9_4e19_8D68_1F22F5DA356E</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="produktionsmetode" type="mat:ProduktionsmetodeType">
+				<annotation>
+					<appinfo>EAID_A7152B5A_6CA7_47ac_8CFE_1FDDA077B6A4</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="skeltype" type="mat:SkeltypeType">
+				<annotation>
+					<appinfo>EAID_BC06685D_DAF8_49c6_8E28_1F039922FE0B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="transformationsId" type="integer">
+				<annotation>
+					<appinfo>EAID_A1D523CB_EFE6_4b96_8610_2545894B8925</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="venstreJordstykkeLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst7C12AA_E4D8_4327_90CD_E1C9E87BA0D5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="hoejreJordstykkeLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst8773D0_1433_4fd9_BD87_EBFAB5026880</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="skelpunkt_1LokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dstBBBBF3_1E43_4ae6_BD41_574CBE43831C[1]</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="skelpunkt_2LokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dstBBBBF3_1E43_4ae6_BD41_574CBE43831C[2]</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelsessagsLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst172E9D_C5D4_49e7_ADCA_584722E9CE0D</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="skelforretningssagsLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst67860B_B578_459d_A8B6_A675EF0E5421</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Matrikelskel -->
+		</sequence>
+	</complexType>
+	<element name="MatrikulaerSag" type="mat:MatrikulaerSagType">
+		<annotation>
+			<appinfo>EAID_D999DCC5_B933_4e45_86E0_FE9CB2B28FBC</appinfo>
+		</annotation>
+	</element>
+	<complexType name="MatrikulaerSagType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesGeometri" type="string"/>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_9223BE9F_D422_4f05_9180_7D3205A382A9.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_9223BE9F_D422_4f05_9180_7D3205A382A9.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningshaendelse" type="mat:SagsoperationType">
+				<annotation>
+					<appinfo>EAID_CE6AEE92_1AD5_4496_8A73_5DF2380A5106</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_D7E712D7_D485_4645_ACA1_6190228C690E</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_B8BDA19C_BD3A_45ae_9030_E7DFCEF34409</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="journaliseringsdato" type="date">
+				<annotation>
+					<appinfo>EAID_F47FC187_5158_4e55_8EE8_F1B99F4F66A1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="kommune" type="string">
+				<annotation>
+					<appinfo>EAID_11D1CACA_AE81_4888_932E_6EC0B84075D0</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="matrikelmyndighedensJournalnum"
+				type="string">
+				<annotation>
+					<appinfo>EAID_1A779A80_8462_4abd_BEEF_4982AB809818</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_75D4B68D_05C2_4ff9_983B_FA89782CB594</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_43C433F9_B544_4c18_999B_BBEA702399E8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_AB376482_5DBC_4314_BD49_9CBF6C975894</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="rekvirentRef" type="string">
+				<annotation>
+					<appinfo>EAID_467DE9F6_E982_4a05_A337_F49700FC48E9</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="sagstitel" type="string">
+				<annotation>
+					<appinfo>EAID_3336AF49_AAC8_4a54_B55F_93488576B768</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status" type="mat:SagsstatusType">
+				<annotation>
+					<appinfo>EAID_3B09A42C_714C_486e_81B2_50B3DC65B415</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_7F5D338F_B4E9_4064_B25B_9F17BF8E0F62</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_03F61E86_EF46_40b6_A597_5F7CD885DEB2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0AE85E10_0407_4d2f_9F73_E4EF203D7A33</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="jordstykkeLokalId" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_dst2564C7_0A48_454b_BB54_841475A598B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="ejerlavLokalId" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_dst1A2D09_9035_40bc_8DE8_6AB30C30B43A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+		</sequence>
+	</complexType>
+	<simpleType name="MatrikulaertElementForretningshaendelseType">
+		<restriction base="string">
+			<enumeration value="Afledt ændring" />
+			<enumeration value="Anden ændring" />
+			<enumeration value="Arealændring på Ejerlejlighed" />
+			<enumeration value="Ejerlejlighed bortfaldet" />
+			<enumeration value="Ejerlejlighed tilkommet" />
+			<enumeration value="Arealændring på Jordstykke" />
+			<enumeration
+				value="BPFG med oprindelse 'Matriklen - stedfæstet' bortfaldet" />
+			<enumeration
+				value="BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet" />
+			<enumeration
+				value="BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet" />
+			<enumeration
+				value="Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'" />
+			<enumeration value="Registrering af relation fra SFE til BPFG bortfaldet" />
+			<enumeration value="Registrering af relation fra SFE til BPFG tilkommet" />
+			<enumeration
+				value="Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet" />
+			<enumeration
+				value="Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet" />
+			<enumeration value="Noteringsændring på Jordstykke" />
+			<enumeration value="Jordstykke(r) bortfaldet" />
+			<enumeration value="Noteringsændring på ejendom" />
+			<enumeration value="Jordstykke(r) tilkommet" />
+		</restriction>
+	</simpleType>
+	<simpleType name="MatrikulaertElementStatusType">
+		<restriction base="string">
+			<enumeration value="Gældende" />
+			<enumeration value="Foreløbig" />
+			<enumeration value="Historisk" />
+			<enumeration value="Ikke Gennemført" />
+		</restriction>
+	</simpleType>
+	<element name="Nullinje" type="mat:NullinjeType">
+		<annotation>
+			<appinfo>EAID_02530814_DE45_45ce_B12D_0AF41DC1663B</appinfo>
+		</annotation>
+	</element>
+	<complexType name="NullinjeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_576F48DF_864C_42e7_9075_AB5ABCF839D5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Nullinje -->
+		</sequence>
+	</complexType>
+	<simpleType name="OmfangType">
+		<restriction base="string">
+			<enumeration value="hel" />
+			<enumeration value="delvis" />
+			<enumeration value="ukendt" />
+		</restriction>
+	</simpleType>
+	<element name="OptagetVej" type="mat:OptagetVejType">
+		<annotation>
+			<appinfo>EAID_6548492B_C1ED_4195_9E26_08FF64EB9CE4</appinfo>
+		</annotation>
+	</element>
+	<complexType name="OptagetVejType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_A55436AD_5362_408d_85AC_7B0EFF0383A2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="produktionsmetode" type="mat:ProduktionsmetodeType">
+				<annotation>
+					<appinfo>EAID_17D0A374_94A6_421e_BE12_7915732AF96F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="vejbredde" nillable="true" type="double">
+				<annotation>
+					<appinfo>EAID_1CC09A3B_88C2_47c5_8722_285A4DE58A57</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="vejtype" nillable="true"
+				type="mat:VejtypeType">
+				<annotation>
+					<appinfo>EAID_64C270E0_688B_497d_886B_8E3A89CA2EDC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="transformationsId" type="integer">
+				<annotation>
+					<appinfo>EAID_1459B55C_256D_42ad_831F_A894E20378E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/OptagetVej --><!--Removed by minei: jordstykkeLokalId/OptagetVej -->
+		</sequence>
+	</complexType>
+	<simpleType name="PaataenktHandlingType">
+		<restriction base="string">
+			<enumeration value="Ændring" />
+			<enumeration value="Nyoprettelse" />
+			<enumeration value="Udgår" />
+		</restriction>
+	</simpleType>
+	<simpleType name="ProduktionsmetodeType">
+		<restriction base="string">
+			<enumeration value="Indlagt med koordinaterne fra en skelmåling - MI" />
+			<enumeration value="Indlagt vha. et måleblad, der er digitaliseret - MD" />
+			<enumeration value="Indlagt vha. digitalisering af et økort - MK" />
+			<enumeration
+				value="Indlagt vha. digitalisering af et rammekort i målforhold &gt;1:2000 - RL" />
+			<enumeration
+				value="Indlagt vha. digitalisering af et rammekort i målforhold 1:500 til 1:2000 - RS" />
+			<enumeration
+				value="Indlagt vha. digitalisering af et skelkort eller en konstruktion - SK" />
+			<enumeration value="Ukendt - UK" />
+		</restriction>
+	</simpleType>
+	<simpleType name="PunktKlasseType">
+		<restriction base="string">
+			<enumeration value="Fikspunkt - 0" />
+			<enumeration value="Indmålt ved hjælp af RTK GPS - 1" />
+			<enumeration value="Indmålt terrestrisk på anden vis - 2" />
+			<enumeration value="Digitaliseret punkt eller labil grænse - 3" />
+		</restriction>
+	</simpleType>
+	<simpleType name="SagskategoriType">
+		<restriction base="string">
+			<enumeration value="Anden sagskategori" />
+			<enumeration value="Matrikulær sag" />
+			<enumeration value="Kvalitetsforbedring af matriklen" />
+			<enumeration value="Minirenovering" />
+			<enumeration value="Klitfredning" />
+			<enumeration value="Strandbeskyttelse" />
+			<enumeration value="Fredskov" />
+			<enumeration value="Majoratskov" />
+			<enumeration value="Stormfald" />
+			<enumeration value="Landbrug" />
+			<enumeration value="Arbejderbolig" />
+			<enumeration value="Jordrente" />
+			<enumeration value="Amts- og kommunegrænse" />
+			<enumeration value="Sognegrænse" />
+			<enumeration value="Jordfordeling" />
+			<enumeration value="Ekspropriation" />
+			<enumeration value="Tilbageførselssag" />
+			<enumeration value="Ejerlejlighedssag" />
+			<enumeration value="Ikke beskikkelseskrævende ændringssag" />
+			<enumeration value="Bygning på fremmed grund fra kommune" />
+			<enumeration value="Bygning på fremmed grund fra landinspektør" />
+			<enumeration value="Bygning på havet" />
+			<enumeration value="Kombinationssag - Ejerlejlighed" />
+			<enumeration value="Kombinationssag - Bygning på fremmed grund" />
+		</restriction>
+	</simpleType>
+	<simpleType name="SagsoperationType">
+		<restriction base="string">
+			<enumeration value="Administrative grænser" />
+			<enumeration value="Ændring af ejerlejlighedsnummer" />
+			<enumeration value="Ændring af fordelingstal" />
+			<enumeration value="Ændring af geometri for ejerlejlighed" />
+			<enumeration value="Ændring af information om ejerlejlighedslodder" />
+			<enumeration value="Ændring af relation til hovedejendom" />
+			<enumeration value="Ændring af relation til samlet fast ejendom" />
+			<enumeration value="Afregistrering af bygning på fremmed grund" />
+			<enumeration value="Anden hjemmel" />
+			<enumeration value="Arealoverførsel af aflagt offentligt vejareal" />
+			<enumeration
+				value="Arealoverførsel af helt matr.nr. - matr.nr. bevares (ejendom til ejendom)" />
+			<enumeration
+				value="Arealoverførsel med tildeling af nyt matr.nr. (ejendom til ejendom)" />
+			<enumeration
+				value="Arealoverførsel med tildeling af nyt matr.nr. (stamnr.) (ejendom til ejendom). Tidligere anvendt i Sønderjylland." />
+			<enumeration
+				value="Arealoverførsel til offentlig vej+ tildeling nyt stamnr, ejendom til vej/sti. Tidligere anvendt i Sønderjylland." />
+			<enumeration value="Arealoverførsel til offentlig vej, ejendom til vej/sti" />
+			<enumeration
+				value="Arealoverførsel til offentligvej + tildeling nyt litra, ejendom til vej/sti" />
+			<enumeration value="Arealoverførsel, ejendom til ejendom" />
+			<enumeration value="Berigtigelse mod fællesjord" />
+			<enumeration value="Berigtigelse mod havet" />
+			<enumeration value="Berigtigelse mod sø og vandløb" />
+			<enumeration
+				value="Deling af jordstykke - registrering nyt skel (internt skel)" />
+			<enumeration
+				value="Deling af jordstykke - registrering nyt skel (internt skel) gebyr" />
+			<enumeration
+				value="Deling af jordstykke - registrering nyt skel (internt skel). Tidligere anvendt i Sønderjylland." />
+			<enumeration value="Diverse" />
+			<enumeration value="Ejendomsberigtigelse" />
+			<enumeration
+				value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1" />
+			<enumeration
+				value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2" />
+			<enumeration
+				value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3" />
+			<enumeration
+				value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4" />
+			<enumeration
+				value="Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 2" />
+			<enumeration value="Fælleslodsnotering" />
+			<enumeration value="Fredskov" />
+			<enumeration value="Genoptagelse af matrikelnummer" />
+			<enumeration value="Inddragelse af matr.nr." />
+			<enumeration value="Jordforurening - boligerklæring" />
+			<enumeration value="Jordforurening V1" />
+			<enumeration value="Jordforurening V2" />
+			<enumeration value="Klitfredning" />
+			<enumeration value="Kortopretning" />
+			<enumeration value="Landbrug - familieejendom" />
+			<enumeration value="Landbrugsejendom" />
+			<enumeration value="Majoratskov/samlet skovstrækning" />
+			<enumeration value="Matrikulering af ikke tidligere registreret areal" />
+			<enumeration value="Matrikulering ved kendelse" />
+			<enumeration value="Nyberegning af areal matr.nr." />
+			<enumeration value="Nyberegning fredskovsareal" />
+			<enumeration value="Nyberegning klitfredningsareal" />
+			<enumeration value="Nyberegning strandbeskyttelsesareal" />
+			<enumeration value="Nyberegning vejareal" />
+			<enumeration value="Opløsning af ejerlejlighedsfællesskab" />
+			<enumeration value="Overførsel fra fællesareal" />
+			<enumeration value="Overførsel mellem bygning på fremmed grund" />
+			<enumeration value="Overførsel mellem ejerlejligheder" />
+			<enumeration value="Overførsel til fællesareal" />
+			<enumeration value="Overførsel ved teknisk ændring - Uden gebyr" />
+			<enumeration value="Overførsel ved teknisk ændring med gebyr" />
+			<enumeration value="Registrering af ændret etageareal" />
+			<enumeration value="Arbejderbolig" />
+			<enumeration value="Jordrente" />
+			<enumeration value="Registrering af ny bygning på fremmed grund" />
+			<enumeration value="Stormfald - gentilplantning" />
+			<enumeration value="Stormfald - oprydning" />
+			<enumeration value="Rettelse (interne ændringer for et matr.nr.)" />
+			<enumeration
+				value="Rettelse af geometri (interne ændringer for et matr.nr.)" />
+			<enumeration value="Sammenlægning af bygning på fremmed grund" />
+			<enumeration value="Sammenlægning af ejendomme (noteringsmæssigt)" />
+			<enumeration value="Sammenlægning af ejerlejligheder" />
+			<enumeration value="Skelforretning - ejendomsberigtigelse" />
+			<enumeration value="Skelforretning - ejendomsgrænsen fastholdes" />
+			<enumeration value="Sletning af ikke udskilt offentlig vej/sti" />
+			<enumeration
+				value="Stedfæstelse af eksisterende bygning på fremmed grund. Udføres af landinspektør." />
+			<enumeration value="Strandbeskyttelse" />
+			<enumeration value="Supplerende ændringer" />
+			<enumeration value="Supplerende måling" />
+			<enumeration
+				value="Tildeling af matr.nr. til særskilt beliggende jordstykke" />
+			<enumeration
+				value="Tildeling af matr.nr. til særskilt beliggende jordstykke. Tidligere anvendt i Sønderjylland." />
+			<enumeration value="Udskillelse af areal til offentlig vej" />
+			<enumeration value="Udskillelse af areal til offentlig vej (nyt litra)" />
+			<enumeration value="Udstykning" />
+			<enumeration value="Udstykning fra flere ejendomme" />
+			<enumeration
+				value="Udstykning fra flere ejendomme + tildeling af nyt matr.nr.(stamnr.)" />
+			<enumeration
+				value="Udstykning, deling eller matr.nr. til lod (stamnummer). Tidligere anvendt i Sønderjylland." />
+			<enumeration value="Udstykning. Tidligere anvendt i Sønderjylland." />
+			<enumeration value="Vej berigtiget" />
+			<enumeration value="Vej omlagt" />
+			<enumeration value="Vej optaget" />
+			<enumeration
+				value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1" />
+			<enumeration
+				value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2" />
+			<enumeration
+				value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3" />
+			<enumeration
+				value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 2" />
+			<enumeration
+				value="Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4" />
+			<enumeration value="Videreopdeling i henhold til anden hjemmel" />
+			<enumeration value="Ændring af geometri for bygning på fremmed grund" />
+		</restriction>
+	</simpleType>
+	<simpleType name="SagsstatusType">
+		<restriction base="string">
+			<enumeration value="Hjemsendt til indberetter" />
+			<enumeration value="Hos matrikelmyndigheden" />
+			<enumeration value="Foreløbige sagsdata udstillet" />
+			<enumeration value="Afventer svar fra kommunen" />
+			<enumeration value="Afventer indsendelse til registrering" />
+			<enumeration value="Annulleret" />
+			<enumeration value="Afventer Tinglysningsretten" />
+			<enumeration value="Afsluttet" />
+			<enumeration value="Aflyst" />
+		</restriction>
+	</simpleType>
+	<element name="SamletFastEjendom" type="mat:SamletFastEjendomType">
+		<annotation>
+			<appinfo>EAID_9C1A6CF4_25D6_4e28_949F_D45BA79F9EF1</appinfo>
+		</annotation>
+	</element>
+	<complexType name="SamletFastEjendomType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>  
+			<element minOccurs="0" nillable="true" name="StedbestemmelsesReference" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="BFEnummer" type="integer">
+				<annotation>
+					<appinfo>EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="arbejderbolig" nillable="true"
+				type="boolean">
+				<annotation>
+					<appinfo>EAID_F91B9A6C_57C4_4740_9233_CA3ADDDF8E5B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="erFaelleslod" type="boolean">
+				<annotation>
+					<appinfo>EAID_1B4F860F_6E2C_4547_81D2_F88CA2730E65</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_7B03CCE8_0143_48ec_86A9_7D85DBD97392</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="hovedejendomOpdeltIEjerlejligh"
+				type="boolean">
+				<annotation>
+					<appinfo>EAID_1FCE535F_0726_459f_9D4F_CF9A2CC2242C</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="landbrugsnotering" nillable="true"
+				type="mat:LandbrugsnoteringType">
+				<annotation>
+					<appinfo>EAID_EEB149CE_6F5F_4b63_82C0_D02D9CDA4979</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="udskiltVej" type="boolean">
+				<annotation>
+					<appinfo>EAID_ABBFDAC1_EA41_4086_BAA6_82272839F811</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/SamletFastEjendom --><!--Removed by minei: jordstykkeLokalId/SamletFastEjendom -->
+		</sequence>
+	</complexType>
+	<element name="Skelpunkt" type="mat:SkelpunktType">
+		<annotation>
+			<appinfo>EAID_CB7FE8B2_2081_4710_9348_B2241DCB4A96</appinfo>
+		</annotation>
+	</element>
+	<complexType name="SkelpunktType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_B91801F3_D0FD_442d_953B_F493B7404E47</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="indlaegningstype" type="mat:IndlaegningstypeType">
+				<annotation>
+					<appinfo>EAID_7544419D_58A6_4c9b_9C05_F7F07872D52B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelseJournalnummer" type="string">
+				<annotation>
+					<appinfo>EAID_B6F155AF_C8AD_4621_B34B_CC38C9B87C0A</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="produktionsmetode" type="mat:ProduktionsmetodeType">
+				<annotation>
+					<appinfo>EAID_33F61EF3_BEE8_49fb_ACA1_459D5A13CF19</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="punktKlasse" type="mat:PunktKlasseType">
+				<annotation>
+					<appinfo>EAID_80EA4A74_8E93_4dc9_BA19_EC3C84EFD777</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="transformationsId" type="integer">
+				<annotation>
+					<appinfo>EAID_87434BF3_7444_4446_87BD_14176D421D16</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="supplerendeMaalingSagsLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dst050EA6_7CED_4796_B854_40AAE768F2F9</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="oprindelsessagsLokalId"
+				nillable="true" type="string">
+				<annotation>
+					<appinfo>EAID_dstCFAE5A_4B04_4251_8E48_A3246F37CC0B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Skelpunkt -->
+		</sequence>
+	</complexType>
+	<simpleType name="SkeltypeType">
+		<restriction base="string">
+			<enumeration value="Almindeligt" />
+			<enumeration value="VejogGade" />
+			<enumeration value="Jernbane" />
+			<enumeration value="Midtlinie" />
+			<enumeration value="Søgrænse" />
+			<enumeration value="Kystlinje" />
+		</restriction>
+	</simpleType>
+
+
+    <!-- Added manually by minei 20160706 -->
+  <element name="Stormfald" type="mat:StormfaldType">
+    <annotation>
+      <appinfo>EAID_5A41FCE2_7F8D_4856_B99D_0B0FD2419CDB</appinfo>
+    </annotation>
+  </element>
+  <complexType name="StormfaldType">
+    <sequence>
+      <element name="objectid" type="integer"/>
+	  <element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+      <element minOccurs="0" name="betalingsdato" type="date">
+        <annotation>
+          <appinfo>EAID_77A2B1F9_4735_4b02_A382_655F91BB351D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="omfang" type="mat:OmfangType">
+        <annotation>
+          <appinfo>EAID_59A56DCD_44E8_446e_B670_F2EAC7A9F912</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="ophoersdato" type="date">
+        <annotation>
+          <appinfo>EAID_25937890_FAD8_4faa_9C68_0D4805683198</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="SNSJournalNummer" type="string">
+        <annotation>
+          <appinfo>EAID_6193F572_CD8C_49ce_A848_9B5F5A5D817D</appinfo>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="tilskudstype" type="mat:TilskudstypeType">
+        <annotation>
+          <appinfo>EAID_5621D8A4_07C4_4373_8B1C_E54BB93F24D1</appinfo>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+
+
+
+
+	<element name="Temalinje" type="mat:TemalinjeType">
+		<annotation>
+			<appinfo>EAID_4C640774_E725_4355_888E_968B26F7AC6A</appinfo>
+		</annotation>
+	</element>
+	<complexType name="TemalinjeType">
+		<sequence>
+			<element name="objectid" type="integer" />
+			<element minOccurs="0" nillable="true" name="feltliste" type="string"/>
+			<element minOccurs="0" name="forretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType">
+				<annotation>
+					<appinfo>EAID_D771C875_92C1_4670_B655_23DF6D1203E2</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="forretningsomraade"
+				type="mat:MatrikelForretningsomraadeType">
+				<annotation>
+					<appinfo>EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forretningsproces" type="mat:SagskategoriType">
+				<annotation>
+					<appinfo>EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_namespace" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="id_lokalId" type="string">
+				<annotation>
+					<appinfo>EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5
+					</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="paataenktHandling" nillable="true"
+				type="mat:PaataenktHandlingType">
+				<annotation>
+					<appinfo>EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_F51B090F_487A_461f_B6D7_791BB28665B2</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="registreringTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="status"
+				type="mat:MatrikulaertElementStatusType">
+				<annotation>
+					<appinfo>EAID_7B734023_916B_432b_A740_756CC2EBBAE8</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningFra" type="dateTime">
+				<annotation>
+					<appinfo>EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningsaktoer" type="string">
+				<annotation>
+					<appinfo>EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="virkningTil" nillable="true"
+				type="dateTime">
+				<annotation>
+					<appinfo>EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="forloeb" type="mat:ForloebType">
+				<annotation>
+					<appinfo>EAID_4334B9FB_3AB1_42b4_8F2C_2B40A5B62F1E</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="senesteSagLokalId" type="string">
+				<annotation>
+					<appinfo>EAID_dst2BA506_3869_47db_8031_E43333FA718F</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="geometri" type="string">
+				<annotation>
+					<appinfo>EAID_A629FA03_8F0E_4260_89A6_329A33AB9124</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="originalTemafladeID" type="string">
+				<annotation>
+					<appinfo>EAID_1643D9EA_D1D3_4f18_9E05_F2950160A4D1</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="tematype" type="mat:TematypeType">
+				<annotation>
+					<appinfo>EAID_033ED95A_C3BD_4073_A221_3C072F9D595A</appinfo>
+				</annotation>
+			</element>
+
+			<element minOccurs="0" name="matrikelskelLokalId" nillable="true"
+				type="string">
+				<annotation>
+					<appinfo>EAID_dst0FFB3B_FFCB_4d4d_BC6F_CC239AC9C772</appinfo>
+				</annotation>
+			</element>
+			<element minOccurs="0" name="gmlId" type="string" />
+			<!--Removed by minei: sekundaerForretningshaendelse/Temalinje --><!--Removed by minei: jordstykkeLokalId/Temalinje -->
+		</sequence>
+	</complexType>
+	<simpleType name="TematypeType">
+		<restriction base="string">
+			<enumeration value="fredskov" />
+			<enumeration value="strandbeskyttelse" />
+			<enumeration value="klitfredning" />
+		</restriction>
+	</simpleType>
+	<simpleType name="TilskudstypeType">
+		<restriction base="string">
+			<enumeration value="1: Tilskud til oprydning" />
+			<enumeration value="2: Tilskud til gentilplantning" />
+		</restriction>
+	</simpleType>
+	<simpleType name="VandarealinkluderingType">
+		<restriction base="string">
+			<enumeration value="inklusiv" />
+			<enumeration value="eksklusiv" />
+			<enumeration value="ukendt" />
+		</restriction>
+	</simpleType>
+	<simpleType name="VejarealberegningsstatusType">
+		<restriction base="string">
+			<enumeration value="vejareal beregnet" />
+			<enumeration value="vejareal ej beregnet" />
+			<enumeration value="ukendt vejareal" />
+		</restriction>
+	</simpleType>
+	<simpleType name="VejtypeType">
+		<restriction base="string">
+			<enumeration value="sti" />
+			<enumeration value="kirkesti" />
+			<enumeration value="markvej" />
+			<enumeration value="byvej" />
+			<enumeration value="landevej" />
+			<enumeration value="ukendt" />
+		</restriction>
+	</simpleType>
+	<element name="Bygningpaafremmedgrundflade_Se"
+		type="mat:Bygningpaafremmedgrundflade_SeType">
+		<annotation>
+			<appinfo>EAID_A2B9B2EF_86F2_4f1d_87C0_1804A7071486.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType
+		name="Bygningpaafremmedgrundflade_SeType">
+		<sequence>
+			<element name="bygningpaafremmedgrundfladeobj" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Bygningpaafremmedgrundpunkt_Se"
+		type="mat:Bygningpaafremmedgrundpunkt_SeType">
+		<annotation>
+			<appinfo>EAID_1C0A5E2D_83CC_43d5_A7D7_C5B4FABF6109.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType
+		name="Bygningpaafremmedgrundpunkt_SeType">
+		<sequence>
+			<element name="bygningpaafremmedgrundpunktobj" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Centroide_Sekundaerforretnings" type="mat:Centroide_SekundaerforretningsType">
+		<annotation>
+			<appinfo>EAID_20AEBD93_4733_4d30_982E_742A35961F43.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Centroide_SekundaerforretningsType">
+		<sequence>
+			<element name="centroideobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Ejerlejlighed_Sekundaerforretn"
+		type="mat:Ejerlejlighed_SekundaerforretnType">
+		<annotation>
+			<appinfo>EAID_0FD7270E_53D6_445d_9572_2D0AF6D9A83A.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Ejerlejlighed_SekundaerforretnType">
+		<sequence>
+			<element name="ejerlejlighedobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Ejerlejlighedslod_Sekundaerfor"
+		type="mat:Ejerlejlighedslod_SekundaerforType">
+		<annotation>
+			<appinfo>EAID_AE0F4880_729C_4cf7_A58E_F7CCAD504065.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Ejerlejlighedslod_SekundaerforType">
+		<sequence>
+			<element name="ejerlejlighedslodobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Jordstykke_Sekundaerforretning"
+		type="mat:Jordstykke_SekundaerforretningType">
+		<annotation>
+			<appinfo>EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Jordstykke_SekundaerforretningType">
+		<sequence>
+			<element name="jordstykkeobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Jordstykke_Stormfald" type="mat:Jordstykke_StormfaldType">
+		<annotation>
+			<appinfo>EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1.EAID_BF54A862_3E4D_4cb6_A120_FB220522C207
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Jordstykke_StormfaldType">
+		<sequence>
+			<element name="jordstykkeobjectid" type="integer" />
+			<element name="stormfaldobjectid" type="integer" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Jordstykketemaflade_Sekundaerf"
+		type="mat:Jordstykketemaflade_SekundaerfType">
+		<annotation>
+			<appinfo>EAID_B8EC966B_3EA9_499b_841C_F3E24EDDB9EC.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Jordstykketemaflade_SekundaerfType">
+		<sequence>
+			<element name="jordstykketemafladeobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Lodflade_Sekundaerforretningsh" type="mat:Lodflade_SekundaerforretningshType">
+		<annotation>
+			<appinfo>EAID_7C2C3988_3D69_446c_B5EB_B1979990AAC4.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Lodflade_SekundaerforretningshType">
+		<sequence>
+			<element name="lodfladeobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Matrikelskel_Sekundaerforretni"
+		type="mat:Matrikelskel_SekundaerforretniType">
+		<annotation>
+			<appinfo>EAID_766A020A_E8DD_409e_BE5D_9B221F3D798F.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Matrikelskel_SekundaerforretniType">
+		<sequence>
+			<element name="matrikelskelobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Nullinje_Sekundaerforretningsh" type="mat:Nullinje_SekundaerforretningshType">
+		<annotation>
+			<appinfo>EAID_02530814_DE45_45ce_B12D_0AF41DC1663B.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Nullinje_SekundaerforretningshType">
+		<sequence>
+			<element name="nullinjeobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Optagetvej_Sekundaerforretning"
+		type="mat:Optagetvej_SekundaerforretningType">
+		<annotation>
+			<appinfo>EAID_6548492B_C1ED_4195_9E26_08FF64EB9CE4.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Optagetvej_SekundaerforretningType">
+		<sequence>
+			<element name="optagetvejobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Optagetvej_Jordstykke" type="mat:Optagetvej_JordstykkeType">
+		<annotation>
+			<appinfo>EAID_6548492B_C1ED_4195_9E26_08FF64EB9CE4.EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Optagetvej_JordstykkeType">
+		<sequence>
+			<element name="optagetvejobjectid" type="integer" />
+			<element name="jordstykkeobjectid" type="integer" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Samletfastejendom_Sekundaerfor"
+		type="mat:Samletfastejendom_SekundaerforType">
+		<annotation>
+			<appinfo>EAID_9C1A6CF4_25D6_4e28_949F_D45BA79F9EF1.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Samletfastejendom_SekundaerforType">
+		<sequence>
+			<element name="samletfastejendomobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Samletfastejendom_Jordstykke" type="mat:Samletfastejendom_JordstykkeType">
+		<annotation>
+			<appinfo>EAID_9C1A6CF4_25D6_4e28_949F_D45BA79F9EF1.EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Samletfastejendom_JordstykkeType">
+		<sequence>
+			<element name="samletfastejendomobjectid" type="integer" />
+			<element name="jordstykkeobjectid" type="integer" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Skelpunkt_Sekundaerforretnings" type="mat:Skelpunkt_SekundaerforretningsType">
+		<annotation>
+			<appinfo>EAID_CB7FE8B2_2081_4710_9348_B2241DCB4A96.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Skelpunkt_SekundaerforretningsType">
+		<sequence>
+			<element name="skelpunktobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Temalinje_Sekundaerforretnings" type="mat:Temalinje_SekundaerforretningsType">
+		<annotation>
+			<appinfo>EAID_4C640774_E725_4355_888E_968B26F7AC6A.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Temalinje_SekundaerforretningsType">
+		<sequence>
+			<element name="temalinjeobjectid" type="integer" />
+			<element name="sekundaerforretningshaendelse"
+				type="mat:MatrikulaertElementForretningshaendelseType" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+	<element name="Temalinje_Jordstykke" type="mat:Temalinje_JordstykkeType">
+		<annotation>
+			<appinfo>EAID_4C640774_E725_4355_888E_968B26F7AC6A.EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1
+			</appinfo>
+		</annotation>
+	</element>
+	<complexType name="Temalinje_JordstykkeType">
+		<sequence>
+			<element name="temalinjeobjectid" type="integer" />
+			<element name="jordstykkeobjectid" type="integer" />
+		</sequence>
+	</complexType><!--Added programmatically by minei 2016.07.04 12:56:04. -->
+</schema>

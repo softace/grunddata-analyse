@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Jordstykke xmlns="http://data.gov.dk/schemas/matrikel/1/payload/Jordstykke" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+	<forretningshaendelse>Load(forretningshaendelse)</forretningshaendelse>
+	<forretningsomraade>Load(forretningsomraade)</forretningsomraade>
+	<forretningsproces>Load(forretningsproces)</forretningsproces>
+	<id_namespace>Load(id_namespace)</id_namespace>
+	<id_lokalId>Load(id_lokalId)</id_lokalId>
+	<paataenktHandling>Load(paataenktHandling)</paataenktHandling>
+	<registreringFra>Load(registreringFra)</registreringFra>
+	<registreringsaktoer>Load(registreringsaktoer)</registreringsaktoer>
+	<registreringTil>Load(registreringTil)</registreringTil>
+	<status>Load(status)</status>
+	<virkningFra>Load(virkningFra)</virkningFra>
+	<virkningsaktoer>Load(virkningsaktoer)</virkningsaktoer>
+	<virkningTil>Load(virkningTil)</virkningTil>
+	<senesteSagLokalId>Load(senesteSagLokalId)</senesteSagLokalId>
+	<arealberegningsmetode>Load(arealberegningsmetode)</arealberegningsmetode>
+	<arealbetegnelse>Load(arealbetegnelse)</arealbetegnelse>
+	<arealtype>Load(arealtype)</arealtype>
+	<brugsretsareal>Load(brugsretsareal)</brugsretsareal>
+	<delnummer>Load(delnummer)</delnummer>
+	<faelleslod>Load(faelleslod)</faelleslod>
+	<matrikelnummer>Load(matrikelnummer)</matrikelnummer>
+	<registreretAreal>Load(registreretAreal)</registreretAreal>
+	<vandarealinkludering>Load(vandarealinkludering)</vandarealinkludering>
+	<vejareal>Load(vejareal)</vejareal>
+	<vejarealberegningsstatus>Load(vejarealberegningsstatus)</vejarealberegningsstatus>
+	<fredskov_fredskovsareal>Load(fredskov_fredskovsareal)</fredskov_fredskovsareal>
+	<fredskov_omfang>Load(fredskov_omfang)</fredskov_omfang>
+	<jordrente_omfang>Load(jordrente_omfang)</jordrente_omfang>
+	<klitfredning_klitfredningsarea>Load(klitfredning_klitfredningsarea)</klitfredning_klitfredningsarea>
+	<klitfredning_omfang>Load(klitfredning_omfang)</klitfredning_omfang>
+	<majoratsskov_majoratsskovsnumm>Load(majoratsskov_majoratsskovsnumm)</majoratsskov_majoratsskovsnumm>
+	<majoratsskov_omfang>Load(majoratsskov_omfang)</majoratsskov_omfang>
+	<strandbeskyttelse_omfang>Load(strandbeskyttelse_omfang)</strandbeskyttelse_omfang>
+	<strandbeskyttelse_strandbeskyt>Load(strandbeskyttelse_strandbeskyt)</strandbeskyttelse_strandbeskyt>
+	<samletFastEjendomLokalId>Load(samletFastEjendomLokalId)</samletFastEjendomLokalId>
+	<skelforretningssagsLokalId>Load(skelforretningssagsLokalId)</skelforretningssagsLokalId>
+	<stammerFraJordstykkeLokalId>Load(stammerFraJordstykkeLokalId)</stammerFraJordstykkeLokalId>
+	<supplerendeMaalingSagLokalId>Load(supplerendeMaalingSagLokalId)</supplerendeMaalingSagLokalId>
+	<ejerlavLokalId>Load(ejerlavLokalId)</ejerlavLokalId>
+	<sognLokalId>Load(sognLokalId)</sognLokalId>
+	<kommuneLokalId>Load(kommuneLokalId)</kommuneLokalId>
+	<regionLokalId>Load(regionLokalId)</regionLokalId>
+</Jordstykke>

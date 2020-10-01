@@ -1,0 +1,26 @@
+{
+  "entityType": "SamletFastEjendom",
+  "attributes": {
+    "forretningshaendelse": "Load(forretningshaendelse)",
+	"forretningsomraade": "Load(forretningsomraade)",
+	"forretningsproces": "Load(forretningsproces)",
+	"id_namespace": "Load(id_namespace)",
+	"id_lokalId": "Load(id_lokalId)",
+	"paataenktHandling": "Load(paataenktHandling)",
+	"registreringFra": "Load(registreringFra)",
+    "registreringTil": "Load(registreringTil)",
+	"registreringsaktoer": "Load(registreringsaktoer)",
+	"status": "Load(status)",
+	"virkningFra": "Load(virkningFra)",
+	"virkningTil": "Load(virkningTil)",
+	"virkningsaktoer": "Load(virkningsaktoer)",
+	"senesteSagLokalId": "Load(senesteSagLokalId)",
+	"BFEnummer": "Load(BFEnummer)",
+	"arbejderbolig": "Load(arbejderbolig)",
+	"erFaelleslod": "Load(erFaelleslod)",
+	"hovedejendomOpdeltIEjerlejligheder": "Load(hovedejendomOpdeltIEjerlejligh)",
+	"landbrugsnotering": "Load(landbrugsnotering)",
+	"udskiltVej": "Load(udskiltVej)"
+  }
+}
+

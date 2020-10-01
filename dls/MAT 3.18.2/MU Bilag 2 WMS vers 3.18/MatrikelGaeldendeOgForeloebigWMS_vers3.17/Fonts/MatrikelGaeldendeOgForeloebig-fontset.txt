@@ -1,0 +1,4 @@
+arial							../fonts/arial.ttf
+arial-italic					../fonts/ariali.ttf
+matrik							../fonts/matr.ttf
+times							../fonts/times.ttf

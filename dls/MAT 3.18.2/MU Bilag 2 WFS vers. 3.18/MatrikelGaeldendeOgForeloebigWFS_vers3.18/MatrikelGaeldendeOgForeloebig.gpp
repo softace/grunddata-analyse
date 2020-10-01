@@ -1,0 +1,3366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sfgp:GoPublisherProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="MatrikelGaeldendeOgForeloebigWFS" xsi:schemaLocation="http://www.snowflakesoftware.co.uk/publisher/3.0 jar:file:/C:/Program%20Files/GOPublisherv3.0.6/jar/go-publisher-lib-3.0.6.jar!/schema/projectdoc.xsd" xmlns:sfgp="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<sfgp:SoftwareProduct buildDate="2014-07-23 12:20" buildNumber="96b4bc6" name="publisher" version="3.0.6"/>
+<sfgp:RuntimeController autoGrouping="true" batchSize="0" compression="None" copySchemas="false" encoding="UTF-8" formatOutput="true" formatOutputIndent="2" maxFeatureCount="10000" multiQuery="true" useQuotes="false" validateOutput="false" wfsCompression="None"/>
+<sfdb:JndiDataSource xmlns:sfdb="http://www.snowflakesoftware.com/datasource">
+<sfdb:jndiName>/jdbc/masterpublish_s0</sfdb:jndiName>
+</sfdb:JndiDataSource>
+<sfgp:SchemaLocationModel>
+<sfgp:schemaRepository>schemas/</sfgp:schemaRepository>
+<sfgp:schemaLocation>
+<sfgp:locationPath>20200304.v1.2.3.matrikel_gml3_TilGIS.xsd</sfgp:locationPath>
+<sfgp:locationPath>http://schemas.datafordeler.dk/schemas/1.0.0/MatrikelGaeldendeOgForeloebigWFS/grunddata_gml3.xsd</sfgp:locationPath>
+<sfgp:locationPath>http://schemas.opengis.net/gml/3.2.1/gml.xsd</sfgp:locationPath>
+<sfgp:locationPath>http://schemas.opengis.net/wfs/2.0/wfs.xsd</sfgp:locationPath>
+</sfgp:schemaLocation>
+<sfgp:defaultGeometrySchema>unknown</sfgp:defaultGeometrySchema>
+<sfgp:namespaces prefixMapping="true">
+<sfgp:namespaceMap>
+<sfgp:entry prefix="gmd" url="http://www.isotc211.org/2005/gmd"/>
+<sfgp:entry prefix="xs" url="http://www.w3.org/2001/XMLSchema"/>
+<sfgp:entry prefix="gd" url="http://data.gov.dk/schemas/grunddata/1/gml3"/>
+<sfgp:entry prefix="gts" url="http://www.isotc211.org/2005/gts"/>
+<sfgp:entry prefix="sfgp" url="http:://www.snowflakesoftware.co.uk/publisher"/>
+<sfgp:entry prefix="ogc" url="http://www.opengis.net/ogc"/>
+<sfgp:entry prefix="kml" url="http://www.opengis.net/kml/2.2"/>
+<sfgp:entry prefix="gdk60" url="http://data.gov.dk/schemas/geodanmark60/2/gml3"/>
+<sfgp:entry prefix="xsl" url="http://www.w3.org/1999/XSL/Transform"/>
+<sfgp:entry prefix="fes" url="http://www.opengis.net/fes/2.0"/>
+<sfgp:entry prefix="svg" url="http://www.w3.org/2000/svg"/>
+<sfgp:entry prefix="gco" url="http://www.isotc211.org/2005/gco"/>
+<sfgp:entry prefix="mat" url="http://data.gov.dk/schemas/matrikel/1"/>
+<sfgp:entry prefix="xml" url="http://www.w3.org/XML/1998/namespace"/>
+<sfgp:entry prefix="env" url="http://www.w3.org/2003/05/soap-envelope"/>
+<sfgp:entry prefix="gsr" url="http://www.isotc211.org/2005/gsr"/>
+<sfgp:entry prefix="gss" url="http://www.isotc211.org/2005/gss"/>
+<sfgp:entry prefix="glwu" url="http://www.snowflakesoftware.com/schema/goloaderworkflow/update"/>
+<sfgp:entry prefix="osgb" url="http://www.ordnancesurvey.co.uk/xml/namespaces/osgb"/>
+<sfgp:entry prefix="wfs" url="http://www.opengis.net/wfs/2.0"/>
+<sfgp:entry prefix="ows" url="http://www.opengis.net/ows/1.1"/>
+<sfgp:entry prefix="xlink" url="http://www.w3.org/1999/xlink"/>
+<sfgp:entry prefix="xsd" url="http://www.w3.org/2001/XMLSchema"/>
+<sfgp:entry prefix="gml" url="http://www.opengis.net/gml/3.2"/>
+<sfgp:entry prefix="soap" url="http://schemas.xmlsoap.org/soap/envelope/"/>
+<sfgp:entry prefix="xsi" url="http://www.w3.org/2001/XMLSchema-instance"/>
+</sfgp:namespaceMap>
+</sfgp:namespaces>
+</sfgp:SchemaLocationModel>
+<sfgp:ModelSpecification mbr="false" mimeType="text/xml; subtype=gml/3.2.1,text/xml; subtype=gml/3.2.1/gmlsf/1.0.0/0" renameElements="false" rootName="wfs:FeatureCollection">
+<sfgp:userComment>Created by GO Publisher. Snowflake Software Ltd. (http://www.snowflakesoftware.com).</sfgp:userComment>
+<sfgp:GeometrySettings coordinateDimension="-1" gml2="false" points="posList" publishingSrsId="http://www.opengis.net/def/crs/EPSG/0/25832" replacementValue="0.0" sourceSrsId="http://www.opengis.net/def/crs/EPSG/0/25832" surfaceMode="Default"/>
+<TimezoneSettings showInOutput="true" xmlns="http://www.snowflakesoftware.co.uk/publisher/3.0">
+<databaseTimezone>Europe/Copenhagen</databaseTimezone>
+<publishedTimezone>Europe/Copenhagen</publishedTimezone>
+</TimezoneSettings>
+<sfgp:Table dbname="BYGNINGPAAFREMMEDGRUNDFLADE_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDFLADE_F" queryDateTime="" queryGeometry="BYGNINGPAAFREMMEDGRUNDFLADE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:BygningPaaFremmedGrundFlade_Foreloebig" type="mat:BygningPaaFremmedGrundFladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPDELTIEJERLEJLIGHEDER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:opdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>opdeltIEjerlejligheder::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelse" type="mat:BygningPaaFremmedGrundOprindelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAAHAVET" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paaHavet" type="xs:boolean"/>
+<sfgp:customSQL>paaHavet::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="RIDS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rids" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="BYGNINGPAAFREMMEDGRUNDFLADE_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDFLADE_G" queryDateTime="" queryGeometry="BYGNINGPAAFREMMEDGRUNDFLADE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:BygningPaaFremmedGrundFlade_Gaeldende" type="mat:BygningPaaFremmedGrundFladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPDELTIEJERLEJLIGHEDER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:opdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>opdeltIEjerlejligheder::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelse" type="mat:BygningPaaFremmedGrundOprindelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAAHAVET" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paaHavet" type="xs:boolean"/>
+<sfgp:customSQL>paaHavet::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="RIDS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rids" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="BYGNINGPAAFREMMEDGRUNDPUNKT_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDPUNKT_F" queryDateTime="" queryGeometry="BYGNINGPAAFREMMEDGRUNDPUNKT_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:BygningPaaFremmedGrundPunkt_Foreloebig" type="mat:BygningPaaFremmedGrundPunktType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPDELTIEJERLEJLIGHEDER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:opdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>opdeltIEjerlejligheder::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelse" type="mat:BygningPaaFremmedGrundOprindelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAAHAVET" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paaHavet" type="xs:boolean"/>
+<sfgp:customSQL>paaHavet::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="RIDS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rids" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="BYGNINGPAAFREMMEDGRUNDPUNKT_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDPUNKT_G" queryDateTime="" queryGeometry="BYGNINGPAAFREMMEDGRUNDPUNKT_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:BygningPaaFremmedGrundPunkt_Gaeldende" type="mat:BygningPaaFremmedGrundPunktType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPDELTIEJERLEJLIGHEDER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:opdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>opdeltIEjerlejligheder::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelse" type="mat:BygningPaaFremmedGrundOprindelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAAHAVET" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paaHavet" type="xs:boolean"/>
+<sfgp:customSQL>paaHavet::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="RIDS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rids" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="CENTROIDE_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.CENTROIDE_F" queryDateTime="" queryGeometry="CENTROIDE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Centroide_Foreloebig" type="mat:CentroideType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="EJERLAVSKODE" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="CENTROIDE_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.CENTROIDE_G" queryDateTime="" queryGeometry="CENTROIDE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Centroide_Gaeldende" type="mat:CentroideType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="EJERLAVSKODE" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLAV_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLAV_F" queryDateTime="" queryGeometry="EJERLAV_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlav_Foreloebig" type="mat:EjerlavType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVSKODE" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVSNAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlavsnavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLAV_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLAV_G" queryDateTime="" queryGeometry="EJERLAV_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlav_Gaeldende" type="mat:EjerlavType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVSKODE" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVSNAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlavsnavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLEJLIGHED_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLEJLIGHED_F" queryDateTime="" queryGeometry="EJERLEJLIGHED_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlejlighed_Foreloebig" type="mat:EjerlejlighedType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="B_BYGNINGPAAFREMMEDGRUNDFLADELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:bygningPaaFremmedGrundLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="B_BYGNINGPAAFREMMEDGRUNDPUNKTLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:bygningPaaFremmedGrundLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDSKORT" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedskort" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDSNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedsnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORDELINGSTALNAEVNER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:fordelingstalNaevner" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORDELINGSTALTAELLER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:fordelingstalTaeller" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="IBYGNINGPAAFREMMEDGRUND" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:iBygningPaaFremmedGrund" type="xs:boolean"/>
+<sfgp:customSQL>iBygningPaaFremmedGrund::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="samletareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:samletAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="SAMLETAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="samletareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN SAMLETAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLEJLIGHED_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLEJLIGHED_G" queryDateTime="" queryGeometry="EJERLEJLIGHED_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlejlighed_Gaeldende" type="mat:EjerlejlighedType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="B_BYGNINGPAAFREMMEDGRUNDFLADELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:bygningPaaFremmedGrundLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="B_BYGNINGPAAFREMMEDGRUNDPUNKTLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:bygningPaaFremmedGrundLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDSKORT" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedskort" type="xs:anyURI"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDSNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedsnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORDELINGSTALNAEVNER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:fordelingstalNaevner" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORDELINGSTALTAELLER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:fordelingstalTaeller" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="IBYGNINGPAAFREMMEDGRUND" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:iBygningPaaFremmedGrund" type="xs:boolean"/>
+<sfgp:customSQL>iBygningPaaFremmedGrund::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="samletareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:samletAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="SAMLETAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="samletareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN SAMLETAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLEJLIGHEDSLOD_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLEJLIGHEDSLOD_F" queryDateTime="" queryGeometry="EJERLEJLIGHEDSLOD_F.SDO_GEOMETRY" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlejlighedslod_Foreloebig" type="mat:EjerlejlighedslodType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ETAGEBETEGNELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:etagebetegnelse" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SDO_GEOMETRY" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="lodareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:lodAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="LODAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="lodareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN LODAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="LODBELIGGENHEDSTEKST" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:lodBeliggenhedstekst" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LODLITRA" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:lodLitra" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="EJERLEJLIGHEDSLOD_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.EJERLEJLIGHEDSLOD_G" queryDateTime="" queryGeometry="EJERLEJLIGHEDSLOD_G.SDO_GEOMETRY" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Ejerlejlighedslod_Gaeldende" type="mat:EjerlejlighedslodType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLEJLIGHEDLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:ejerlejlighedLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ETAGEBETEGNELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:etagebetegnelse" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SDO_GEOMETRY" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="lodareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:lodAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="LODAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="lodareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN LODAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="LODBELIGGENHEDSTEKST" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:lodBeliggenhedstekst" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LODLITRA" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:lodLitra" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="JORDSTYKKE_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.JORDSTYKKE_F" queryDateTime="" queryGeometry="JORDSTYKKE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Jordstykke_Foreloebig" type="mat:JordstykkeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELFORRETNINGSSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelforretningssagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STAMMERFRAJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:stammerFraJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SUPPLERENDEMAALINGSAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:supplerendeMaalingSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALBEREGNINGSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealberegningsmetode" type="mat:ArealberegningsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALBETEGNELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealbetegnelse" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealtype" type="mat:ArealtypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BRUGSRETSAREAL" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:brugsretsareal" type="xs:boolean"/>
+<sfgp:customSQL>brugsretsareal::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="DELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:delnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FAELLESLOD" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:faelleslod" type="xs:boolean"/>
+<sfgp:customSQL>faelleslod::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="EJERLAVSKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="SOGNEKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:sognekode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="KOMMUNEKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:kommunekode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="REGIONSKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:regionskode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="registreretareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:registreretAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="REGISTRERETAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="registreretareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN REGISTRERETAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="VANDAREALINKLUDERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vandarealinkludering" type="mat:VandarealinkluderingType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="vejareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:vejareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="VEJAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="vejareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN VEJAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="VEJAREALBEREGNINGSSTATUS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vejarealberegningsstatus" type="mat:VejarealberegningsstatusType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="fredskov_fredskovsareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:fredskov.fredskovsareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="FREDSKOV_FREDSKOVSAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="fredskovareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN FREDSKOV_FREDSKOVSAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="FREDSKOV_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:fredskov.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDRENTE_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordrente.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="klitfredningsareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:klitfredning.klitfredningsareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="KLITFREDNING_KLITFREDNINGSAREA" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="klitfredningsareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN KLITFREDNING_KLITFREDNINGSAREA IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="KLITFREDNING_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:klitfredning.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MAJORATSSKOV_MAJORATSSKOVSNUMM" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:majoratsskov.majoratsskovsnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MAJORATSSKOV_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:majoratsskov.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STRANDBESKYTTELSE_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:strandbeskyttelse.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STRANDBESKYTTELSE_STRANDBESKYT" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:strandbeskyttelse.strandbeskyttelsesareal" type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STORMFALDSNOTERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:stormfaldsnotering" type="xs:boolean"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+</sfgp:Table>
+<sfgp:Table dbname="JORDSTYKKE_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.JORDSTYKKE_G" queryDateTime="" queryGeometry="JORDSTYKKE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Jordstykke_Gaeldende" type="mat:JordstykkeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELFORRETNINGSSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelforretningssagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STAMMERFRAJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:stammerFraJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SUPPLERENDEMAALINGSAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:supplerendeMaalingSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALBEREGNINGSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealberegningsmetode" type="mat:ArealberegningsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALBETEGNELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealbetegnelse" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="AREALTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arealtype" type="mat:ArealtypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BRUGSRETSAREAL" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:brugsretsareal" type="xs:boolean"/>
+<sfgp:customSQL>brugsretsareal::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="DELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:delnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FAELLESLOD" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:faelleslod" type="xs:boolean"/>
+<sfgp:customSQL>faelleslod::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="EJERLAVSKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:ejerlavskode" type="xs:integer" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="SOGNEKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:sognekode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="KOMMUNEKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:kommunekode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="REGIONSKODE" required="false" type="VARCHAR2" xmlContent="false">
+<sfgp:SimpleMapping path="mat:regionskode" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>Default</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="registreretareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:registreretAreal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="REGISTRERETAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="registreretareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN REGISTRERETAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="VANDAREALINKLUDERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vandarealinkludering" type="mat:VandarealinkluderingType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="vejareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:vejareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="VEJAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="vejareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN VEJAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="VEJAREALBEREGNINGSSTATUS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vejarealberegningsstatus" type="mat:VejarealberegningsstatusType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="fredskov_fredskovsareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:fredskov.fredskovsareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="FREDSKOV_FREDSKOVSAREAL" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="fredskovsareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN FREDSKOV_FREDSKOVSAREAL IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="FREDSKOV_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:fredskov.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDRENTE_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordrente.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="klitfredning_klitfredningsareal" required="false" separator="">
+<sfgp:ComplexMapping path="mat:klitfredning.klitfredningsareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="KLITFREDNING_KLITFREDNINGSAREA" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="klitfredningsareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN KLITFREDNING_KLITFREDNINGSAREA IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="KLITFREDNING_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:klitfredning.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MAJORATSSKOV_MAJORATSSKOVSNUMM" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:majoratsskov.majoratsskovsnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MAJORATSSKOV_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:majoratsskov.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STRANDBESKYTTELSE_OMFANG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:strandbeskyttelse.omfang" type="mat:OmfangType"/>
+</sfgp:Column>
+<sfgp:Group complex="true" enabled="true" name="strandbeskyttelse_strandbeskyt" required="false" separator="">
+<sfgp:ComplexMapping path="mat:strandbeskyttelse.strandbeskyttelsesareal" type="gml:AreaType" xsltResource=""/>
+<sfgp:Column enabled="true" name="STRANDBESKYTTELSE_STRANDBESKYT" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="." type="gml:AreaType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="strandbeskyttelsesareal_uom" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="@gml:uom" type="gml:UomIdentifier" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+<sfgp:customSQL>CASE WHEN STRANDBESKYTTELSE_STRANDBESKYT IS NULL THEN NULL ELSE 'm2' END</sfgp:customSQL>
+</sfgp:Column>
+</sfgp:Group>
+<sfgp:Column enabled="true" name="STORMFALDSNOTERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:stormfaldsnotering" type="xs:boolean"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+<sfgp:Column enabled="true" name="SAMLETFASTEJENDOMLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:samletFastEjendomLokalId" type="xs:string"/>
+</sfgp:Column>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELKOMMUNE_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELKOMMUNE_F" queryDateTime="" queryGeometry="MATRIKELKOMMUNE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikelKommune_Foreloebig" type="mat:MatrikelKommuneType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNENAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommunenavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommunekode" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELKOMMUNE_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELKOMMUNE_G" queryDateTime="" queryGeometry="MATRIKELKOMMUNE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikelKommune_Gaeldende" type="mat:MatrikelKommuneType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNENAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommunenavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommunekode" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELSKEL_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELSKEL_F" queryDateTime="" queryGeometry="MATRIKELSKEL_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Matrikelskel_Foreloebig" type="mat:MatrikelskelType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ADMINISTRATIVGRAENSEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:administrativGraenseKode" type="mat:GraensekodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="HOEJREJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:hoejreJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSESSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelsesSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELFORRETNINGSSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelforretningsSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELPUNKT_1LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelpunktLokalId_1" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELPUNKT_2LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelpunktLokalId_2" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VENSTREJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:venstreJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSEJOURNALNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelseJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skeltype" type="mat:SkeltypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELSKEL_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELSKEL_G" queryDateTime="" queryGeometry="MATRIKELSKEL_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Matrikelskel_Gaeldende" type="mat:MatrikelskelType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ADMINISTRATIVGRAENSEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:administrativGraenseKode" type="mat:GraensekodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="HOEJREJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:hoejreJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSESSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelsesSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELFORRETNINGSSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelforretningsSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELPUNKT_1LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelpunktLokalId_1" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELPUNKT_2LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skelpunktLokalId_2" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VENSTREJORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:venstreJordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSEJOURNALNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelseJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SKELTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:skeltype" type="mat:SkeltypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELSOGN_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELSOGN_F" queryDateTime="" queryGeometry="MATRIKELSOGN_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikelSogn_Foreloebig" type="mat:MatrikelSognType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SOGNENAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sognenavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SOGNEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sognekode" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKELSOGN_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.MATRIKELSOGN_G" queryDateTime="" queryGeometry="MATRIKELSOGN_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikelSogn_Gaeldende" type="mat:MatrikelSognType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SOGNENAVN" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sognenavn" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SOGNEKODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sognekode" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="NULLINJE_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.NULLINJE_F" queryDateTime="" queryGeometry="" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Nullinje_Foreloebig" type="mat:NullinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="SENESTESAGLOKALID" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="GEOMETRI" required="false" type="geometry" xmlContent="false">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="NULLINJE_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.NULLINJE_G" queryDateTime="" queryGeometry="" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Nullinje_Gaeldende" type="mat:NullinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="SENESTESAGLOKALID" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="PAATAENKTHANDLING" required="false" type="" xmlContent="false">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" isId="false" isLink="false" name="GEOMETRI" required="false" type="geometry" xmlContent="false">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType" xsltResource=""/>
+<sfgp:KmlProperties>
+<sfgp:altitudeMode>absolute</sfgp:altitudeMode>
+</sfgp:KmlProperties>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="OPTAGETVEJ_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.OPTAGETVEJ_F" queryDateTime="" queryGeometry="OPTAGETVEJ_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:OptagetVej_Foreloebig" type="mat:OptagetVejType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VEJBREDDE" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:vejbredde" type="xs:double"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VEJTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vejtype" type="mat:VejtypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="OPTAGETVEJ_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.OPTAGETVEJ_G" queryDateTime="" queryGeometry="OPTAGETVEJ_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:OptagetVej_Gaeldende" type="mat:OptagetVejType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VEJBREDDE" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:vejbredde" type="xs:double"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VEJTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:vejtype" type="mat:VejtypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="SAMLETFASTEJENDOM_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.SAMLETFASTEJENDOM_F" queryDateTime="" queryGeometry="SAMLETFASTEJENDOM_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:SamletFastEjendom_Foreloebig" type="mat:SamletFastEjendomType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ARBEJDERBOLIG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arbejderbolig" type="xs:boolean"/>
+<sfgp:customSQL>arbejderbolig::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ERFAELLESLOD" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:erFaelleslod" type="xs:boolean"/>
+<sfgp:customSQL>erFaelleslod::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="HOVEDEJENDOMOPDELTIEJERLEJLIGH" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:hovedejendomOpdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>hovedejendomOpdeltIEjerlejligh::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LANDBRUGSNOTERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:landbrugsnotering" type="mat:LandbrugsnoteringType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="UDSKILTVEJ" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:udskiltVej" type="xs:boolean"/>
+<sfgp:customSQL>udskiltVej::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="SAMLETFASTEJENDOM_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.SAMLETFASTEJENDOM_G" queryDateTime="" queryGeometry="SAMLETFASTEJENDOM_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:SamletFastEjendom_Gaeldende" type="mat:SamletFastEjendomType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="BFENUMMER" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:BFEnummer" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ARBEJDERBOLIG" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:arbejderbolig" type="xs:boolean"/>
+<sfgp:customSQL>arbejderbolig::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ERFAELLESLOD" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:erFaelleslod" type="xs:boolean"/>
+<sfgp:customSQL>erFaelleslod::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:MultiSurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="HOVEDEJENDOMOPDELTIEJERLEJLIGH" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:hovedejendomOpdeltIEjerlejligheder" type="xs:boolean"/>
+<sfgp:customSQL>hovedejendomOpdeltIEjerlejligh::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="LANDBRUGSNOTERING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:landbrugsnotering" type="mat:LandbrugsnoteringType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="UDSKILTVEJ" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:udskiltVej" type="xs:boolean"/>
+<sfgp:customSQL>udskiltVej::text</sfgp:customSQL>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="SKELPUNKT_F" decomposable="false" enabled="true" name="MATRIKEL_GIS.SKELPUNKT_F" queryDateTime="" queryGeometry="SKELPUNKT_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Skelpunkt_Foreloebig" type="mat:SkelpunktType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSESSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelsesSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SUPPLERENDEMAALINGSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:supplerendeMaalingSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="INDLAEGNINGSTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:indlaegningstype" type="mat:IndlaegningstypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSEJOURNALNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelseJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PUNKTKLASSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:punktKlasse" type="mat:PunktKlasseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="SKELPUNKT_G" decomposable="false" enabled="true" name="MATRIKEL_GIS.SKELPUNKT_G" queryDateTime="" queryGeometry="SKELPUNKT_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Skelpunkt_Gaeldende" type="mat:SkelpunktType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:PointPropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSESSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelsesSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SUPPLERENDEMAALINGSAGSLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:supplerendeMaalingSagsLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="INDLAEGNINGSTYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:indlaegningstype" type="mat:IndlaegningstypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OPRINDELSEJOURNALNUMMER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:oprindelseJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PRODUKTIONSMETODE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:produktionsmetode" type="mat:ProduktionsmetodeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PUNKTKLASSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:punktKlasse" type="mat:PunktKlasseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TRANSFORMATIONSID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:transformationsId" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="LODFLADE_F" decomposable="false" enabled="true" name="LODFLADE_F" queryDateTime="" queryGeometry="LODFLADE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Lodflade_Foreloebig" type="mat:LodfladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="LODFLADE_G" decomposable="false" enabled="true" name="LODFLADE_G" queryDateTime="" queryGeometry="LODFLADE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:Lodflade_Gaeldende" type="mat:LodfladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKULAERSAG_A" decomposable="false" enabled="true" name="MATRIKULAERSAG_A" queryDateTime="MATRIKULAERSAG_A.JOURNALISERINGSDATO" queryGeometry="MATRIKULAERSAG_A.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikulaerSag_Afsluttet" type="mat:MatrikulaerSagType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:SagsoperationType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSOMRAADE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsomraade" type="mat:MatrikelForretningsomraadeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JOURNALISERINGSDATO" required="false" type="DATE">
+<sfgp:SimpleMapping path="mat:journaliseringsdato" type="xs:date"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommune" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELMYNDIGHEDENSJOURNALNUM" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelmyndighedensJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REKVIRENTREF" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rekvirentRef" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGSTITEL" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sagstitel" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STATUS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:status" type="mat:SagsstatusType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVLOKALID" required="false" type="VARCHAR2"/>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="MATRIKULAERSAG_I" decomposable="false" enabled="true" name="MATRIKULAERSAG_I" queryDateTime="MATRIKULAERSAG_I.JOURNALISERINGSDATO" queryGeometry="MATRIKULAERSAG_I.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:MatrikulaerSag_Igangvaerende" type="mat:MatrikulaerSagType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:SagsoperationType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSOMRAADE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsomraade" type="mat:MatrikelForretningsomraadeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JOURNALISERINGSDATO" required="false" type="DATE">
+<sfgp:SimpleMapping path="mat:journaliseringsdato" type="xs:date"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="KOMMUNE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:kommune" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="MATRIKELMYNDIGHEDENSJOURNALNUM" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:matrikelmyndighedensJournalnummer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REKVIRENTREF" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:rekvirentRef" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SAGSTITEL" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:sagstitel" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="STATUS" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:status" type="mat:SagsstatusType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="EJERLAVLOKALID" required="false" type="VARCHAR2"/>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="FREDSKOVFLADE_F" decomposable="false" enabled="true" name="FREDSKOVFLADE_F" queryDateTime="" queryGeometry="FREDSKOVFLADE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:FredskovFlade_Foreloebig" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="FREDSKOVFLADE_G" decomposable="false" enabled="true" name="FREDSKOVFLADE_G" queryDateTime="" queryGeometry="FREDSKOVFLADE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:FredskovFlade_Gaeldende" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="FREDSKOVLINJE_F" decomposable="false" enabled="true" name="FREDSKOVLINJE_F" queryDateTime="" queryGeometry="FREDSKOVLINJE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:FredskovLinje_Foreloebig" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="FREDSKOVLINJE_G" decomposable="false" enabled="true" name="FREDSKOVLINJE_G" queryDateTime="" queryGeometry="FREDSKOVLINJE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:FredskovLinje_Gaeldende" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="KLITFREDNINGFLADE_F" decomposable="false" enabled="true" name="KLITFREDNINGFLADE_F" queryDateTime="" queryGeometry="KLITFREDNINGFLADE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:KlitfredningFlade_Foreloebig" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="KLITFREDNINGFLADE_G" decomposable="false" enabled="true" name="KLITFREDNINGFLADE_G" queryDateTime="" queryGeometry="KLITFREDNINGFLADE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:KlitfredningFlade_Gaeldende" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="KLITFREDNINGLINJE_F" decomposable="false" enabled="true" name="KLITFREDNINGLINJE_F" queryDateTime="" queryGeometry="KLITFREDNINGLINJE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:KlitfredningLinje_Foreloebig" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="KLITFREDNINGLINJE_G" decomposable="false" enabled="true" name="KLITFREDNINGLINJE_G" queryDateTime="" queryGeometry="KLITFREDNINGLINJE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:KlitfredningLinje_Gaeldende" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="STRANDBESKYTTELSEFLADE_F" decomposable="false" enabled="true" name="STRANDBESKYTTELSEFLADE_F" queryDateTime="" queryGeometry="STRANDBESKYTTELSEFLADE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:StrandbeskyttelseFlade_Foreloebig" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="STRANDBESKYTTELSEFLADE_G" decomposable="false" enabled="true" name="STRANDBESKYTTELSEFLADE_G" queryDateTime="" queryGeometry="STRANDBESKYTTELSEFLADE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:StrandbeskyttelseFlade_Gaeldende" type="mat:JordstykkeTemafladeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:SurfacePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMAFLADEID" required="false" type="NUMBER">
+<sfgp:SimpleMapping path="mat:temaFladeID" type="xs:integer"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="JORDSTYKKELOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:jordstykkeLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="STRANDBESKYTTELSELINJE_F" decomposable="false" enabled="true" name="STRANDBESKYTTELSELINJE_F" queryDateTime="" queryGeometry="STRANDBESKYTTELSELINJE_F.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:StrandbeskyttelseLinje_Foreloebig" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="PAATAENKTHANDLING" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:paataenktHandling" type="mat:PaataenktHandlingType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+<sfgp:Table dbname="STRANDBESKYTTELSELINJE_G" decomposable="false" enabled="true" name="STRANDBESKYTTELSELINJE_G" queryDateTime="" queryGeometry="STRANDBESKYTTELSELINJE_G.GEOMETRI" schemaName="MATRIKEL_GIS">
+<sfgp:ComplexMapping path="wfs:member/mat:StrandbeskyttelseLinje_Gaeldende" type="mat:TemalinjeType"/>
+<sfgp:Column enabled="true" name="GMLID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="@gml:id" type="xs:ID"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSHAENDELSE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningshaendelse" type="mat:MatrikulaertElementForretningshaendelseType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="SENESTESAGLOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:senesteSagLokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORRETNINGSPROCES" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forretningsproces" type="mat:SagskategoriType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_NAMESPACE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.namespace" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ID_LOKALID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:id.lokalId" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="REGISTRERINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:registreringFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGFRA" required="false" type="TIMESTAMP(6)">
+<sfgp:SimpleMapping path="mat:virkningFra" type="xs:dateTime"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="VIRKNINGSAKTOER" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:virkningsaktoer" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="FORLOEB" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:forloeb" type="mat:ForloebType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="GEOMETRI" required="false" type="geometry">
+<sfgp:SimpleMapping path="mat:geometri" type="gml:CurvePropertyType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="ORIGINALTEMAFLADEID" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:originalTemafladeID" type="xs:string"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="TEMATYPE" required="false" type="VARCHAR2">
+<sfgp:SimpleMapping path="mat:tematype" type="mat:TematypeType"/>
+</sfgp:Column>
+<sfgp:Column enabled="true" name="OBJECTID" required="false" type="NUMBER"/>
+</sfgp:Table>
+</sfgp:ModelSpecification>
+<sfgp:WFSSettings allowsUnboundedPeriods="true" includeLicence="false" isTwoStage="true" servletURL="/GOPublisherWFS" validating="false" webArchivePath="file:/C:/configstore/store/Matrikel_gis_NOHIST/Matrikel_gis_NOHIST.war">
+<ows:WGS84BoundingBox LowerCorner="-180.0 -90.0" UpperCorner="180.0 90.0" xmlns:ows="http://www.opengis.net/ows"/>
+<wfs:otherSRSList xmlns:wfs="http://www.opengis.net/wfs/2.0">
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+</wfs:otherSRSList>
+<wfs:WFS_Capabilities xmlns:ows="http://www.opengis.net/ows" xmlns:wfs="http://www.opengis.net/wfs" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1.0">
+<ows:ServiceIdentification>
+<ows:Title>MatrikelGaeldendeOgForeloebig</ows:Title>
+<ows:Abstract>MatrikelGaeldendeOgForeloebig</ows:Abstract>
+<ows:Keywords>
+<ows:Keyword>WFS</ows:Keyword>
+<ows:Keyword>Matrikelkortet</ows:Keyword>
+</ows:Keywords>
+<ows:ServiceType>WFS</ows:ServiceType>
+<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+<ows:Fees>Kontakt Datafordeleren</ows:Fees>
+<ows:AccessConstraints>KrĂ¦ver bruger pĂĄ Datafordeleren</ows:AccessConstraints>
+</ows:ServiceIdentification>
+<ows:ServiceProvider>
+<ows:ProviderName>Datafordeleren</ows:ProviderName>
+<ows:ProviderSite xlink:href="http://datafordeler.dk/"/>
+<ows:ServiceContact>
+<ows:ContactInfo>
+<ows:Phone>
+<ows:Voice>+45 44 60 49 04</ows:Voice>
+<ows:Facsimile/>
+</ows:Phone>
+<ows:Address>
+<ows:DeliveryPoint>Rentemestervej 8</ows:DeliveryPoint>
+<ows:City>KĂ¸benhavn NV</ows:City>
+<ows:AdministrativeArea>NV</ows:AdministrativeArea>
+<ows:PostalCode>2400</ows:PostalCode>
+<ows:Country>Danmark</ows:Country>
+<ows:ElectronicMailAddress>datafordeler@kmd.dk</ows:ElectronicMailAddress>
+</ows:Address>
+</ows:ContactInfo>
+</ows:ServiceContact>
+</ows:ServiceProvider>
+<ows:OperationsMetadata>
+<ows:Operation name="GetCapabilities">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="AcceptVersions">
+<ows:Value>2.0.0</ows:Value>
+<ows:Value>1.1.0</ows:Value>
+<ows:Value>1.0.0</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="AcceptFormats">
+<ows:Value>text/xml</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="Sections">
+<ows:Value>ServiceIdentification</ows:Value>
+<ows:Value>ServiceProvider</ows:Value>
+<ows:Value>OperationsMetadata</ows:Value>
+<ows:Value>FeatureTypeList</ows:Value>
+<ows:Value>ServesGMLObjectTypeList</ows:Value>
+<ows:Value>SupportsGMLObjectTypeList</ows:Value>
+<ows:Value>Filter_Capabilities</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Operation name="DescribeFeatureType">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="outputFormat">
+<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Operation name="GetFeature">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="unknown?"/>
+<ows:Post xlink:href="unknown"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="resultType">
+<ows:Value>results</ows:Value>
+<ows:Value>hits</ows:Value>
+</ows:Parameter>
+<ows:Parameter name="outputFormat">
+<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+</ows:Parameter>
+</ows:Operation>
+<ows:Parameter name="srsName">
+<ows:Value>http://www.opengis.net/def/crs/EPSG/0/25832</ows:Value>
+</ows:Parameter>
+<ows:Constraint name="ImplementsBasicWFS">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsTransactionalWFS">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsLockingWFS">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="KVPEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="XMLEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="SOAPEncoding">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsInheritance">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsRemoteResolve">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsStandardJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsSpatialJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsTemporalJoins">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ImplementsFeatureVersioning">
+<ows:Value>FALSE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="ManageStoredQueries">
+<ows:Value>TRUE</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="QueryExpressions">
+<ows:Value>wfs:Query</ows:Value>
+<ows:Value>wfs:StoredQuery</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="LocalTraverseXLinkScope">
+<ows:Value>0</ows:Value>
+<ows:Value>0</ows:Value>
+</ows:Constraint>
+<ows:Constraint name="RemoteTraverseXLinkScope">
+<ows:Value>0</ows:Value>
+<ows:Value>0</ows:Value>
+</ows:Constraint>
+</ows:OperationsMetadata>
+<wfs:FeatureTypeList>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:BygningPaaFremmedGrundFlade_Foreloebig</wfs:Name>
+<wfs:Title>BygningPaaFremmedGrundFlade_Foreloebig</wfs:Title>
+<wfs:Abstract>BygningPaaFremmedGrundFlade med status foreløbig. BygningPåFremmedGrund geometrisk registreret med fladegeometri.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>BygningPaaFremmedGrundFlade_Foreloebig</ows:Keyword>
+<ows:Keyword>BYGNINGPAAFREMMEDGRUNDFLADE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:BygningPaaFremmedGrundFlade_Gaeldende</wfs:Name>
+<wfs:Title>BygningPaaFremmedGrundFlade_Gaeldende</wfs:Title>
+<wfs:Abstract>BygningPaaFremmedGrundFlade med status gældende. BygningPåFremmedGrund geometrisk registreret med fladegeometri.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>BygningPaaFremmedGrundFlade_Gaeldende</ows:Keyword>
+<ows:Keyword>BYGNINGPAAFREMMEDGRUNDFLADE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:BygningPaaFremmedGrundPunkt_Foreloebig</wfs:Name>
+<wfs:Title>BygningPaaFremmedGrundPunkt_Foreloebig</wfs:Title>
+<wfs:Abstract>BygningPaaFremmedGrundPunkt med status foreløbig. BygningPåFremmedGrund geometrisk registreret med punktgeometri.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>BygningPaaFremmedGrundPunkt_Foreloebig</ows:Keyword>
+<ows:Keyword>BYGNINGPAAFREMMEDGRUNDPUNKT_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:BygningPaaFremmedGrundPunkt_Gaeldende</wfs:Name>
+<wfs:Title>BygningPaaFremmedGrundPunkt_Gaeldende</wfs:Title>
+<wfs:Abstract>BygningPaaFremmedGrundPunkt med status gældende. BygningPåFremmedGrund geometrisk registreret med punktgeometri.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>BygningPaaFremmedGrundPunkt_Gaeldende</ows:Keyword>
+<ows:Keyword>BYGNINGPAAFREMMEDGRUNDPUNKT_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Centroide_Foreloebig</wfs:Name>
+<wfs:Title>Centroide_Foreloebig</wfs:Title>
+<wfs:Abstract>Centroide med status foreløbig. Et punkt inden i et jordstykke, hvorved man med en simpel position kan stedfæste alle egenskabsdata, der er knyttet til et jordstykke.
+NOTE Centroide indgår i den matrikulære proces som pladsholder for oplysninger om jordstykket. Selve jordstykkets udstrækning beskrives i den matrikulære proces gennem jordstykkets MatrikelSkel.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Centroide_Foreloebig</ows:Keyword>
+<ows:Keyword>CENTROIDE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Centroide_Gaeldende</wfs:Name>
+<wfs:Title>Centroide_Gaeldende</wfs:Title>
+<wfs:Abstract>Centroide med status gældende. Et punkt inden i et jordstykke, hvorved man med en simpel position kan stedfæste alle egenskabsdata, der er knyttet til et jordstykke.
+NOTE Centroide indgår i den matrikulære proces som pladsholder for oplysninger om jordstykket. Selve jordstykkets udstrækning beskrives i den matrikulære proces gennem jordstykkets MatrikelSkel.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Centroide_Gaeldende</ows:Keyword>
+<ows:Keyword>CENTROIDE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlav_Foreloebig</wfs:Name>
+<wfs:Title>Ejerlav_Foreloebig</wfs:Title>
+<wfs:Abstract>Ejerlav med status foreløbig. Underinddeling af sogne i matrikulære distrikter.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlav_Foreloebig</ows:Keyword>
+<ows:Keyword>EJERLAV_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlav_Gaeldende</wfs:Name>
+<wfs:Title>Ejerlav_Gaeldende</wfs:Title>
+<wfs:Abstract>Ejerlav med status gældende. Underinddeling af sogne i matrikulære distrikter.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlav_Gaeldende</ows:Keyword>
+<ows:Keyword>EJERLAV_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlejlighed_Foreloebig</wfs:Name>
+<wfs:Title>Ejerlejlighed_Foreloebig</wfs:Title>
+<wfs:Abstract>Ejerlejlighed med status foreløbig. Lejlighed i en beboelsesejendom hvor hver enkelt lejlighed ejes særskilt og betragtes som selvstændig fast ejendom, mens de fælles dele og faciliteter ejes i fællesskab af en ejerforening.
+NOTE Hver Ejerlejlighed har en selvstændig identitet, således at der kan tinglyses rettigheder på hver enkelt Ejerlejlighed. En Ejerlejlighed er del af en hovedejendom, som enten er en Samlet fast ejendom eller en Bygning på fremmed grund. Ejeren af en Ejerlejlighed ejer selve lejligheden, mens hovedejendommen med jordstykke, trapper m.v. normalt ejes af alle ejerlejlighedsejere i fælles sameje, efter ejerlejlighedernes fordelingstal.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlejlighed_Foreloebig</ows:Keyword>
+<ows:Keyword>EJERLEJLIGHED_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlejlighed_Gaeldende</wfs:Name>
+<wfs:Title>Ejerlejlighed_Gaeldende</wfs:Title>
+<wfs:Abstract>Ejerlejlighed med status gældende. Lejlighed i en beboelsesejendom hvor hver enkelt lejlighed ejes særskilt og betragtes som selvstændig fast ejendom, mens de fælles dele og faciliteter ejes i fællesskab af en ejerforening.
+NOTE Hver Ejerlejlighed har en selvstændig identitet, således at der kan tinglyses rettigheder på hver enkelt Ejerlejlighed. En Ejerlejlighed er del af en hovedejendom, som enten er en Samlet fast ejendom eller en Bygning på fremmed grund. Ejeren af en Ejerlejlighed ejer selve lejligheden, mens hovedejendommen med jordstykke, trapper m.v. normalt ejes af alle ejerlejlighedsejere i fælles sameje, efter ejerlejlighedernes fordelingstal.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlejlighed_Gaeldende</ows:Keyword>
+<ows:Keyword>EJERLEJLIGHED_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlejlighedslod_Foreloebig</wfs:Name>
+<wfs:Title>Ejerlejlighedslod_Foreloebig</wfs:Title>
+<wfs:Abstract>Ejerlejlighedslod med status foreløbig. En ejerlejlighed kan bestå af flere arealer, som er fysisk adskilt fra hinanden. Disse arealer kaldes ejerlejlighedslodder.
+NOTE Information vedr. ejerlejlighedslodder registreres i dag ikke i Tingbogen. Dvs. ved idriftsættelsestidspunktet af Matriklens Udvidelse vil der ikke findes ejerlejlighedslodder på eksisterende ejerlejligheder. Nye ejerlejligheder, der kommer ind efter idriftsættelse, vil bestå af én eller flere ejerlejlighedslodder. Formålet med at registrere ejerlejlighedslodder er primært at give mulighed for at landinspektører kan genbruge data i sager, hvor der sker forandring af &lt;i&gt;ejerlejligheder&lt;/i&gt;.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlejlighedslod_Foreloebig</ows:Keyword>
+<ows:Keyword>EJERLEJLIGHEDSLOD_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Ejerlejlighedslod_Gaeldende</wfs:Name>
+<wfs:Title>Ejerlejlighedslod_Gaeldende</wfs:Title>
+<wfs:Abstract>Ejerlejlighedslod med status gældende. En ejerlejlighed kan bestå af flere arealer, som er fysisk adskilt fra hinanden. Disse arealer kaldes ejerlejlighedslodder.
+NOTE Information vedr. ejerlejlighedslodder registreres i dag ikke i Tingbogen. Dvs. ved idriftsættelsestidspunktet af Matriklens Udvidelse vil der ikke findes ejerlejlighedslodder på eksisterende ejerlejligheder. Nye ejerlejligheder, der kommer ind efter idriftsættelse, vil bestå af én eller flere ejerlejlighedslodder. Formålet med at registrere ejerlejlighedslodder er primært at give mulighed for at landinspektører kan genbruge data i sager, hvor der sker forandring af &lt;i&gt;ejerlejligheder&lt;/i&gt;.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Ejerlejlighedslod_Gaeldende</ows:Keyword>
+<ows:Keyword>EJERLEJLIGHEDSLOD_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Jordstykke_Foreloebig</wfs:Name>
+<wfs:Title>Jordstykke_Foreloebig</wfs:Title>
+<wfs:Abstract>Jordstykke med status foreløbig. Areal på jordoverfladen som er registreret i Matriklen og afgrænset af matrikelskel.
+NOTE Jordstykker kan selvstændigt eller i forening danne en Samlet fast ejendom. Et jordstykke kan enten være: et matrikuleret areal eller et umatrikuleret areal i form af udskilt, offentlig vej optaget i matriklen med matrikelnummer 7000 plus vejlitra.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Jordstykke_Foreloebig</ows:Keyword>
+<ows:Keyword>JORDSTYKKE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Jordstykke_Gaeldende</wfs:Name>
+<wfs:Title>Jordstykke_Gaeldende</wfs:Title>
+<wfs:Abstract>Jordstykke med status gældende. Areal på jordoverfladen som er registreret i Matriklen og afgrænset af matrikelskel.
+NOTE Jordstykker kan selvstændigt eller i forening danne en Samlet fast ejendom. Et jordstykke kan enten være: et matrikuleret areal eller et umatrikuleret areal i form af udskilt, offentlig vej optaget i matriklen med matrikelnummer 7000 plus vejlitra.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Jordstykke_Gaeldende</ows:Keyword>
+<ows:Keyword>JORDSTYKKE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikelKommune_Foreloebig</wfs:Name>
+<wfs:Title>MatrikelKommune_Foreloebig</wfs:Title>
+<wfs:Abstract>MatrikelKommune med status foreløbig. Geometrisk inddeling af kommune pba. registreringer i matrikelregisteret.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikelKommune_Foreloebig</ows:Keyword>
+<ows:Keyword>MATRIKELKOMMUNE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikelKommune_Gaeldende</wfs:Name>
+<wfs:Title>MatrikelKommune_Gaeldende</wfs:Title>
+<wfs:Abstract>MatrikelKommune med status gældende. Geometrisk inddeling af kommune pba. registreringer i matrikelregisteret.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikelKommune_Gaeldende</ows:Keyword>
+<ows:Keyword>MATRIKELKOMMUNE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Matrikelskel_Foreloebig</wfs:Name>
+<wfs:Title>Matrikelskel_Foreloebig</wfs:Title>
+<wfs:Abstract>Matrikelskel med status foreløbig. En linje eller en polylinje, der – sammen med mindst ét andet matrikelskel - afgrænser et Jordstykke.
+NOTE Et matrikelskel er typisk en linje, men hvis skellet følger en cirkelbue, vil cirkelbuen blive repræsenteret ved en polylinje.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Matrikelskel_Foreloebig</ows:Keyword>
+<ows:Keyword>MATRIKELSKEL_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Matrikelskel_Gaeldende</wfs:Name>
+<wfs:Title>Matrikelskel_Gaeldende</wfs:Title>
+<wfs:Abstract>Matrikelskel med status gældende. En linje eller en polylinje, der – sammen med mindst ét andet matrikelskel - afgrænser et Jordstykke.
+NOTE Et matrikelskel er typisk en linje, men hvis skellet følger en cirkelbue, vil cirkelbuen blive repræsenteret ved en polylinje.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Matrikelskel_Gaeldende</ows:Keyword>
+<ows:Keyword>MATRIKELSKEL_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikelSogn_Foreloebig</wfs:Name>
+<wfs:Title>MatrikelSogn_Foreloebig</wfs:Title>
+<wfs:Abstract>MatrikelSogn med status foreløbig. Geometrisk inddeling af sogn pba. registreringer i matrikelregisteret.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikelSogn_Foreloebig</ows:Keyword>
+<ows:Keyword>MATRIKELSOGN_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikelSogn_Gaeldende</wfs:Name>
+<wfs:Title>MatrikelSogn_Gaeldende</wfs:Title>
+<wfs:Abstract>MatrikelSogn med status gældende. Geometrisk inddeling af sogn pba. registreringer i matrikelregisteret.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikelSogn_Gaeldende</ows:Keyword>
+<ows:Keyword>MATRIKELSOGN_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Nullinje_Foreloebig</wfs:Name>
+<wfs:Title>Nullinje_Foreloebig</wfs:Title>
+<wfs:Abstract>Nullinje med status foreløbig. Nullinjen i Nissum Fjord angiver grænsen for henholdsvis statens og strandejernes ejendomsret.
+NOTE Grænsen er fastlagt af den i henhold til § 4 i lov nr. 143 af 17. juni 1929 nedsatte kommission.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Nullinje_Foreloebig</ows:Keyword>
+<ows:Keyword>NULLINJE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Nullinje_Gaeldende</wfs:Name>
+<wfs:Title>Nullinje_Gaeldende</wfs:Title>
+<wfs:Abstract>Nullinje med status gældende. Nullinjen i Nissum Fjord angiver grænsen for henholdsvis statens og strandejernes ejendomsret.
+NOTE Grænsen er fastlagt af den i henhold til § 4 i lov nr. 143 af 17. juni 1929 nedsatte kommission.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Nullinje_Gaeldende</ows:Keyword>
+<ows:Keyword>NULLINJE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:OptagetVej_Foreloebig</wfs:Name>
+<wfs:Title>OptagetVej_Foreloebig</wfs:Title>
+<wfs:Abstract>OptagetVej med status foreløbig. Registrering af vej og sti, som tjener som adgang til anden ejendom, og som ikke er udskilt med eget vejlitra eller matrikelnummer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>OptagetVej_Foreloebig</ows:Keyword>
+<ows:Keyword>OPTAGETVEJ_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:OptagetVej_Gaeldende</wfs:Name>
+<wfs:Title>OptagetVej_Gaeldende</wfs:Title>
+<wfs:Abstract>OptagetVej med status gældende. Registrering af vej og sti, som tjener som adgang til anden ejendom, og som ikke er udskilt med eget vejlitra eller matrikelnummer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>OptagetVej_Gaeldende</ows:Keyword>
+<ows:Keyword>OPTAGETVEJ_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:SamletFastEjendom_Foreloebig</wfs:Name>
+<wfs:Title>SamletFastEjendom_Foreloebig</wfs:Title>
+<wfs:Abstract>SamletFastEjendom med status foreløbig. En vedvarende forening af et eller flere jordstykker som tilsammen udgør én ejendom.
+NOTE Begrebet er knyttet til arealer på jordoverfladen og er fysisk bestemt ved det eller de jordstykker, der indgår i den samlede faste ejendom (se definition af jordstykke tidligere).
+Parcelhusgrunde vil normalt kun bestå af ét Jordstykke, hvorimod landbrugsejendomme ofte består af flere Jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>SamletFastEjendom_Foreloebig</ows:Keyword>
+<ows:Keyword>SAMLETFASTEJENDOM_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:SamletFastEjendom_Gaeldende</wfs:Name>
+<wfs:Title>SamletFastEjendom_Gaeldende</wfs:Title>
+<wfs:Abstract>SamletFastEjendom med status gældende. En vedvarende forening af et eller flere jordstykker som tilsammen udgør én ejendom.
+NOTE Begrebet er knyttet til arealer på jordoverfladen og er fysisk bestemt ved det eller de jordstykker, der indgår i den samlede faste ejendom (se definition af jordstykke tidligere).
+Parcelhusgrunde vil normalt kun bestå af ét Jordstykke, hvorimod landbrugsejendomme ofte består af flere Jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>SamletFastEjendom_Gaeldende</ows:Keyword>
+<ows:Keyword>SAMLETFASTEJENDOM_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Skelpunkt_Foreloebig</wfs:Name>
+<wfs:Title>Skelpunkt_Foreloebig</wfs:Title>
+<wfs:Abstract>Skelpunkt med status foreløbig. Et punkt, der angiver et Matrikelskels start eller slut.
+NOTE Punktet anvendes til opbevaring af informationer, som relaterer sig til punktet.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Skelpunkt_Foreloebig</ows:Keyword>
+<ows:Keyword>SKELPUNKT_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Skelpunkt_Gaeldende</wfs:Name>
+<wfs:Title>Skelpunkt_Gaeldende</wfs:Title>
+<wfs:Abstract>Skelpunkt med status gældende. Et punkt, der angiver et Matrikelskels start eller slut.
+NOTE Punktet anvendes til opbevaring af informationer, som relaterer sig til punktet.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Skelpunkt_Gaeldende</ows:Keyword>
+<ows:Keyword>SKELPUNKT_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Lodflade_Foreloebig</wfs:Name>
+<wfs:Title>Lodflade_Foreloebig</wfs:Title>
+<wfs:Abstract>Lodflade med status foreløbig. Fladegeometrien hørende til et Jordstykke.
+NOTE Bemærk at Lodflade er et Ejendom forretningsobjekt i sig selv. Dvs. Lodflade og Jordstykke kan ændres uafhængigt af hinanden.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Lodflade_Foreloebig</ows:Keyword>
+<ows:Keyword>LODFLADE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:Lodflade_Gaeldende</wfs:Name>
+<wfs:Title>Lodflade_Gaeldende</wfs:Title>
+<wfs:Abstract>Lodflade med status gældende. Fladegeometrien hørende til et Jordstykke.
+NOTE Bemærk at Lodflade er et Ejendom forretningsobjekt i sig selv. Dvs. Lodflade og Jordstykke kan ændres uafhængigt af hinanden.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>Lodflade_Gaeldende</ows:Keyword>
+<ows:Keyword>LODFLADE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikulaerSag_Afsluttet</wfs:Name>
+<wfs:Title>MatrikulaerSag_Afsluttet</wfs:Title>
+<wfs:Abstract>MatrikulaerSag med status Afslutte. Helheden af de faktorer og omstændigheder der knytter sig til en matrikulær hændelse.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikulaerSag_Afsluttet</ows:Keyword>
+<ows:Keyword>MATRIKULAERSAG_A</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:MatrikulaerSag_Igangvaerende</wfs:Name>
+<wfs:Title>MatrikulaerSag_Igangvaerende</wfs:Title>
+<wfs:Abstract>MatrikulaerSag med status værdier for igangværende sager. Helheden af de faktorer og omstændigheder der knytter sig til en matrikulær hændelse.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>MatrikulaerSag_Igangvaerende</ows:Keyword>
+<ows:Keyword>MATRIKULAERSAG_I</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:FredskovFlade_Foreloebig</wfs:Name>
+<wfs:Title>FredskovFlade_Foreloebig</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen fredskov med status foreløbig. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>FredskovFlade_Foreloebig</ows:Keyword>
+<ows:Keyword>FREDSKOVFLADE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:FredskovFlade_Gaeldende</wfs:Name>
+<wfs:Title>FredskovFlade_Gaeldende</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen fredskov med status gældende. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>FredskovFlade_Gaeldende</ows:Keyword>
+<ows:Keyword>FREDSKOVFLADE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:FredskovLinje_Foreloebig</wfs:Name>
+<wfs:Title>FredskovLinje_Foreloebig</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen fredskov med status foreløbig. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>FredskovLinje_Foreloebig</ows:Keyword>
+<ows:Keyword>FREDSKOVLINJE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:FredskovLinje_Gaeldende</wfs:Name>
+<wfs:Title>FredskovLinje_Gaeldende</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen fredskov med status gældende. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>FredskovLinje_Gaeldende</ows:Keyword>
+<ows:Keyword>FREDSKOVLINJE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:KlitfredningFlade_Foreloebig</wfs:Name>
+<wfs:Title>KlitfredningFlade_Foreloebig</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen klitfredning med status foreløbig. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>KlitfredningFlade_Foreloebig</ows:Keyword>
+<ows:Keyword>KLITFREDNINGFLADE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:KlitfredningFlade_Gaeldende</wfs:Name>
+<wfs:Title>KlitfredningFlade_Gaeldende</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen klitfredning med status gældende. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>KlitfredningFlade_Gaeldende</ows:Keyword>
+<ows:Keyword>KLITFREDNINGFLADE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:KlitfredningLinje_Foreloebig</wfs:Name>
+<wfs:Title>KlitfredningLinje_Foreloebig</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen klitfredning med status foreløbig. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>KlitfredningLinje_Foreloebig</ows:Keyword>
+<ows:Keyword>KLITFREDNINGLINJE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:KlitfredningLinje_Gaeldende</wfs:Name>
+<wfs:Title>KlitfredningLinje_Gaeldende</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen klitfredning med status gældende. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>KlitfredningLinje_Gaeldende</ows:Keyword>
+<ows:Keyword>KLITFREDNINGLINJE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:StrandbeskyttelseFlade_Foreloebig</wfs:Name>
+<wfs:Title>StrandbeskyttelseFlade_Foreloebig</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen strandbeskyttelse med status foreløbig. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>StrandbeskyttelseFlade_Foreloebig</ows:Keyword>
+<ows:Keyword>STRANDBESKYTTELSEFLADE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:StrandbeskyttelseFlade_Gaeldende</wfs:Name>
+<wfs:Title>StrandbeskyttelseFlade_Gaeldende</wfs:Title>
+<wfs:Abstract>JordstykkeTemaflade af tematypen strandbeskyttelse med status gældende. En flade, der er dannet ved aggregering af temalinjer.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>StrandbeskyttelseFlade_Gaeldende</ows:Keyword>
+<ows:Keyword>STRANDBESKYTTELSEFLADE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:StrandbeskyttelseLinje_Foreloebig</wfs:Name>
+<wfs:Title>StrandbeskyttelseLinje_Foreloebig</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen strandbeskyttelse med status foreløbig. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>StrandbeskyttelseLinje_Foreloebig</ows:Keyword>
+<ows:Keyword>STRANDBESKYTTELSELINJE_F</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+<wfs:FeatureType>
+<wfs:Name xmlns:mat="http://data.gov.dk/schemas/matrikel/1">mat:StrandbeskyttelseLinje_Gaeldende</wfs:Name>
+<wfs:Title>StrandbeskyttelseLinje_Gaeldende</wfs:Title>
+<wfs:Abstract>Temalinje af tematypen strandbeskyttelse med status gældende. Linje til registrering af afgrænsning for strandbeskyttelse, klitfredning, fredskov.
+NOTE En temalinje kan skære flere jordstykker.</wfs:Abstract>
+<ows:Keywords>
+<ows:Keyword>StrandbeskyttelseLinje_Gaeldende</ows:Keyword>
+<ows:Keyword>STRANDBESKYTTELSELINJE_G</ows:Keyword>
+</ows:Keywords>
+<wfs:DefaultSRS>http://www.opengis.net/def/crs/EPSG/0/25832</wfs:DefaultSRS>
+<wfs:OtherSRS>EPSG:25832</wfs:OtherSRS>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+</wfs:FeatureType>
+</wfs:FeatureTypeList>
+<ogc:Filter_Capabilities xmlns:ogc="http://www.opengis.net/ogc">
+<ogc:Spatial_Capabilities>
+<ogc:GeometryOperands>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Envelope</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Point</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:LineString</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Polygon</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Arc</ogc:GeometryOperand>
+<ogc:GeometryOperand xmlns:gml="http://www.opengis.net/gml/3.2">gml:Circle</ogc:GeometryOperand>
+</ogc:GeometryOperands>
+<ogc:SpatialOperators>
+<ogc:SpatialOperator name="BBOX"/>
+<ogc:SpatialOperator name="Equals"/>
+<ogc:SpatialOperator name="Disjoint"/>
+<ogc:SpatialOperator name="Intersects"/>
+<ogc:SpatialOperator name="Touches"/>
+<ogc:SpatialOperator name="Crosses"/>
+<ogc:SpatialOperator name="Within"/>
+<ogc:SpatialOperator name="Contains"/>
+<ogc:SpatialOperator name="Overlaps"/>
+<ogc:SpatialOperator name="Beyond"/>
+<ogc:SpatialOperator name="DWithin"/>
+</ogc:SpatialOperators>
+</ogc:Spatial_Capabilities>
+<ogc:Scalar_Capabilities>
+<ogc:LogicalOperators/>
+<ogc:ComparisonOperators>
+<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+<ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+</ogc:ComparisonOperators>
+<ogc:ArithmeticOperators>
+<ogc:SimpleArithmetic/>
+</ogc:ArithmeticOperators>
+</ogc:Scalar_Capabilities>
+<ogc:Id_Capabilities>
+<ogc:EID/>
+<ogc:FID/>
+</ogc:Id_Capabilities>
+</ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>
+</sfgp:WFSSettings>
+</sfgp:GoPublisherProject>

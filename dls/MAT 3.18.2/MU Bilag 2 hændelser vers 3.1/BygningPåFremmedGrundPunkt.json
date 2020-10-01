@@ -1,0 +1,26 @@
+{
+  "entityType": "BygningPaaFremmedGrundPunkt",
+  "attributes": {
+    "forretningshaendelse": "Load(forretningshaendelse)",
+	"forretningsomraade": "Load(forretningsomraade)",
+	"forretningsproces": "Load(forretningsproces)",
+	"id_namespace": "Load(id_namespace)",
+	"id_lokalId": "Load(id_lokalId)",
+	"paataenktHandling": "Load(paataenktHandling)",
+	"registreringFra": "Load(registreringFra)",
+    "registreringTil": "Load(registreringTil)",
+	"registreringsaktoer": "Load(registreringsaktoer)",
+	"status": "Load(status)",
+	"virkningFra": "Load(virkningFra)",
+	"virkningTil": "Load(virkningTil)",
+	"virkningsaktoer": "Load(virkningsaktoer)",
+	"BFEnummer": "Load(BFEnummer)",
+	"opdeltIEjerlejligheder": "Load(opdeltIEjerlejligheder)",
+	"oprindelse": "Load(oprindelse)",
+	"paaHavet": "Load(paaHavet)",
+	"rids": "Load(rids)",
+	"senesteSagLokalId": "Load(senesteSagLokalId)",
+	"SamletFastEjendomBFEnummer": "Load(samletFastEjendomLokalId)"
+  }
+}
+

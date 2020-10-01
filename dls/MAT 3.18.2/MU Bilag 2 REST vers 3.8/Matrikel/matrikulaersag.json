@@ -1,0 +1,343 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "EAID_D999DCC5_B933_4e45_86E0_FE9CB2B28FBC",
+  "title": "MatrikulaerSag",
+  "required": [
+    "type",
+    "features"
+  ],
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "type": {
+      "enum": [
+        "FeatureCollection"
+      ],
+      "default": "FeatureCollection",
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "properties",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "Feature"
+            ],
+            "default": "Feature",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "required": [
+              "ejerlavLokalId",
+              "id_namespace",
+              "id_lokalId",
+              "jordstykkeLokalId",
+              "forretningshaendelse",
+              "forretningsomraade",
+              "forretningsproces",
+              "journaliseringsdato",
+              "kommune",
+              "matrikelmyndighedensJournalnummer",
+              "registreringFra",
+              "registreringsaktoer",
+              "registreringTil",
+              "rekvirentRef",
+              "sagstitel",
+              "status",
+              "virkningFra",
+              "virkningsaktoer",
+              "virkningTil",
+              "bestemtFastEjendom"
+            ],
+            "properties": {
+              "ejerlavLokalId": {
+                "title": "ejerlavLokalId",
+                "description": "EAID_dst1A2D09_9035_40bc_8DE8_6AB30C30B43A",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "id_namespace": {
+                "title": "id_namespace",
+                "description": "EAID_9223BE9F_D422_4f05_9180_7D3205A382A9.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+                "type": "string"
+              },
+              "id_lokalId": {
+                "title": "id_lokalId",
+                "description": "EAID_9223BE9F_D422_4f05_9180_7D3205A382A9.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+                "type": "string"
+              },
+              "forretningshaendelse": {
+                "title": "forretningshaendelse",
+                "description": "EAID_CE6AEE92_1AD5_4496_8A73_5DF2380A5106",
+                "type": "string",
+                "enum": [
+                  "Administrative grænser",
+                  "Ændring af ejerlejlighedsnummer",
+                  "Ændring af fordelingstal",
+                  "Ændring af geometri for ejerlejlighed",
+                  "Ændring af information om ejerlejlighedslodder",
+                  "Ændring af relation til hovedejendom",
+                  "Ændring af relation til samlet fast ejendom",
+                  "Afregistrering af bygning på fremmed grund",
+                  "Anden hjemmel",
+                  "Arealoverførsel af aflagt offentligt vejareal",
+                  "Arealoverførsel af helt matr.nr. - matr.nr. bevares (ejendom til ejendom)",
+                  "Arealoverførsel med tildeling af nyt matr.nr. (ejendom til ejendom)",
+                  "Arealoverførsel med tildeling af nyt matr.nr. (stamnr.) (ejendom til ejendom). Tidligere anvendt i Sønderjylland.",
+                  "Arealoverførsel til offentlig vej+ tildeling nyt stamnr, ejendom til vej/sti. Tidligere anvendt i Sønderjylland.",
+                  "Arealoverførsel til offentlig vej, ejendom til vej/sti",
+                  "Arealoverførsel til offentligvej + tildeling nyt litra, ejendom til vej/sti",
+                  "Arealoverførsel, ejendom til ejendom",
+                  "Berigtigelse mod fællesjord",
+                  "Berigtigelse mod havet",
+                  "Berigtigelse mod sø og vandløb",
+                  "Deling af jordstykke - registrering nyt skel (internt skel)",
+                  "Deling af jordstykke - registrering nyt skel (internt skel) gebyr",
+                  "Deling af jordstykke - registrering nyt skel (internt skel). Tidligere anvendt i Sønderjylland.",
+                  "Diverse",
+                  "Ejendomsberigtigelse",
+                  "Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1",
+                  "Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2",
+                  "Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 3",
+                  "Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4",
+                  "Nyopdeling i henhold til ejerlejlighedsloven § 10 stk. 2",
+                  "Fælleslodsnotering",
+                  "Fredskov",
+                  "Genoptagelse af matrikelnummer",
+                  "Inddragelse af matr.nr.",
+                  "Jordforurening - boligerklæring",
+                  "Jordforurening V1",
+                  "Jordforurening V2",
+                  "Klitfredning",
+                  "Kortopretning",
+                  "Landbrug - familieejendom",
+                  "Landbrugsejendom",
+                  "Majoratskov/samlet skovstrækning",
+                  "Matrikulering af ikke tidligere registreret areal",
+                  "Matrikulering ved kendelse",
+                  "Nyberegning af areal matr.nr.",
+                  "Nyberegning fredskovsareal",
+                  "Nyberegning klitfredningsareal",
+                  "Nyberegning strandbeskyttelsesareal",
+                  "Nyberegning vejareal",
+                  "Opløsning af ejerlejlighedsfællesskab",
+                  "Overførsel fra fællesareal",
+                  "Overførsel mellem bygning på fremmed grund",
+                  "Overførsel mellem ejerlejligheder",
+                  "Overførsel til fællesareal",
+                  "Overførsel ved teknisk ændring - Uden gebyr",
+                  "Overførsel ved teknisk ændring med gebyr",
+                  "Registrering af ændret etageareal",
+                  "Arbejderbolig",
+                  "Jordrente",
+                  "Registrering af ny bygning på fremmed grund",
+                  "Stormfald - gentilplantning",
+                  "Stormfald - oprydning",
+                  "Rettelse (interne ændringer for et matr.nr.)",
+                  "Rettelse af geometri (interne ændringer for et matr.nr.)",
+                  "Sammenlægning af bygning på fremmed grund",
+                  "Sammenlægning af ejendomme (noteringsmæssigt)",
+                  "Sammenlægning af ejerlejligheder",
+                  "Skelforretning - ejendomsberigtigelse",
+                  "Skelforretning - ejendomsgrænsen fastholdes",
+                  "Sletning af ikke udskilt offentlig vej/sti",
+                  "Stedfæstelse af eksisterende bygning på fremmed grund. Udføres af landinspektør.",
+                  "Strandbeskyttelse",
+                  "Supplerende ændringer",
+                  "Supplerende måling",
+                  "Tildeling af matr.nr. til særskilt beliggende jordstykke",
+                  "Tildeling af matr.nr. til særskilt beliggende jordstykke. Tidligere anvendt i Sønderjylland.",
+                  "Udskillelse af areal til offentlig vej",
+                  "Udskillelse af areal til offentlig vej (nyt litra)",
+                  "Udstykning",
+                  "Udstykning fra flere ejendomme",
+                  "Udstykning fra flere ejendomme + tildeling af nyt matr.nr.(stamnr.)",
+                  "Udstykning, deling eller matr.nr. til lod (stamnummer). Tidligere anvendt i Sønderjylland.",
+                  "Udstykning. Tidligere anvendt i Sønderjylland.",
+                  "Vej berigtiget",
+                  "Vej omlagt",
+                  "Vej optaget",
+                  "Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 1",
+                  "Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 2",
+                  "Videreopdeling i henhold til Ejerlejlighedsloven § 10 stk. 1, nr. 3",
+                  "Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 2",
+                  "Videreopdeling i henhold til ejerlejlighedsloven § 10 stk. 1, nr. 4",
+                  "Videreopdeling i henhold til anden hjemmel",
+                  "Ændring af geometri for bygning på fremmed grund"
+                ]
+              },
+              "forretningsomraade": {
+                "title": "forretningsomraade",
+                "description": "EAID_D7E712D7_D485_4645_ACA1_6190228C690E",
+                "type": "string",
+                "enum": [
+                  "52.20.05"
+                ]
+              },
+              "forretningsproces": {
+                "title": "Sagskategori",
+                "description": "EAID_B8BDA19C_BD3A_45ae_9030_E7DFCEF34409",
+                "type": "string",
+                "enum": [
+                  "Matrikulær sag",
+                  "Kvalitetsforbedring af matriklen",
+                  "Minirenovering",
+                  "Klitfredning",
+                  "Strandbeskyttelse",
+                  "Fredskov",
+                  "Majoratskov",
+                  "Stormfald",
+                  "Landbrug",
+                  "Arbejderbolig",
+                  "Jordrente",
+                  "Amts- og kommunegrænse",
+                  "Sognegrænse",
+                  "Jordfordeling",
+                  "Ekspropriation",
+                  "Tilbageførselssag",
+                  "Ejerlejlighedssag",
+                  "Ikke beskikkelseskrævende ændringssag",
+                  "Bygning på fremmed grund fra kommune",
+                  "Bygning på fremmed grund fra landinspektør",
+                  "Bygning på havet",
+                  "Kombinationssag - Ejerlejlighed",
+                  "Kombinationssag - Bygning på fremmed grund",
+                  "Anden sagskategori"
+                ]
+              },
+              "journaliseringsdato": {
+                "title": "journaliseringsdato",
+                "description": "EAID_F47FC187_5158_4e55_8EE8_F1B99F4F66A1",
+                "type": "string",
+                "format": "date-time"
+              },
+              "kommune": {
+                "title": "kommune",
+                "description": "EAID_11D1CACA_AE81_4888_932E_6EC0B84075D0",
+                "type": "string"
+              },
+              "matrikelmyndighedensJournalnummer": {
+                "title": "matrikelmyndighedensJournalnummer",
+                "description": "EAID_1A779A80_8462_4abd_BEEF_4982AB809818",
+                "type": "string"
+              },
+              "registreringFra": {
+                "title": "registreringFra",
+                "description": "EAID_75D4B68D_05C2_4ff9_983B_FA89782CB594",
+                "type": "string",
+                "format": "date-time"
+              },
+              "registreringsaktoer": {
+                "title": "registreringsaktoer",
+                "description": "EAID_43C433F9_B544_4c18_999B_BBEA702399E8",
+                "type": "string"
+              },
+              "registreringTil": {
+                "title": "registreringTil",
+                "description": "EAID_AB376482_5DBC_4314_BD49_9CBF6C975894",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "rekvirentRef": {
+                "title": "rekvirentRef",
+                "description": "EAID_467DE9F6_E982_4a05_A337_F49700FC48E9",
+                "type": "string"
+              },
+              "sagstitel": {
+                "title": "sagstitel",
+                "description": "EAID_3336AF49_AAC8_4a54_B55F_93488576B768",
+                "type": "string"
+              },
+              "status": {
+                "title": "status",
+                "description": "EAID_3B09A42C_714C_486e_81B2_50B3DC65B415",
+                "type": "string",
+                "enum": [
+                  "Hjemsendt til indberetter",
+                  "Hos matrikelmyndigheden",
+                  "Foreløbige sagsdata udstillet",
+                  "Afventer svar fra kommunen",
+                  "Afventer indsendelse til registrering",
+                  "Annulleret",
+                  "Afventer Tinglysningsretten",
+                  "Afsluttet",
+                  "Aflyst"
+                ]
+              },
+              "virkningFra": {
+                "title": "virkningFra",
+                "description": "EAID_7F5D338F_B4E9_4064_B25B_9F17BF8E0F62",
+                "type": "string",
+                "format": "date-time"
+              },
+              "virkningsaktoer": {
+                "title": "virkningsaktoer",
+                "description": "EAID_03F61E86_EF46_40b6_A597_5F7CD885DEB2",
+                "type": "string"
+              },
+              "virkningTil": {
+                "title": "virkningTil",
+                "description": "EAID_0AE85E10_0407_4d2f_9F73_E4EF203D7A33",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "jordstykkeLokalId": {
+                "title": "jordstykkeLokalId",
+                "description": "EAID_dst2564C7_0A48_454b_BB54_841475A598B2",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "bestemtFastEjendom": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "BFEnummer",
+                    "status"
+                  ],
+                  "properties": {
+                    "BFEnummer": {
+                      "title": "BFEnummer",
+                      "description": "EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28",
+                      "type": "integer"
+                    },
+                    "status": {
+                      "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                      "enum": [
+                        "Gældende",
+                        "Foreløbig",
+                        "Historisk",
+                        "Ikke Gennemført"
+                      ],
+                      "title": "status",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

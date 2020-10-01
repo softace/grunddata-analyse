@@ -1,0 +1,1031 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "EAID_9C1A6CF4_25D6_4e28_949F_D45BA79F9EF1",
+  "required": [
+    "type",
+    "features"
+  ],
+  "title": "SamletFastEjendom",
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "type": {
+      "enum": [
+        "FeatureCollection"
+      ],
+      "default": "FeatureCollection",
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "properties",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "Feature"
+            ],
+            "default": "Feature",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "required": [
+              "BFEnummer",
+              "arbejderbolig",
+              "bygningPaaFremmedGrund",
+              "ejerlejlighed",
+              "erFaelleslod",
+              "forretningshaendelse",
+              "sekundaerForretningshaendelse",
+              "forretningsomraade",
+              "forretningsproces",
+              "hovedejendomOpdeltIEjerlejligheder",
+              "id_lokalId",
+              "id_namespace",
+              "jordstykke",
+              "landbrugsnotering",
+              "paataenktHandling",
+              "registreringFra",
+              "registreringTil",
+              "registreringsaktoer",
+              "senesteSagLokalId",
+              "status",
+              "udskiltVej",
+              "virkningFra",
+              "virkningTil",
+              "virkningsaktoer"
+            ],
+            "properties": {
+              "BFEnummer": {
+                "description": "EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28",
+                "title": "BFEnummer",
+                "type": "integer"
+              },
+              "arbejderbolig": {
+                "description": "EAID_F91B9A6C_57C4_4740_9233_CA3ADDDF8E5B",
+                "title": "arbejderbolig",
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "bygningPaaFremmedGrund": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "BFEnummer",
+                    "status",
+                    "senesteSagLokalId",
+                    "ejerlejlighed"
+                  ],
+                  "properties": {
+                    "BFEnummer": {
+                      "title": "BFEnummer",
+                      "description": "EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28",
+                      "type": "integer"
+                    },
+                    "status": {
+                      "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                      "enum": [
+                        "Gældende",
+                        "Foreløbig",
+                        "Historisk",
+                        "Ikke Gennemført"
+                      ],
+                      "title": "status",
+                      "type": "string"
+                    },
+                    "senesteSagLokalId": {
+                      "title": "senesteSagLokalId",
+                      "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                      "type": "string"
+                    },
+                    "ejerlejlighed": {
+                      "description": "EAID_0FD7270E_53D6_445d_9572_2D0AF6D9A83A",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "BFEnummer",
+                          "status",
+                          "senesteSagLokalId"
+                        ],
+                        "properties": {
+                          "BFEnummer": {
+                            "title": "BFEnummer",
+                            "description": "EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28",
+                            "type": "integer"
+                          },
+                          "status": {
+                            "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                            "enum": [
+                              "Gældende",
+                              "Foreløbig",
+                              "Historisk",
+                              "Ikke Gennemført"
+                            ],
+                            "title": "status",
+                            "type": "string"
+                          },
+                          "senesteSagLokalId": {
+                            "title": "senesteSagLokalId",
+                            "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "ejerlejlighed": {
+                "description": "EAID_0FD7270E_53D6_445d_9572_2D0AF6D9A83A",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "BFEnummer",
+                    "status",
+                    "senesteSagLokalId"
+                  ],
+                  "properties": {
+                    "BFEnummer": {
+                      "title": "BFEnummer",
+                      "description": "EAID_3828326A_2F94_4e83_A24D_F0BBB5D9EC28",
+                      "type": "integer"
+                    },
+                    "status": {
+                      "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                      "enum": [
+                        "Gældende",
+                        "Foreløbig",
+                        "Historisk",
+                        "Ikke Gennemført"
+                      ],
+                      "title": "status",
+                      "type": "string"
+                    },
+                    "senesteSagLokalId": {
+                      "title": "senesteSagLokalId",
+                      "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "erFaelleslod": {
+                "description": "EAID_1B4F860F_6E2C_4547_81D2_F88CA2730E65",
+                "title": "erFaelleslod",
+                "type": "boolean"
+              },
+              "forretningshaendelse": {
+                "description": "EAID_D771C875_92C1_4670_B655_23DF6D1203E2",
+                "enum": [
+                  "Afledt ændring",
+                  "Anden ændring",
+                  "Arealændring på Ejerlejlighed",
+                  "Ejerlejlighed bortfaldet",
+                  "Ejerlejlighed tilkommet",
+                  "Arealændring på Jordstykke",
+                  "BPFG med oprindelse 'Matriklen -  stedfæstet' bortfaldet",
+                  "BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet",
+                  "BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet",
+                  "Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'",
+                  "Registrering af relation fra SFE til BPFG bortfaldet",
+                  "Registrering af relation fra SFE til BPFG tilkommet",
+                  "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet",
+                  "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet",
+                  "Noteringsændring på Jordstykke",
+                  "Jordstykke(r) bortfaldet",
+                  "Noteringsændring på ejendom",
+                  "Jordstykke(r) tilkommet"
+                ],
+                "title": "forretningshaendelse",
+                "type": "string"
+              },
+              "sekundaerForretningshaendelse": {
+                "type": "array",
+                "description": "EAID_9C1A6CF4_25D6_4e28_949F_D45BA79F9EF1.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5",
+                "items": {
+                  "title": "sekundaerForretningshaendelse",
+                  "description": "EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5",
+                  "type": "string",
+                  "enum": [
+                    "Afledt ændring",
+                    "Anden ændring",
+                    "Arealændring på Ejerlejlighed",
+                    "Ejerlejlighed bortfaldet",
+                    "Ejerlejlighed tilkommet",
+                    "Arealændring på Jordstykke",
+                    "BPFG med oprindelse 'Matriklen -  stedfæstet' bortfaldet",
+                    "BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet",
+                    "BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet",
+                    "Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'",
+                    "Registrering af relation fra SFE til BPFG bortfaldet",
+                    "Registrering af relation fra SFE til BPFG tilkommet",
+                    "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet",
+                    "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet",
+                    "Noteringsændring på Jordstykke",
+                    "Jordstykke(r) bortfaldet",
+                    "Noteringsændring på ejendom",
+                    "Jordstykke(r) tilkommet"
+                  ]
+                }
+              },
+              "forretningsomraade": {
+                "description": "EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343",
+                "enum": [
+                  "52.20.05"
+                ],
+                "title": "forretningsomraade",
+                "type": "string"
+              },
+              "forretningsproces": {
+                "description": "EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240",
+                "enum": [
+                  "Anden sagskategori",
+				          "Matrikulær sag",
+                  "Kvalitetsforbedring af matriklen",
+                  "Minirenovering",
+                  "Klitfredning",
+                  "Strandbeskyttelse",
+                  "Fredskov",
+                  "Majoratskov",
+                  "Stormfald",
+                  "Landbrug",
+                  "Arbejderbolig",
+                  "Jordrente",
+                  "Amts- og kommunegrænse",
+                  "Sognegrænse",
+                  "Jordfordeling",
+                  "Ekspropriation",
+                  "Tilbageførselssag",
+                  "Ejerlejlighedssag",
+                  "Ikke beskikkelseskrævende ændringssag",
+                  "Bygning på fremmed grund fra kommune",
+                  "Bygning på fremmed grund fra landinspektør",
+                  "Bygning på havet",
+                  "Kombinationssag - Ejerlejlighed",
+                  "Kombinationssag - Bygning på fremmed grund"
+                ],
+                "title": "forretningsproces",
+                "type": "string"
+              },
+              "hovedejendomOpdeltIEjerlejligheder": {
+                "description": "EAID_1FCE535F_0726_459f_9D4F_CF9A2CC2242C",
+                "title": "hovedejendomOpdeltIEjerlejligheder",
+                "type": "boolean"
+              },
+              "id_lokalId": {
+                "description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+                "title": "id_lokalId",
+                "type": "string"
+              },
+              "id_namespace": {
+                "description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+                "title": "id_namespace",
+                "type": "string"
+              },
+              "jordstykke": {
+                "description": "EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1",
+                "title": "Jordstykke",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "properties",
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "Jordstykke"
+                      ],
+                      "default": "Jordstykke",
+                      "type": "string"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "required": [
+                        "arealberegningsmetode",
+                        "arealbetegnelse",
+                        "arealtype",
+                        "brugsretsareal",
+                        "centroide",
+                        "delnummer",
+                        "ejerlavskode",
+                        "ejerlavsnavn",
+                        "faelleslod",
+                        "forretningshaendelse",
+                        "sekundaerForretningshaendelse",
+                        "forretningsomraade",
+                        "forretningsproces",
+                        "fredskov",
+                        "id_lokalId",
+                        "id_namespace",
+                        "jordrente",
+                        "klitfredning",
+                        "kommuneLokalId",
+                        "majoratskov",
+                        "matrikelnummer",
+                        "paataenktHandling",
+                        "regionLokalId",
+                        "registreretAreal",
+                        "registreringFra",
+                        "registreringTil",
+                        "registreringsaktoer",
+                        "samletFastEjendomBFEnummer",
+                        "senesteSagLokalId",
+                        "skelforretningssagsLokalId",
+                        "sognLokalId",
+                        "stammerFraJordstykkeLokalId",
+                        "status",
+                        "stormfald",
+                        "strandbeskyttelse",
+                        "supplerendeMaalingSagLokalId",
+                        "vandarealinkludering",
+                        "vejareal",
+                        "vejarealberegningsstatus",
+                        "virkningFra",
+                        "virkningTil",
+                        "virkningsaktoer"
+                      ],
+                      "properties": {
+                        "arealberegningsmetode": {
+                          "description": "EAID_6B45A043_9EB3_4099_B554_94AFC8048204",
+                          "enum": [
+                            "Areal beregnet efter opmåling - o",
+                            "Areal beregnet efter konstruktion i større målforhold - s",
+                            "Areal beregnet efter kortet - k"
+                          ],
+                          "title": "arealberegningsmetode",
+                          "type": "string"
+                        },
+                        "arealbetegnelse": {
+                          "description": "EAID_B7097689_BD63_43f5_9A29_7A496D49AFD5",
+                          "title": "arealbetegnelse",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "arealtype": {
+                          "description": "EAID_21E8BFE5_EB68_4fd9_A415_4BCE7A66344A",
+                          "enum": [
+                            "Offentlig vej",
+                            "Privat vej",
+                            "Jernbane",
+                            "Kirke",
+                            "Kirkegård",
+                            "Byens gade",
+                            "Fælles grusgrav",
+                            "DigeDæmning",
+                            "Fælles drift",
+                            "Kanal",
+                            "Strand",
+                            "Fælles vanding",
+                            null
+                          ],
+                          "title": "arealtype",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "brugsretsareal": {
+                          "description": "EAID_11FCCE34_38CA_4968_B896_AAC7C4438A15",
+                          "title": "brugsretsareal",
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "centroide": {
+                          "title": "centroide",
+                          "description": "EAID_20AEBD93_4733_4d30_982E_742A35961F43",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "geometri",
+                              "senesteSagLokalId",
+                              "status"
+                            ],
+                            "properties": {
+                              "geometri": {
+                                "title": "geometri",
+                                "description": "EAID_18E3EBC0_5B73_41cc_890C_D4BD80E0B07B",
+                                "type": "string"
+                              },
+                              "senesteSagLokalId": {
+                                "title": "senesteSagLokalId",
+                                "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                                "type": "string"
+                              },
+                              "status": {
+                                "title": "status",
+                                "description": "EAID_18E3EBC0_5B73_41cc_890C_D4BD80E0B07B",
+                                "enum": [
+                                  "Gældende",
+                                  "Foreløbig",
+                                  "Historisk",
+                                  "Ikke Gennemført"
+                                ],
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "delnummer": {
+                          "description": "EAID_AABD2266_EDC4_48fd_A726_D54F6636C4CD",
+                          "title": "delnummer",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "ejerlavskode": {
+                          "description": "EAID_157A3B49_F2FC_4dea_B641_19E46367B721",
+                          "title": "ejerlavskode",
+                          "type": "integer"
+                        },
+                        "ejerlavsnavn": {
+                          "description": "EAID_61005553_EC47_4fce_9F14_F3F103648C20",
+                          "title": "ejerlavsnavn",
+                          "type": "string"
+                        },
+                        "faelleslod": {
+                          "description": "EAID_36AD19AD_817E_4add_A886_318EDAF1605F",
+                          "title": "faelleslod",
+                          "type": "boolean"
+                        },
+                        "forretningshaendelse": {
+                          "description": "EAID_D771C875_92C1_4670_B655_23DF6D1203E2",
+                          "enum": [
+                            "Afledt ændring",
+                            "Anden ændring",
+                            "Arealændring på Ejerlejlighed",
+                            "Ejerlejlighed bortfaldet",
+                            "Ejerlejlighed tilkommet",
+                            "Arealændring på Jordstykke",
+                            "BPFG med oprindelse 'Matriklen -  stedfæstet' bortfaldet",
+                            "BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet",
+                            "BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet",
+                            "Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'",
+                            "Registrering af relation fra SFE til BPFG bortfaldet",
+                            "Registrering af relation fra SFE til BPFG tilkommet",
+                            "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet",
+                            "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet",
+                            "Noteringsændring på Jordstykke",
+                            "Jordstykke(r) bortfaldet",
+                            "Noteringsændring på ejendom",
+                            "Jordstykke(r) tilkommet"
+                          ],
+                          "title": "forretningshaendelse",
+                          "type": "string"
+                        },
+                        "sekundaerForretningshaendelse": {
+                          "type": "array",
+                          "description": "EAID_8B60BEE8_D3BD_4c07_88FF_A2547A3D82D1.EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5",
+                          "items": {
+                            "title": "sekundaerForretningshaendelse",
+                            "description": "EAID_A0A706C1_027A_46ec_AC79_9138DA725DF5",
+                            "type": "string",
+                            "enum": [
+                              "Afledt ændring",
+                              "Anden ændring",
+                              "Arealændring på Ejerlejlighed",
+                              "Ejerlejlighed bortfaldet",
+                              "Ejerlejlighed tilkommet",
+                              "Arealændring på Jordstykke",
+                              "BPFG med oprindelse 'Matriklen -  stedfæstet' bortfaldet",
+                              "BPFG med oprindelse 'Matriklen - ikke stedfæstet' bortfaldet",
+                              "BPFG med oprindelse 'Matriklen - ikke stedfæstet' tilkommet",
+                              "Oprindelse for BPFG ændret til 'Matriklen - stedfæstet'",
+                              "Registrering af relation fra SFE til BPFG bortfaldet",
+                              "Registrering af relation fra SFE til BPFG tilkommet",
+                              "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab bortfaldet",
+                              "Registrering af SFE som Hovedejendom for ejerlejlighedsfællesskab tilkommet",
+                              "Noteringsændring på Jordstykke",
+                              "Jordstykke(r) bortfaldet",
+                              "Noteringsændring på ejendom",
+                              "Jordstykke(r) tilkommet"
+                            ]
+                          }
+                        },
+                        "forretningsomraade": {
+                          "description": "EAID_6A42FB88_BF98_4feb_BE05_CA6D71AFA343",
+                          "enum": [
+                            "52.20.05"
+                          ],
+                          "title": "forretningsomraade",
+                          "type": "string"
+                        },
+                        "forretningsproces": {
+                          "description": "EAID_3F933144_5FA8_49c1_A55B_DFEC76E25240",
+                          "enum": [
+                            "Anden sagskategori",
+                            "Matrikulær sag",
+                            "Kvalitetsforbedring af matriklen",
+                            "Minirenovering",
+                            "Klitfredning",
+                            "Strandbeskyttelse",
+                            "Fredskov",
+                            "Majoratskov",
+                            "Stormfald",
+                            "Landbrug",
+                            "Arbejderbolig",
+                            "Jordrente",
+                            "Amts- og kommunegrænse",
+                            "Sognegrænse",
+                            "Jordfordeling",
+                            "Ekspropriation",
+                            "Tilbageførselssag",
+                            "Ejerlejlighedssag",
+                            "Ikke beskikkelseskrævende ændringssag",
+                            "Bygning på fremmed grund fra kommune",
+                            "Bygning på fremmed grund fra landinspektør",
+                            "Bygning på havet",
+                            "Kombinationssag - Ejerlejlighed",
+                            "Kombinationssag - Bygning på fremmed grund"
+                          ],
+                          "title": "forretningsproces",
+                          "type": "string"
+                        },
+                        "fredskov": {
+                          "description": "EAID_8A74EF00_4E61_453f_BEE4_9E4E410FB386",
+                          "title": "fredskov",
+                          "required": [
+                            "fredskovsareal",
+                            "omfang"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "fredskovsareal": {
+                              "description": "EAID_8A74EF00_4E61_453f_BEE4_9E4E410FB386.EAID_F6E62878_D147_4efe_88A1_FFC5535F2125",
+                              "title": "fredskovsareal",
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "omfang": {
+                              "description": "EAID_8A74EF00_4E61_453f_BEE4_9E4E410FB386.EAID_C2E00FF5_1F49_4b1a_9128_E1B751A3FD3F",
+                              "enum": [
+                                "hel",
+                                "delvis",
+                                "ukendt",
+                                null
+                              ],
+                              "title": "omfang",
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          }
+                        },
+                        "id_lokalId": {
+                          "description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_9AB90AE0_9F85_4164_9B25_8EB2139D65A5",
+                          "title": "id_lokalId",
+                          "type": "string"
+                        },
+                        "id_namespace": {
+                          "description": "EAID_57428AF0_E57B_40ff_9680_DBA58BD0BAB0.EAID_6CEB0356_5CBF_4159_B96B_A2489DD2DAC8",
+                          "title": "id_namespace",
+                          "type": "string"
+                        },
+                        "jordrente": {
+                          "description": "EAID_53924590_56E3_4b1f_A241_A86B2B33CB85",
+                          "type": "object",
+                          "required": [
+                            "omfang"
+                          ],
+                          "properties": {
+                            "omfang": {
+                              "description": "EAID_C2F78E9F_A745_4f52_A9E7_5D90D3A471DD",
+                              "title": "omfang",
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "enum": [
+                                "hel",
+                                "delvis",
+                                "ukendt",
+                                null
+                              ]
+                            }
+                          }
+                        },
+                        "klitfredning": {
+                          "description": "EAID_0A172EF2_2E17_4d86_847A_24DA11F81A44",
+                          "type": ["object", "null"],
+                          "required": [
+                            "klitfredningsareal",
+                            "omfang"
+                          ],
+                          "properties": {
+                            "klitfredningsareal": {
+                              "description": "EAID_0A172EF2_2E17_4d86_847A_24DA11F81A44.EAID_B77251E1_E5E8_402f_84E7_8AB7A69C6AA3",
+                              "title": "klitfredningsareal",
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "omfang": {
+                              "description": "EAID_0A172EF2_2E17_4d86_847A_24DA11F81A44.EAID_09A8A1E7_17BC_40ba_9EC0_4ACD57512DCD",
+                              "title": "omfang",
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "enum": [
+                                "hel",
+                                "delvis",
+                                "ukendt",
+                                null
+                              ]
+                            }
+                          }
+                        },
+                        "kommuneLokalId": {
+                          "description": "EAID_dst28DB7F_1A26_4256_9DB0_69BEED67A0AF",
+                          "title": "kommuneLokalId",
+                          "type": "string"
+                        },
+                        "majoratskov": {
+                          "description": "EAID_E17E1EC1_E476_4dcf_B897_8965F50C34D",
+                          "required": [
+                            "majoratskovsnummer",
+                            "omfang"
+                          ],
+                          "type": ["object", "null"],
+                          "properties": {
+                            "majoratskovsnummer": {
+                              "description": "EAID_E17E1EC1_E476_4dcf_B897_8965F50C34D.EAID_459B33AF_6C50_49da_80FA_275C872A4F40",
+                              "title": "majoratskovsnummer",
+                              "type": [
+                                "integer",
+                                "null"
+                              ]
+                            },
+                            "omfang": {
+                              "description": "EAID_E17E1EC1_E476_4dcf_B897_8965F50C34D.EAID_95B15AA8_26EA_4e21_9062_8D2DE06E629E",
+                              "title": "omfang",
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "enum": [
+                                "hel",
+                                "delvis",
+                                "ukendt",
+                                null
+                              ]
+                            }
+                          }
+                        },
+                        "matrikelnummer": {
+                          "description": "EAID_9C0920E3_3534_492a_978A_D6ED7344379B",
+                          "title": "matrikelnummer",
+                          "type": "string"
+                        },
+                        "paataenktHandling": {
+                          "description": "EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6",
+                          "enum": [
+                            "Ændring",
+                            "Nyoprettelse",
+                            "Udgår",
+                            null
+                          ],
+                          "title": "paataenktHandling",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "regionLokalId": {
+                          "description": "EAID_dst49D5E7_250D_4585_BC44_77E897880EA5",
+                          "title": "regionLokalId",
+                          "type": "string"
+                        },
+                        "registreretAreal": {
+                          "description": "EAID_4D421096_4DDB_495c_9CD4_5CADF0C9CB3C",
+                          "title": "registreretAreal",
+                          "type": "number"
+                        },
+                        "registreringFra": {
+                          "description": "EAID_F51B090F_487A_461f_B6D7_791BB28665B2",
+                          "format": "date-time",
+                          "title": "registreringFra",
+                          "type": "string"
+                        },
+                        "registreringTil": {
+                          "description": "EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94",
+                          "format": "date-time",
+                          "title": "registreringTil",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "registreringsaktoer": {
+                          "description": "EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8",
+                          "title": "registreringsaktoer",
+                          "type": "string"
+                        },
+                        "samletFastEjendomBFEnummer": {
+                          "description": "EAID_dst4D3E5E_84EF_4d87_85F6_8B46883C79F9",
+                          "title": "samletFastEjendomBFEnummer",
+                          "type": "integer"
+                        },
+                        "senesteSagLokalId": {
+                          "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                          "title": "senesteSagLokalId",
+                          "type": "string"
+                        },
+                        "skelforretningssagsLokalId": {
+                          "description": "EAID_dst0B3D61_0A61_49ca_92F3_8DC72D4357ED",
+                          "title": "skelforretningssagsLokalId",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "sognLokalId": {
+                          "description": "EAID_dst1C708E_15F0_4f57_8B4D_BA2F8BE0D3A9",
+                          "title": "sognLokalId",
+                          "type": "string"
+                        },
+                        "stammerFraJordstykkeLokalId": {
+                          "description": "EAID_dst6F5F38_6F41_44e6_99E6_A9E22727B446",
+                          "title": "stammerFraJordstykkeLokalId",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "status": {
+                          "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                          "enum": [
+                            "Gældende",
+                            "Foreløbig",
+                            "Historisk",
+                            "Ikke Gennemført"
+                          ],
+                          "title": "status",
+                          "type": "string"
+                        },
+                        "stormfald": {
+                          "description": "EAID_BF54A862_3E4D_4cb6_A120_FB220522C207",
+                          "title": "stormfald",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "SNSJournalNummer",
+                              "betalingsdato",
+                              "omfang",
+                              "ophoersdato",
+                              "tilskudstype"
+                            ],
+                            "properties": {
+                              "SNSJournalNummer": {
+                                "description": "EAID_6193F572_CD8C_49ce_A848_9B5F5A5D817D",
+                                "title": "SNSJournalNummer",
+                                "type": "string"
+                              },
+                              "betalingsdato": {
+                                "description": "EAID_77A2B1F9_4735_4b02_A382_655F91BB351D",
+                                "format": "date-time",
+                                "title": "betalingsdato",
+                                "type": "string"
+                              },
+                              "omfang": {
+                                "description": "EAID_59A56DCD_44E8_446e_B670_F2EAC7A9F912",
+                                "enum": [
+                                  "hel",
+                                  "delvis",
+                                  "ukendt"
+                                ],
+                                "title": "omfang",
+                                "type": "string"
+                              },
+                              "ophoersdato": {
+                                "description": "EAID_25937890_FAD8_4faa_9C68_0D4805683198",
+                                "format": "date-time",
+                                "title": "ophoersdato",
+                                "type": "string"
+                              },
+                              "tilskudstype": {
+                                "description": "EAID_5621D8A4_07C4_4373_8B1C_E54BB93F24D1",
+                                "enum": [
+                                  "1: Tilskud til oprydning",
+                                  "2: Tilskud til gentilplantning"
+                                ],
+                                "title": "tilskudstype",
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "strandbeskyttelse": {
+                          "description": "EAID_8CA23EEC_1E1A_43d2_8360_A02084B2BEC2",
+                          "title": "strandbeskyttelse",
+                          "type": ["object", "null"],
+                          "required": [
+                            "omfang",
+                            "strandbeskyttelsesareal"
+                          ],
+                          "properties": {
+                            "omfang": {
+                              "description": "EAID_8CA23EEC_1E1A_43d2_8360_A02084B2BEC2.EAID_B9F19F99_4AFE_40b8_8604_B752F1BE3ABD",
+                              "enum": [
+                                "hel",
+                                "delvis",
+                                "ukendt",
+                                null
+                              ],
+                              "title": "omfang",
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "strandbeskyttelsesareal": {
+                              "description": "EAID_8CA23EEC_1E1A_43d2_8360_A02084B2BEC2.EAID_104C76A0_F515_444d_BD56_3E0888BA4C13",
+                              "title": "strandbeskyttelsesareal",
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          }
+                        },
+                        "supplerendeMaalingSagLokalId": {
+                          "description": "EAID_dst6958C9_2DE8_4a3f_A3E0_067F58B5D606",
+                          "title": "supplerendeMaalingSagLokalId",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "vandarealinkludering": {
+                          "description": "EAID_21A2A28C_6C11_40cb_8277_D2FD898F903F",
+                          "enum": [
+                            "inklusiv",
+                            "eksklusiv",
+                            "ukendt"
+                          ],
+                          "title": "vandarealinkludering",
+                          "type": "string"
+                        },
+                        "vejareal": {
+                          "description": "EAID_1D34F1EC_2A4A_4671_8A0F_A741BAF2FCDB",
+                          "title": "vejareal",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "vejarealberegningsstatus": {
+                          "description": "EAID_F2B695DC_7929_4c07_B61C_E49B8CDC14D1",
+                          "enum": [
+                            "vejareal beregnet",
+                            "vejareal ej beregnet",
+                            "ukendt vejareal"
+                          ],
+                          "title": "vejarealberegningsstatus",
+                          "type": "string"
+                        },
+                        "virkningFra": {
+                          "description": "EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC",
+                          "format": "date-time",
+                          "title": "virkningFra",
+                          "type": "string"
+                        },
+                        "virkningTil": {
+                          "description": "EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5",
+                          "format": "date-time",
+                          "title": "virkningTil",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "virkningsaktoer": {
+                          "description": "EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B",
+                          "title": "virkningsaktoer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "landbrugsnotering": {
+                "description": "EAID_EEB149CE_6F5F_4b63_82C0_D02D9CDA4979",
+                "enum": [
+                  "FamilieBrug",
+                  "Landbrug",
+                  "LandbrugUdenBygning",
+                  null
+                ],
+                "title": "landbrugsnotering",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "paataenktHandling": {
+                "description": "EAID_D38C4D27_B57C_4356_89E1_05E8DA0250B6",
+                "enum": [
+                  "Ændring",
+                  "Nyoprettelse",
+                  "Udgår",
+                  null
+                ],
+                "title": "paataenktHandling",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "registreringFra": {
+                "description": "EAID_F51B090F_487A_461f_B6D7_791BB28665B2",
+                "format": "date-time",
+                "title": "registreringFra",
+                "type": "string"
+              },
+              "registreringTil": {
+                "description": "EAID_0B40190D_F1B6_4790_8CF5_42999F64BD94",
+                "format": "date-time",
+                "title": "registreringTil",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "registreringsaktoer": {
+                "description": "EAID_496B551A_9228_41d0_A48A_FB6675B3CBE8",
+                "title": "registreringsaktoer",
+                "type": "string"
+              },
+              "senesteSagLokalId": {
+                "description": "EAID_dst2BA506_3869_47db_8031_E43333FA718F",
+                "title": "senesteSagLokalId",
+                "type": "string"
+              },
+              "status": {
+                "description": "EAID_7B734023_916B_432b_A740_756CC2EBBAE8",
+                "enum": [
+                  "Gældende",
+                  "Foreløbig",
+                  "Historisk",
+                  "Ikke Gennemført"
+                ],
+                "title": "status",
+                "type": "string"
+              },
+              "udskiltVej": {
+                "description": "EAID_ABBFDAC1_EA41_4086_BAA6_82272839F811",
+                "title": "udskiltVej",
+                "type": "boolean"
+              },
+              "virkningFra": {
+                "description": "EAID_D679F4FE_2378_4115_8E7E_2374F419C1CC",
+                "format": "date-time",
+                "title": "virkningFra",
+                "type": "string"
+              },
+              "virkningTil": {
+                "description": "EAID_78C7DF8E_3F5A_42e5_AAD4_70B83A2AC3A5",
+                "format": "date-time",
+                "title": "virkningTil",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "virkningsaktoer": {
+                "description": "EAID_15E2E7DB_B269_412a_BB10_7F60B4A3E73B",
+                "title": "virkningsaktoer",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

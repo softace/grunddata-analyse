@@ -1,0 +1,3175 @@
+MAP
+ NAME "Matrikel_gis_NOHIST"
+ PROJECTION 
+   "init=epsg:25832" 
+ END
+ EXTENT 120000 5900000 1000000 6500000
+ MAXSIZE 10000
+ 
+ #SHAPEPATH ""
+ FONTSET "./MatrikelGaeldendeOgForeloebig-fontset.txt" 
+ SYMBOLSET "./MatrikelGaeldendeOgForeloebig-symbolset.map"
+ STATUS ON
+ UNITS METERS
+ DEBUG 5
+ CONFIG "ON_MISSING_DATA" "FAIL"
+ CONFIG "MS_ERRORFILE" "maperror_Matrikel_gis_NOHIST.log"
+ WEB
+   IMAGEPATH "/local/tmp_ms/"
+   #IMAGEURL "/tmp/tmp_ms/"
+   TEMPPATH "/local/tmp_ms/"
+   METADATA 
+     "wms_title" "Matrikel_gis_NOHIST"
+     "wms_srs" "EPSG:4326 EPSG:4258 EPSG:25832 EPSG:25833 EPSG:32632 EPSG:32633 EPSG:4093 EPSG:4094 EPSG:4095 EPSG:4096 EPSG:3395 EPSG:3857"
+     "wms_bbox_extended" "TRUE"
+     "wms_getmap_formatlist" "image/jpeg,image/png,image/png; mode=8bit,image/gif"
+     "ows_enable_request" "*"
+     #"wms_feature_info_mime_type" "text/plain,text/html,application/vnd.ogc.gml" #udkommenteret sålænge HTML-template ikke er etableret
+     "wms_feature_info_mime_type" "text/plain,application/vnd.ogc.gml"
+     "ows_sld_enabled" "true"
+     "wms_encoding" "utf-8"
+   END
+ END
+ 
+#Test af forskellen mellem udregning af målestok i ArcGIS og MapServer, viser at en god tilnærmelse kan være en divisor på:
+#1.33139
+#Således at en målestoksangivelse i en mxd-fil skal deles med 1.33139 for anvendelse i MapServer
+ 
+ 
+ LAYER #Centroide_f
+   NAME "Centroide_Foreloebig"
+   #GROUP "25"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.CENTROIDE_F USING UNIQUE OBJECTID SRID 25832"
+   TEMPLATE "./templates/mat_pg-centroide.html"
+   EXTENT 120000 5900000 1000000 6500000
+   LABELITEM "MATRIKELNUMMER"
+   CLASSITEM "PAATAENKTHANDLING"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  7511
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 7511 
+   METADATA
+     "wms_title" "Centroide, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_pointproperty_type" "point"
+   END # METADATA
+   CLASS
+     NAME "Nyoprettet centroide"
+	 GROUP "default"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 0 255 0
+      #FONT "matrik" # nyoprettede centroider kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  FONT "arial-italic"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     NAME "Ændret centroide"
+	 GROUP "default"
+	 EXPRESSION "Ændring"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR  255 170 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     NAME "Centroide udgår"
+	 GROUP "default"
+	 EXPRESSION "Udgår"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR  255 0 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Gule_centroider_foreloebig"
+	 NAME "Centroide, gul, foreløbig"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 255 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Roede_centroider"
+	 NAME "Centroide, rød, foreløbig"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 0 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Hvide_centroider"
+	 NAME "Centroide, hvid, foreløbig"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 255 255
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Sorte_centroider"
+	 NAME "Centroide, sort, foreløbig"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 0 0 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS false
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS   
+ END # LAYER
+
+ LAYER #Centroide_g
+   NAME "Centroide_Gaeldende"
+   #GROUP "25"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.CENTROIDE_G USING UNIQUE OBJECTID SRID 25832"
+   TEMPLATE "./templates/mat_pg-centroide.html"
+   EXTENT 120000 5900000 1000000 6500000
+   LABELITEM "MATRIKELNUMMER"
+   #layerstoerrelse 5000
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  7511
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 7511 
+   METADATA
+     "wms_title" "Centroide, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_pointproperty_type" "point"
+   END # METADATA
+   CLASS
+     NAME "Centroide"
+	 GROUP "default"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 0 0 255
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Gule_centroider"
+	 NAME "Centroide, gul"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 255 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Roede_centroider"
+	 NAME "Centroide, roed"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 0 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Hvide_centroider"
+	 NAME "Centroide, hvid"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 255 255 255
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS FALSE
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Sorte_centroider"
+	 NAME "Centroide, sort"
+	 STYLE
+     END # STYLE
+	 LABEL
+       COLOR 0 0 0
+       FONT "matrik"
+       TYPE truetype
+       SIZE 9
+       PARTIALS false
+	   #MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto 
+	   #FORCE true
+	 END # LABEL
+   END # CLASS   
+ END # LAYER
+
+ LAYER #Skelpunkt
+   NAME "Skelpunkt_Foreloebig"
+   #GROUP "20"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.SKELPUNKT_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-skelpunkt.html"
+   #layerstoerrelse 5000
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  11266
+   METADATA
+     "wms_title" "Skelpunkt, foreløbig"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_GEOMETRI_type" "point"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet skelpunkt"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 255 0
+	   SYMBOL "circle_empty"
+	   SIZE 5
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Ændret skelpunkt"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 170 0
+	   SYMBOL "circle_empty"
+	   SIZE 5
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Skelpunkt udgår"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   SYMBOL "circle_empty"
+	   SIZE 5
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "produktionsmetode"
+	 NAME "Skelpunkt"
+	 EXPRESSION ('[PRODUKTIONSMETODE]' != 'Indlagt med koordinaterne fra en skelmåling - MI')
+	 STYLE
+	   COLOR 0 0 0
+	   SYMBOL "circle_filled"
+       SIZE 4
+	   WIDTH 1
+     END # STYLE
+   END # CLASS
+   CLASS 
+     GROUP "produktionsmetode"
+	 NAME "Indlagt med koordinaterne fra en skelmåling - MI"
+     EXPRESSION ('[PRODUKTIONSMETODE]' = 'Indlagt med koordinaterne fra en skelmåling - MI')
+	 STYLE
+	   COLOR 0 0 0
+	   SYMBOL "circle_empty"
+       SIZE 5
+	   WIDTH 0.7
+     END # STYLE
+   END # CLASS
+ END # LAYER 
+ 
+ LAYER #Skelpunkt
+   NAME "Skelpunkt_Gaeldende"
+   #GROUP "20"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.SKELPUNKT_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-skelpunkt.html"
+   #layerstoerrelse 5000
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  11266
+   METADATA
+     "wms_title" "Skelpunkt, gældende"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_pointproperty_type" "point"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Indlagt ved andre metoder"
+	 EXPRESSION ('[PRODUKTIONSMETODE]' != 'Indlagt med koordinaterne fra en skelmåling - MI')
+	 STYLE
+	   COLOR 0 0 0
+	   SYMBOL "circle_filled"
+       SIZE 4
+	   WIDTH 1
+     END # STYLE
+   END # CLASS
+   CLASS 
+     GROUP "default"
+	 NAME "Indlagt med koordinaterne fra en skelmåling - MI"
+     EXPRESSION ('[PRODUKTIONSMETODE]' = 'Indlagt med koordinaterne fra en skelmåling - MI')
+	 STYLE
+	   COLOR 0 0 0
+	   SYMBOL "circle_empty"
+       SIZE 5
+	   WIDTH 0.7
+     END # STYLE
+   END # CLASS 	 
+   #####
+   ### Valgbar style "punktklasse" på baggrund af værdi i dq_punktklasse (indført til intern brug i Minimaks):
+   ### Blå, stor udfyldt = 1 
+   ### Blå, mindre udfyldt = 2 
+   ### Gul, ring = 3
+   #####
+   ### EXPRESSION (('[dq_prodmetode]' = 'MI') AND (([dq_punktklasse] = 1) OR ([dq_punktklasse] = 2))) # gemt til evt. senere reference
+   #CLASS
+   #  GROUP "punktklasse"
+   #  #NAME "Skelpunkt, punktklasse 1"
+   #  EXPRESSION ('[dq_punktklasse]' = '1')
+   #  STYLE
+   #    COLOR 0 0 255
+   #    SYMBOL "circle_filled"
+   #    SIZE 8
+   #    WIDTH 1
+   #  END # STYLE
+   #END # CLASS
+   #CLASS 
+   #  GROUP "punktklasse"
+   #  #NAME "Skelpunkt, punktklasse 2"
+   #  EXPRESSION ('[dq_punktklasse]' = '2')
+   # STYLE
+   #   COLOR  0 0 255
+   #   SYMBOL "circle_filled"
+   #    SIZE 6
+   #    WIDTH 1
+   #  END # STYLE
+   #END # CLASS
+   #CLASS 
+   #  GROUP "punktklasse"
+   #  #NAME "Skelpunkt, punktklasse 3"
+   #  EXPRESSION ('[dq_punktklasse]' = '3')
+   #  STYLE
+   #    COLOR  190 193 0
+   #    SYMBOL "circle_empty"
+   #    SIZE 5
+   #    WIDTH 0.7
+   #  END # STYLE
+   #END # CLASS
+ END # LAYER 
+ 
+ LAYER #BYGNINGPAAFREMMEDGRUNDPUNKT_F
+   NAME "BygningPaaFremmedGrundPunkt_Foreloebig"
+   #GROUP "24"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDPUNKT_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "./templates/dummy.html"
+   LABELITEM "BFENUMMER"
+   CLASSITEM "PAATAENKTHANDLING"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  11266
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 11266
+   METADATA
+     "wms_title" "Bygning på fremmed grund punkt, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_pointproperty_type" "point"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet BygningPaaFremmedGrundPunkt"
+	 EXPRESSION "Nyoprettelse"
+     LABEL
+	   COLOR 0 109 0 #70 130 180 #190 232 255
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+	   OFFSET 0 1
+       POSITION ur
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+	   FORCE TRUE
+	 END # LABEL
+     STYLE
+	   COLOR 0 109 0 #70 130 180 #190 232 255
+       SYMBOL "circle_empty"
+       SIZE 8
+       WIDTH 0.5
+     END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Ændret BygningPaaFremmedGrundPunkt"
+	 EXPRESSION "Ændring"
+     LABEL
+	   COLOR 255 140 0 #70 130 180 #190 232 255
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+	   OFFSET 0 1
+       POSITION ur
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+	   FORCE TRUE
+	 END # LABEL
+     STYLE
+	   COLOR 255 140 0 #70 130 180 #190 232 255
+       SYMBOL "circle_empty"
+       SIZE 8
+       WIDTH 0.5
+     END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "BygningPaaFremmedGrundPunkt udgår"
+	 EXPRESSION "Udgår"
+     LABEL
+	   COLOR 255 0 0 #70 130 180 #190 232 255
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+	   OFFSET 0 1
+       POSITION ur
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+	   FORCE TRUE
+	 END # LABEL
+     STYLE
+	   COLOR 255 0 0 #70 130 180 #190 232 255
+       SYMBOL "circle_empty"
+       SIZE 8
+       WIDTH 0.5
+     END # STYLE
+   END # CLASS
+ END # LAYER    
+ 
+
+ LAYER #BYGNINGPAAFREMMEDGRUNDPUNKT_G
+   NAME "BygningPaaFremmedGrundPunkt_Gaeldende"
+   #GROUP "24"
+   TYPE point
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDPUNKT_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "./templates/dummy.html"
+   LABELITEM "BFENUMMER"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  11266
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 11266
+   METADATA
+     "wms_title" "Bygning på fremmed grund punkt, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_pointproperty_type" "point"
+   END # METADATA
+   CLASS
+	 NAME "BygningPaaFremmedGrundPunkt"
+     LABEL
+	   COLOR 70 130 180 #190 232 255
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+	   OFFSET 0 1
+       POSITION ur
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+	   FORCE TRUE
+	 END # LABEL
+     STYLE
+	   COLOR 70 130 180 #190 232 255
+       SYMBOL "circle_empty"
+       SIZE 8
+       WIDTH 0.5
+     END # STYLE
+   END # CLASS
+ END # LAYER    
+ 
+ LAYER #BYGNINGPAAFREMMEDGRUNDFLADE_F
+   NAME "BygningPaaFremmedGrundFlade_Foreloebig"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDFLADE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Bygning på fremmed grund (flade), foreløbig"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     #"gml_geometries" "geometri"
+     #"gml_surfaceproperty_type" "polygon"
+   END # METADATA 
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet Bygning på fremmed grund (flade)"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 109 0 #190 232 255
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+	 NAME "Ændret Bygning på fremmed grund (flade)"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0 #190 232 255
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+	 NAME "Bygning på fremmed grund (flade) udgår"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0 #190 232 255
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+ LAYER #BYGNINGPAAFREMMEDGRUNDFLADE_G
+   NAME "BygningPaaFremmedGrundFlade_Gaeldende"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.BYGNINGPAAFREMMEDGRUNDFLADE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Bygning på fremmed grund (flade), gældende"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     "gml_geometries" "geometri"
+     "gml_surfaceproperty_type" "polygon"
+   END # METADATA 
+   CLASS
+   GROUP "default"
+   NAME "Bygning på fremmed grund (flade), gældende"
+	 STYLE
+	   COLOR 190 232 255
+	   OUTLINECOLOR 50 0 0 
+	   WIDTH 0.5
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+ LAYER #EJERLEJLIGHED_F
+   NAME "Ejerlejlighed_Foreloebig"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.EJERLEJLIGHED_F_MV USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Ejerlejlighed, foreløbig"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     "gml_geometries" "GEOMETRI"
+     "gml_GEOMETRI_type" "polygon"
+   END # METADATA 
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet Ejerlejlighed, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 109 0
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+	 NAME "Ændret Ejerlejlighed, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+	 NAME "Ejerlejlighed udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+ LAYER #EJERLEJLIGHED_G
+   NAME "Ejerlejlighed_Gaeldende"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.EJERLEJLIGHED_G_MV USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Ejerlejlighed, gældende"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     "gml_geometries" "GEOMETRI"
+     "gml_GEOMETRI_type" "polygon"
+   END # METADATA 
+   CLASS
+   GROUP "default"
+   NAME "Ejerlejlighed, gældende"
+	 STYLE
+	   COLOR 190 232 255
+	   OUTLINECOLOR 50 0 0 
+	   WIDTH 0.5
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+
+ LAYER #EJERLEJLIGHEDSLOD_F
+   NAME "Ejerlejlighedslod_Foreloebig"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "SDO_GEOMETRY FROM MATRIKEL_GIS.EJERLEJLIGHEDSLOD_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Ejerlejlighedslod, foreløbig"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     "gml_geometries" "SDO_GEOMETRY"
+     "gml_SDO_GEOMETRY_type" "polygon"
+   END # METADATA 
+   CLASS
+     GROUP "default"
+     NAME "Nyoprettet Ejerlejlighedslod, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+     STYLE
+   	   COLOR 0 109 0
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+     NAME "Ændret Ejerlejlighedslod, foreløbig"
+	 EXPRESSION "Ændring"
+     STYLE
+   	   COLOR 255 140 0
+	 END # STYLE
+   END # CLASS 
+   CLASS
+     GROUP "default"
+     NAME "Ejerlejlighedslod udgår, foreløbig"
+	 EXPRESSION "Udgår"
+     STYLE
+   	   COLOR 255 0 0
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+ LAYER #EJERLEJLIGHEDSLOD_G
+   NAME "Ejerlejlighedslod_Gaeldende"
+   #GROUP "0"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"
+   DATA "SDO_GEOMETRY FROM MATRIKEL_GIS.EJERLEJLIGHEDSLOD_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   #TEMPLATE "blank.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  80000
+   METADATA
+     "wms_title" "Ejerlejlighedslod, gældende"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+     "gml_geometries" "SDO_GEOMETRY"
+     "gml_SDO_GEOMETRY_type" "polygon"
+   END # METADATA 
+   CLASS
+   GROUP "default"
+   NAME "Ejerlejlighedslod, gældende"
+	 STYLE
+	   COLOR 190 232 255
+	   OUTLINECOLOR 50 0 0 
+	   WIDTH 0.5
+	 END # STYLE
+   END # CLASS 
+ END # LAYER
+
+ LAYER #Kommune
+   NAME "Matrikelkommune_Foreloebig"
+   #GROUP "2"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELKOMMUNE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-kommune.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  6000000
+   LABELITEM "KOMMUNENAVN"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150220
+   METADATA
+     "wms_title" "Matrikelkommune, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_GEOMETRI_type" "polygon"
+   END # METADATA
+   CLASS
+     GROUP "default"
+     NAME "Nyoprettet Matrikelkommune, Foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 0 109 0 
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 0 109 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Ændret Matrikelkommune, Foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 255 140 0 
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 140 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Matrikelkommune Udgår, Foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 255 0 0 
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Matrikelkommune_foreloebig_transparent"
+     NAME "Foreløbig kommune, transparent"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 0 0 0
+	   OPACITY 35  
+	   WIDTH 0.5
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END # LAYER
+
+ LAYER #Kommune
+   NAME "Matrikelkommune_Gaeldende"
+   #GROUP "2"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELKOMMUNE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-kommune.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  6000000
+   LABELITEM "KOMMUNENAVN"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150220
+   METADATA
+     "wms_title" "Matrikelkommune, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END # METADATA
+   CLASS
+     GROUP "default"
+     NAME "Kommune"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 0 0 0 
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Matrikelkommune_gaeldende_transparent"
+     NAME "Kommune, transparent"
+	 STYLE
+	   COLOR 233 255 190
+	   OUTLINECOLOR 0 0 0
+	   OPACITY 35  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial"
+       TYPE truetype
+       SIZE 10
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END # LAYER
+
+ LAYER #Sogn
+   NAME "Matrikelsogn_Foreloebig"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELSOGN_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-sogn.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "SOGNENAVN"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Sogn, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Nyoprettet Sogn, Foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 0 109 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 0 109 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Ændret Sogn, Foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 255 140 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 140 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Sogn Udgår, Foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 255 0 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Sogn_foreloebig_transparent"
+     NAME "Sogn, Foreløbig, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #Sogn
+   NAME "Matrikelsogn_Gaeldende"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELSOGN_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-sogn.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "SOGNENAVN"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Sogn, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Sogn"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Matrikelsogn_gaeldende_transparent"
+     NAME "Sogn, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #Samletfastejendom_Foreloebig
+   NAME "Samletfastejendom_Foreloebig"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.SAMLETFASTEJENDOM_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/dummy.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "BFENUMMER"
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Samlet fast ejendom, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_GEOMETRI_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Nyoprettet Samlet Fast Ejendom, Foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 0 109 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 0 109 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Ændret Samlet Fast Ejendom, Foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 255 140 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 140 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+     NAME "Samlet Fast Ejendom Udgår, Foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 255 0 0  
+	   WIDTH 1
+	 END # STYLE
+     LABEL
+       COLOR 255 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "SamletFastEjendom_Foreloebig_transparent"
+     NAME "Samlet fast ejendom, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #SamletFastEjendom_Gaeldende
+   NAME "SamletFastEjendom_Gaeldende"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.SAMLETFASTEJENDOM_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/dummy.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "BFENUMMER"
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Samlet fast ejendom, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Samlet fast ejendom"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "SamletFastEjendom_transparent"
+     NAME "Samlet fast ejendom, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #MatrikulaerSag_Afsluttet
+   NAME "MatrikulaerSag_Afsluttet"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKULAERSAG_A USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/dummy.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "MATRIKELMYNDIGHEDENSJOURNALNUM"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Matrikulær sag, afsluttet"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Matrikulær sag"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "MatrikulaerSagAfsluttet_transparent"
+     NAME "Afsluttet matrikulær sag, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #MatrikulaerSag_Igangvarende
+   NAME "MatrikulaerSag_Igangvaerende"
+   #GROUP "3"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKULAERSAG_I USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/dummy.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  375547
+   LABELITEM "MATRIKELMYNDIGHEDENSJOURNALNUM"
+   LABELMINSCALEDENOM 18777
+   LABELMAXSCALEDENOM 150222
+   METADATA
+     "wms_title" "Matrikulær sag, igangværende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     GROUP "default"
+     NAME "Afsluttet matrikulær sag"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "MatrikulaerSag_Afsluttet_transparent"
+     NAME "Afsluttet matrikulær sag, transparent"
+	 STYLE
+	   COLOR 217 245 208
+	   OUTLINECOLOR 110 110 110
+	   OPACITY 35  
+	   WIDTH 0.5
+	 END # STYLE
+     LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 13
+       POSITION AUTO
+       PARTIALS FALSE
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+ END 
+ 
+ LAYER #Ejerlav
+   NAME "Ejerlav_Foreloebig"
+   #GROUP "4"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.EJERLAV_F USING UNIQUE OBJECTID SRID 25832"
+   #CLASSITEM "PAATAENKTHANDLING" EJERLAV_F har ikke denne kolonne
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-ejerlav.html"
+   LABELITEM "EJERLAVSNAVN"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  187773
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 26289
+   #!!#OFFSITE 254 254 254 # benyttes til 100% transparent fyld i "Jordstykke, farve" GetLegendGraphics
+   METADATA
+     "wms_title" "Ejerlav, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+	 GROUP "default"
+     NAME "Ejerlav, foreløbig"
+	 #EXPRESSION 
+	 STYLE
+	   COLOR 255 255 190
+	   OUTLINECOLOR 110 110 110 
+	   WIDTH 0.5
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+	 LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Gule_Foreloebige_Ejerlav"
+     NAME "Foreløbige Ejerlav, gul"
+	 STYLE
+	   OUTLINECOLOR 255 255 0	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	 END
+	 LABEL
+       COLOR 255 255 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Roede_Foreloebige_Ejerlav"
+     NAME "Foreløbige Ejerlav, roed"
+	 STYLE
+	   OUTLINECOLOR 255 0 0
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 255 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Hvide_Foreloebige_Ejerlav"
+     NAME "Foreløbige Ejerlav, hvid"
+	 STYLE
+	   OUTLINECOLOR 255 255 255
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 255 255 255
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Sorte_Foreloebige_Ejerlav"
+     NAME "Foreløbige Ejerlav, sort"
+	 STYLE
+	   OUTLINECOLOR 0 0 0
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS   
+ END 
+
+ LAYER #Ejerlav
+   NAME "Ejerlav_Gaeldende"
+   #GROUP "4"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.EJERLAV_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-ejerlav.html"
+   LABELITEM "EJERLAVSNAVN"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  187773
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 26289
+   #!!#OFFSITE 254 254 254 # benyttes til 100% transparent fyld i "Jordstykke, farve" GetLegendGraphics
+   METADATA
+     "wms_title" "Ejerlav, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+	 GROUP "default"
+     NAME "Ejerlav, foreløbig"
+	 STYLE
+	   COLOR 255 255 190
+	   OUTLINECOLOR 110 110 110 
+	   WIDTH 0.5
+	 END # STYLE
+	 LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Gule_Ejerlav_Foreloebig"
+     NAME "Ejerlav, foreloebig, gul"
+	 STYLE
+	   OUTLINECOLOR 255 255 0	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	 END
+	 LABEL
+       COLOR 255 255 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Roede_Ejerlav_Foreloebig"
+     NAME "Ejerlav, foreløbig, rød"
+	 STYLE
+	   OUTLINECOLOR 255 0 0
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 255 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Hvide_Ejerlav_Foreloebig"
+     NAME "Ejerlav, foreloebig, hvid"
+	 STYLE
+	   OUTLINECOLOR 255 255 255
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 255 255 255
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS
+   CLASS
+	 GROUP "Sorte_Ejerlav_Foreloebig"
+     NAME "Ejerlav, foreløbig, sort"
+	 STYLE
+	   OUTLINECOLOR 0 0 0
+       #!!#COLOR 254 254 254	   
+	   WIDTH 1
+     END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	 LABEL
+       COLOR 0 0 0
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       POSITION auto
+       PARTIALS false
+	   MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       #MINFEATURESIZE auto #sætter kun labels, hvis de kan være inden for polygonens bbox
+	 END # LABEL
+   END # CLASS   
+ END 
+ 
+ 
+ LAYER #NulLinie i Nissum Fjord
+   NAME "NulLinie_Foreloebig"
+   #GROUP "30"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.NULLINJE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "NulLinie, foreløbig"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet NulLinie, foreløbig"
+	 EXPRESSION "Nyoprettet"
+	 STYLE
+	   COLOR 0 109 0
+	   WIDTH 2
+           LINECAP butt
+           PATTERN 10 5 3 5 END
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Ændret NulLinie, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	   WIDTH 2
+           LINECAP butt
+           PATTERN 10 5 3 5 END
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "NulLinie Udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 2
+           LINECAP butt
+           PATTERN 10 5 3 5 END
+	 END # STYLE
+   END # CLASS
+ END
+ 
+ LAYER #NulLinie i Nissum Fjord
+   NAME "NulLinie_Gaeldende"
+   #GROUP "30"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.NULLINJE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "NulLinie, gældende"
+     "wms_srs" "EPSG:25832"
+     "ows_include_items" "all"
+   END # METADATA
+   CLASS
+	 NAME "NulLinie"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 2
+           LINECAP butt
+           PATTERN 10 5 3 5 END
+	 END # STYLE
+   END # CLASS
+ END
+
+ LAYER #MatrikelSkel
+   NAME "MatrikelSkel_Foreloebig"
+   #GROUP "19"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELSKEL_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-matrikelskel.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555  
+   CLASSITEM "PAATAENKTHANDLING" 
+   METADATA
+     "wms_title" "MatrikelSkel, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Nyoprettet Skel, foreløbig"
+	 EXPRESSION "Nyoprettet"
+	 STYLE
+	   COLOR 0 109 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Ændret Skel, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Skel Udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   
+   CLASS
+	 GROUP "Gule_skel_foreloebig"
+	 NAME "Skel, foreløbig, gul"
+	 STYLE
+	   COLOR 255 255 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Roede_skel_foreloebig"
+	 NAME "Skel, foreløbig, rød"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Hvide_skel_foreloebig"
+	 NAME "Skel, foreløbig, hvid"
+	 STYLE
+	   COLOR 255 255 255
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Sorte_skel_foreloebig"
+	 NAME "Skel, foreløbig, sort"
+	 STYLE
+	   COLOR 0 0 0
+	   WIDTH 1
+   	 END # STYLE
+   END # CLASS
+  END # LAYER 
+
+ LAYER #MatrikelSkel
+   NAME "MatrikelSkel_Gaeldende"
+   #GROUP "19"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.MATRIKELSKEL_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-matrikelskel.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555  
+   #CLASSITEM 'featurecode' 
+   CLASSITEM "SKELTYPE"
+   METADATA
+     "wms_title" "MatrikelSkel, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_GEOMETRI_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Skel generelt"
+	 #EXPRESSION "9011"		# "Skel i øvrigt" (Skel generelt)
+	 EXPRESSION "Almindeligt"
+	 STYLE
+	   COLOR 0 0 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 #NAME "Ejd.gr. i vandloeb og soe"
+	 NAME "Midtlinie"
+	 #EXPRESSION "9014"	# "Grænse i vandløb og sø" (Ejd.gr. i vandløb og sø)
+	 EXPRESSION "Midtlinie"
+	 STYLE
+	   COLOR 115 178 255
+	   WIDTH 0.75
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Kystlinie"
+	 #EXPRESSION "9016" # "Kystlinie" (Kystlinie)
+	 EXPRESSION "Kystlinje"
+	 STYLE
+	   COLOR 115 178 255
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Graense mod soe"
+	 #EXPRESSION "9015" # "Grænse mod søer" (Grænse mod søer)
+	 EXPRESSION "Søgrænse"
+	 STYLE
+	   COLOR 115 178 255
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Skel for jernbane"
+	 #EXPRESSION "9013" # "Skel for jernbane"
+	 EXPRESSION "Jernbane"
+	 STYLE
+	   COLOR 130 130 130
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Skel for udskilt vej og gadejord"
+	 #EXPRESSION "9012" # Skel for udskilt vej og gadejord
+	 EXPRESSION "VejogGade"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+  
+   CLASS
+	 GROUP "Gule_skel"
+	 NAME "Skel, gul"
+	 #EXPRESSION ([featurecode] = 9011 or [featurecode] = 9012 or [featurecode] = 9013 or [featurecode] = 9014 or [featurecode] = 9015 or [featurecode] = 9016)
+	 STYLE
+	   COLOR 255 255 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Roede_skel"
+	 NAME "Skel, roed"
+	 #EXPRESSION ([featurecode] = 9011 or [featurecode] = 9012 or [featurecode] = 9013 or [featurecode] = 9014 or [featurecode] = 9015 or [featurecode] = 9016)
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Hvide_skel"
+	 NAME "Skel, hvid"
+	 #EXPRESSION ([featurecode] = 9011 or [featurecode] = 9012 or [featurecode] = 9013 or [featurecode] = 9014 or [featurecode] = 9015 or [featurecode] = 9016)
+	 STYLE
+	   COLOR 255 255 255
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "Sorte_skel"
+	 NAME "Skel, sort"
+	 #EXPRESSION ([featurecode] = 9011 or [featurecode] = 9012 or [featurecode] = 9013 or [featurecode] = 9014 or [featurecode] = 9015 or [featurecode] = 9016)
+	 STYLE
+	   COLOR 0 0 0
+	   WIDTH 1
+   	 END # STYLE
+   END # CLASS
+  END # LAYER 
+
+ LAYER #Optaget Vej
+   NAME "OptagetVej_Foreloebig"
+   #GROUP "18"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   #DATA "curveproperty from (select coalesce(vejbredde,'1') as vejbredde,kfid,curveproperty from mat.kf_optagetvej_v) as subquery USING UNIQUE kfid USING SRID=25832"
+   ### ovenstående er til forsøg på at vise vejbredde med to decimaler, uden samtidig at vise uønskede nulværdier fra DB
+   DATA "GEOMETRI FROM MATRIKEL_GIS.OPTAGETVEJ_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-optagetvej.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  26288 
+   LABELITEM "VEJBREDDE"   # aktiveres igen hvis "TEXT" i CLASS ikke længere anvendes
+   METADATA
+     "wms_title" "Optaget vej, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet Optaget Vej, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+     #TEXT (tostring([vejbredde],"%.2f")) #altid to decimaler, også .00 
+# Dette gør desværre at også alle nulværdier udstilles. Et sql-filter i DATA-statement kan måske hjælpe...
+	 #TEXT (round([vejbredde],2.5)) #afrunder til et multiplum af anden parameter
+	 #TEXT ({tostring([vejbredde],"%.1f")//./,})
+     STYLE
+       COLOR 0 109 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 0 109 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+	   #OFFSET 0 -7
+       POSITION uc
+	   #REPEATDISTANCE		#[integer] (overvej evt. at aktivere?)
+	   ANGLE auto
+       #PARTIALS false
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet Optaget Vej, foreløbig"
+	 EXPRESSION "Ændring"
+     #TEXT (tostring([vejbredde],"%.2f")) #altid to decimaler, også .00 
+# Dette gør desværre at også alle nulværdier udstilles. Et sql-filter i DATA-statement kan måske hjælpe...
+	 #TEXT (round([vejbredde],2.5)) #afrunder til et multiplum af anden parameter
+	 #TEXT ({tostring([vejbredde],"%.1f")//./,})
+     STYLE
+       COLOR 255 140 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 140 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+	   #OFFSET 0 -7
+       POSITION uc
+	   #REPEATDISTANCE		#[integer] (overvej evt. at aktivere?)
+	   ANGLE auto
+       #PARTIALS false
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Optaget Vej Udgår, foreløbig"
+	 EXPRESSION "Udgår"
+     #TEXT (tostring([vejbredde],"%.2f")) #altid to decimaler, også .00 
+# Dette gør desværre at også alle nulværdier udstilles. Et sql-filter i DATA-statement kan måske hjælpe...
+	 #TEXT (round([vejbredde],2.5)) #afrunder til et multiplum af anden parameter
+	 #TEXT ({tostring([vejbredde],"%.1f")//./,})
+     STYLE
+       COLOR 255 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+	   #OFFSET 0 -7
+       POSITION uc
+	   #REPEATDISTANCE		#[integer] (overvej evt. at aktivere?)
+	   ANGLE auto
+       #PARTIALS false
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Gul_OptagetVej"
+	 NAME "Optaget Vej, gul"
+     STYLE
+       COLOR 255 255 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 255 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Roed_OptagetVej"
+	 NAME "Optaget Vej, roed"
+     STYLE
+       COLOR 255 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Hvid_OptagetVej"
+	 NAME "Optaget Vej, hvid"
+     STYLE
+       COLOR 255 255 255
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 255 255
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Sort_OptagetVej"
+	 NAME "Optaget Vej, sort"
+     STYLE
+       COLOR 0 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 0 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+ END # LAYER   
+  
+ LAYER #Optaget Vej
+   NAME "OptagetVej_Gaeldende"
+   #GROUP "18"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   #DATA "curveproperty from (select coalesce(vejbredde,'1') as vejbredde,kfid,curveproperty from mat.kf_optagetvej_v) as subquery USING UNIQUE kfid USING SRID=25832"
+   ### ovenstående er til forsøg på at vise vejbredde med to decimaler, uden samtidig at vise uønskede nulværdier fra DB
+   DATA "GEOMETRI FROM MATRIKEL_GIS.OPTAGETVEJ_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-optagetvej.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  26288 
+   LABELITEM "VEJBREDDE"   # aktiveres igen hvis "TEXT" i CLASS ikke længere anvendes
+   METADATA
+     "wms_title" "Optaget vej, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Optaget Vej"
+     #TEXT (tostring([vejbredde],"%.2f")) #altid to decimaler, også .00 
+# Dette gør desværre at også alle nulværdier udstilles. Et sql-filter i DATA-statement kan måske hjælpe...
+	 #TEXT (round([vejbredde],2.5)) #afrunder til et multiplum af anden parameter
+	 #TEXT ({tostring([vejbredde],"%.1f")//./,})
+     STYLE
+       COLOR 0 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 0 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+	   #OFFSET 0 -7
+       POSITION uc
+	   #REPEATDISTANCE		#[integer] (overvej evt. at aktivere?)
+	   ANGLE auto
+       #PARTIALS false
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Gul_OptagetVej"
+	 NAME "Optaget Vej, gul"
+     STYLE
+       COLOR 255 255 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 255 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Roed_OptagetVej"
+	 NAME "Optaget Vej, roed"
+     STYLE
+       COLOR 255 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Hvid_OptagetVej"
+	 NAME "Optaget Vej, hvid"
+     STYLE
+       COLOR 255 255 255
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 255 255 255
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+   CLASS
+     GROUP "Sort_OptagetVej"
+	 NAME "Optaget Vej, sort"
+     STYLE
+       COLOR 0 0 0
+       WIDTH 1
+       LINECAP butt
+       PATTERN 
+	     5 2 
+	   END # PATTERN
+     END # STYLE
+	 LABEL
+	   COLOR 0 0 0
+	   FONT "times"
+	   TYPE truetype
+	   SIZE 8
+       POSITION uc
+	   ANGLE auto
+	   MINDISTANCE 100
+	 END # LABEL
+   END # CLASS
+ END # LAYER   
+
+ LAYER #Temalinie
+   NAME "FredskovLinje_Foreloebig"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.FREDSKOVLINJE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Fredskovlinje, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_GEOMETRI_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Nyoprettet fredskovslinje, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 109 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Ændret fredskovlinje, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Fredskovlinje udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+
+ LAYER #Temalinie
+   NAME "FredskovLinje_Gaeldende"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.FREDSKOVLINJE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Fredskovlinje, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Temalinie, fredskov"
+	 STYLE
+	   COLOR 109 187 67
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+
+ LAYER #Temalinie
+   NAME "Klitfredningslinje_Foreloebig"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.KLITFREDNINGLINJE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Klitfredningslinje, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+     GROUP "default"
+	 NAME "Nyoprettet klitfredningslinje, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 109 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Ændret klitfredningslinje, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+     GROUP "default"
+	 NAME "Klitfredningslinje Udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+  
+ LAYER #Temalinie
+   NAME "Klitfredningslinje_Gaeldende"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.KLITFREDNINGLINJE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Klitfredningslinje, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+	  GROUP "default"
+	  NAME "Temalinie, klitfredning"
+	 STYLE
+	   COLOR 255 170 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+  
+ LAYER #Temalinie
+   NAME "Strandbeskytelselinje_Foreloebig"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.STRANDBESKYTTELSELINJE_F USING UNIQUE OBJECTID SRID 25832"
+   CLASSITEM "PAATAENKTHANDLING"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Strandbeskyttelseslinje, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Nyoprettet Strandbeskyttelseslinie, foreløbig"
+	 EXPRESSION "Nyoprettelse"
+	 STYLE
+	   COLOR 0 109 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Ændret Strandbeskyttelseslinie, foreløbig"
+	 EXPRESSION "Ændring"
+	 STYLE
+	   COLOR 255 140 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+   CLASS
+	 GROUP "default"
+	 NAME "Strandbeskyttelseslinie Udgår, foreløbig"
+	 EXPRESSION "Udgår"
+	 STYLE
+	   COLOR 255 0 0
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+  
+ LAYER #Temalinie
+   NAME "Strandbeskytelselinje_Gaeldende"
+   #GROUP "17"
+   TYPE line
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.STRANDBESKYTTELSELINJE_G USING UNIQUE OBJECTID SRID 25832"
+   TEMPLATE "./templates/mat_pg-temalinie.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  37555   
+   METADATA
+     "wms_title" "Strandbeskyttelseslinje, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_curveproperty_type" "line"
+   END # METADATA
+   CLASS
+	 GROUP "default"
+	 NAME "Temalinie, strandbeskyttelse"
+	 STYLE
+	   COLOR 255 170 0
+	   WIDTH 1
+	 END # STYLE
+   END # CLASS
+  END # LAYER   
+  
+  
+LAYER #Jordstykke
+  NAME "Jordstykke_Foreloebig"
+  #GROUP "5"
+  TYPE polygon
+  INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+  ###DATA "surfaceproperty from mat.kf_jordstykke_v USING UNIQUE kfid USING SRID=25832"  # Denne tabel indeholder ikke information om samlet fast ejendom
+  DATA "GEOMETRI FROM MATRIKEL_GIS.JORDSTYKKE_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+  TEMPLATE "./templates/mat_pg-jordstykke.html"
+  ###layerstoerrelse 25000
+  MINSCALEDENOM  1
+  MAXSCALEDENOM  26289
+  LABELMINSCALEDENOM 1
+  LABELMAXSCALEDENOM 7511
+  LABELITEM "MATRIKELNUMMER"
+  CLASSITEM "PAATAENKTHANDLING"
+  #!!#OFFSITE 254 254 254 # benyttes til 100% transparent fyld i "Jordstykke, farve" GetLegendGraphics
+  METADATA
+    "wms_title" "Jordstykke, foreløbig"
+    "wms_srs" "EPSG:25832"
+	"ows_include_items" "all"
+	"gml_matrikelnummer_type" "Character" 		#Så MS understøtter FE på disse to attributter. De er lagret i databasen som tekst,
+	"gml_landsejerlavskode_type" "Character"	# men da der også optræder tal, skal MS explicit fortælles at der altid er tale om tekst
+	#"gml_sfe_Ejendomsnummer_alias" "sfe_ejendomsnummer" # For måske at være bagudkompatibel med en del af de SLD'er der findes derude.
+	"gml_geometries" "GEOMETRI"			# sørger for at geometrien returneres i GetFeatureInfo
+	"gml_GEOMETRI_type" "polygon"		# sørger for at geometrien returneres i GetFeatureInfo
+  END # METADATA
+  CLASS 
+    GROUP "default"
+	NAME "Nyoprettet Jordstykke, foreløbig"
+	EXPRESSION "Nyoprettelse"
+	STYLE
+	  COLOR 255 255 222
+	  OUTLINECOLOR 0 109 0
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	LABEL
+      COLOR 0 109 0
+      #FONT "matrik" # nyoprettede jordstykker kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  FONT "arial-italic"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "default"
+	NAME "Ændret Jordstykke, foreløbig"
+	EXPRESSION "Ændring"
+	STYLE
+	  COLOR 255 255 222
+	  OUTLINECOLOR 255 140 0
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	LABEL
+      COLOR 0 109 0
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "default"
+	NAME "Jordstykke Udgår, foreløbig"
+	EXPRESSION "Udgår"
+	STYLE
+	  COLOR 255 255 222
+	  OUTLINECOLOR 255 0 0
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	LABEL
+      COLOR 0 109 0
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+
+  CLASS 
+    GROUP "Gule_Foreloebige_Jordstykker"
+	NAME "Foreløbigt Jordstykke, gul"
+	STYLE
+	  OUTLINECOLOR 255 255 0
+	  #!!#COLOR 254 254 254
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	END
+	LABEL
+      COLOR 255 255 0
+      #FONT "matrik" # foreløbige jordstykker kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  FONT "arial"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	   ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	   ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "Roede_Foreloebige_Jordstykker"
+	NAME "Foreløbigt Jordstykke, rød"
+	STYLE
+	  OUTLINECOLOR 255 0 0
+	  #!!#COLOR 254 254 254
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	 END
+	LABEL
+      COLOR 255 0 0
+      FONT "matrik" # foreløbige jordstykker kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "Hvide_Foreloebige_Jordstykker"
+	NAME "Foreløbigt Jordstykke, hvid"
+	STYLE
+	  OUTLINECOLOR 255 255 255
+	  #!!#COLOR 254 254 254
+	  WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	 END
+	LABEL
+      COLOR 255 255 255
+      #FONT "matrik" # foreløbige jordstykker kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  FONT "arial"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "Sorte_Foreloebige_Jordstykker"
+	NAME "Foreløbigt Jordstykke, sort"
+	#NAME "Jordstykke"			## Test af udstilling af andet logisk navn i GetLegendGraphic-forespørgsler
+	STYLE
+	   OUTLINECOLOR 0 0 0
+	   #!!#COLOR 254 254 254
+	   WIDTH 1
+	   PATTERN
+	     10 5
+	   END # PATTERN
+    END # STYLE
+	 STYLE
+	    COLOR 255 255 255
+		OPACITY 0
+	 END
+	LABEL
+      COLOR 0 0 0
+      #FONT "matrik" # foreløbige jordstykker kan have MATRIKELNUMMER='Delnr. 4'. Denne font har ikke noget bogstav 'D'..
+	  FONT "arial"
+      TYPE truetype
+      SIZE 9
+      PARTIALS false
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      #MINFEATURESIZE auto 
+	  #FORCE true
+	END # LABEL
+  END # CLASS   
+END # LAYER
+  
+LAYER #Jordstykke
+  NAME "Jordstykke_Gaeldende"
+  TYPE polygon
+  INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+  DATA "GEOMETRI FROM MATRIKEL_GIS.JORDSTYKKE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+  TEMPLATE "./templates/mat_pg-jordstykke.html"
+  ###layerstoerrelse 25000
+  MINSCALEDENOM  1
+  MAXSCALEDENOM  26289
+  LABELMINSCALEDENOM 1
+  LABELMAXSCALEDENOM 7511
+  LABELITEM "MATRIKELNUMMER"
+  CLASSITEM "MATRIKELNUMMER"
+  #CLASSITEM "featurecode"
+  #!!#OFFSITE 254 254 254 # benyttes til 100% transparent fyld i "Jordstykke, farve" GetLegendGraphics
+  METADATA
+    "wms_title" "Jordstykke, gældende"
+    "wms_srs" "EPSG:25832"
+	"ows_include_items" "all"
+	#"gml_matrikelnummer_type" "Character" 		#Så MS understøtter FE på disse to attributter. De er lagret i databasen som tekst,
+	#"gml_ejerlavskode_type" "Character"	# men da der også optræder tal, skal MS explicit fortælles at der altid er tale om tekst
+	#"gml_sfe_Ejendomsnummer_alias" "sfe_ejendomsnummer" # For måske at være bagudkompatibel med en del af de SLD'er der findes derude.
+	"gml_geometries" "GEOMETRI"			# sørger for at geometrien returneres i GetFeatureInfo
+	"gml_GEOMETRI_type" "polygon"		# sørger for at geometrien returneres i GetFeatureInfo
+  END # METADATA
+  CLASS 
+    GROUP "default"
+	NAME "Jordstykke, gældende"
+	# alt undtagen matrikelnumre som begynder med "7000" - udskilt vej
+	EXPRESSION /^[1-9]$|^[1-9][a-zæøå]|^[1-9][0-9]$|^[1-9][0-9][a-zæøå]|^[1-9][0-9][0-9]$|^[1-9][0-9][0-9][a-zæøå]|^[1,2,3,4,5,6,8,9][0-9][0-9][0-9]|^[1,2,3,4,5,6,8,9][0-9][0-9][0-9][a-zæøå]/
+	#EXPRESSION "9034"
+	###EXPRESSION "Jordstykke, matrikuleret"
+	STYLE
+	  COLOR 255 255 222
+	  OUTLINECOLOR 130 39 0
+	  WIDTH 1
+    END # STYLE
+	LABEL
+      COLOR 0 0 255
+      FONT "matrik"
+	  #FONT "arial-italic"
+      TYPE truetype
+      SIZE 9
+	  POSITION auto
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      #MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "default"
+	NAME "Udskilt vej"
+	EXPRESSION /^7000/
+	#EXPRESSION "9035"
+	###EXPRESSION "Jordstykke, udskilt vej"
+	STYLE
+	  COLOR 235 235 235
+	  OUTLINECOLOR 130 39 0
+	  WIDTH 1
+    END # STYLE
+	LABEL
+      COLOR 0 0 255
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+	  ###MINDISTANCE 100 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+      MINFEATURESIZE auto 
+	  ###FORCE true
+	END # LABEL
+  END # CLASS
+END # LAYER
+  
+LAYER #Lodflade
+  NAME "Lodflade_Foreloebig"
+  TYPE polygon
+  INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+  DATA "GEOMETRI FROM MATRIKEL_GIS.LODFLADE_F USING UNIQUE OBJECTID SRID 25832"
+  CLASSITEM "PAATAENKTHANDLING"
+  EXTENT 120000 5900000 1000000 6500000
+  TEMPLATE "./templates/dummy.html"
+  ###layerstoerrelse 25000
+  MINSCALEDENOM  1
+  MAXSCALEDENOM  26289
+  LABELMINSCALEDENOM 1
+  LABELMAXSCALEDENOM 7511
+  LABELITEM "JORDSTYKKELOKALID"
+  METADATA
+    "wms_title" "Lodflade, foreløbig"
+    "wms_srs" "EPSG:25832"
+	"ows_include_items" "all"
+	"gml_geometries" "GEOMETRI"			# sørger for at geometrien returneres i GetFeatureInfo
+	"gml_GEOMETRI_type" "polygon"		# sørger for at geometrien returneres i GetFeatureInfo
+  END # METADATA
+  CLASS 
+    GROUP "default"
+	NAME "Nyoprettet Lodflade, foreløbig"
+	EXPRESSION "Nyoprettelse"
+	STYLE
+	  COLOR 255 255 222
+	  #OUTLINECOLOR 130 39 0
+	  OUTLINECOLOR 0 109 0
+	  WIDTH 1
+	   PATTERN
+	     5 2
+	   END # PATTERN
+	   LINECAP BUTT
+    END # STYLE
+	LABEL
+      COLOR 0 109 0
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+      MINFEATURESIZE auto 
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "default"
+	NAME "Ændret Lodflade, foreløbig"
+	EXPRESSION "Ændring"
+	STYLE
+	  COLOR 255 255 222
+	  #OUTLINECOLOR 130 39 0
+	  OUTLINECOLOR 255 140 0
+	  WIDTH 1
+	   PATTERN
+	     5 2
+	   END # PATTERN
+	   LINECAP BUTT
+    END # STYLE
+	LABEL
+      COLOR 255 140 0
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+      MINFEATURESIZE auto 
+	END # LABEL
+  END # CLASS
+  CLASS 
+    GROUP "default"
+	NAME "Lodflade Udgår, foreløbig"
+	EXPRESSION "Udgår"
+	STYLE
+	  COLOR 255 255 222
+	  #OUTLINECOLOR 130 39 0
+	  OUTLINECOLOR 255 0 0
+	  WIDTH 1
+	   PATTERN
+	     5 2
+	   END # PATTERN
+	   LINECAP BUTT
+    END # STYLE
+	LABEL
+      COLOR 255 0 0
+      FONT "matrik"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+      MINFEATURESIZE auto 
+	END # LABEL
+  END # CLASS
+END # LAYER
+  
+LAYER #Lodflade
+  NAME "Lodflade_Gaeldende"
+  #GROUP "5"
+  TYPE polygon
+  INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+  DATA "GEOMETRI FROM MATRIKEL_GIS.LODFLADE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+  #TEMPLATE "./templates/dummy.html"
+  ###layerstoerrelse 25000
+  #MINSCALEDENOM  1
+  #MAXSCALEDENOM  26289
+  #LABELMINSCALEDENOM 1
+  #LABELMAXSCALEDENOM 7511
+  LABELITEM "JORDSTYKKELOKALID"
+  METADATA
+    "wms_title" "Lodflade, gældende"
+    "wms_srs" "EPSG:25832"
+	#"ows_include_items" "all"
+	#"gml_geometries" "GEOMETRI"			# sørger for at geometrien returneres i GetFeatureInfo
+	#"gml_surfaceproperty_type" "polygon"		# sørger for at geometrien returneres i GetFeatureInfo
+  END # METADATA
+  CLASS 
+    GROUP "default"
+	NAME "Lodflade, gældende"
+	STYLE
+	  COLOR 255 255 222
+	  OUTLINECOLOR 130 39 0
+	  WIDTH 1
+    END # STYLE
+	LABEL
+      COLOR 0 0 255
+      #FONT "matrik"
+	  FONT "arial"
+      TYPE truetype
+      SIZE 9
+      PARTIALS FALSE
+      MINFEATURESIZE auto 
+	END # LABEL
+  END # CLASS
+END # LAYER
+  
+ LAYER #Strandbeskyttelse
+   NAME "StrandbeskyttelseFlade_Foreloebig"
+   #GROUP "8"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.STRANDBESKYTTELSEFLADE_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-strandbeskyttelse.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   METADATA
+     "wms_title" "StrandbeskyttelseFlade, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Strandbeskyttelse"
+	 OUTLINECOLOR 255 170 0
+	 STYLE
+	   SYMBOL "skravering"
+	   COLOR 255 170 0  
+	   ANGLE 45
+	   SIZE 7
+	   WIDTH 0.7
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS 
+ END  
+
+ LAYER #Strandbeskyttelse
+   NAME "StrandbeskyttelseFlade_Gaeldende"
+   #GROUP "8"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.STRANDBESKYTTELSEFLADE_G USING UNIQUE OBJECTID SRID 25832"
+   TEMPLATE "./templates/mat_pg-strandbeskyttelse.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   METADATA
+     "wms_title" "StrandbeskyttelseFlade, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Strandbeskyttelse"
+	 OUTLINECOLOR 255 170 0
+	 STYLE
+	   SYMBOL "skravering"
+	   COLOR 255 170 0  
+	   ANGLE 45
+	   SIZE 7
+	   WIDTH 0.7
+	 END # STYLE
+   END # CLASS 
+ END  
+
+ LAYER #Klitfredning
+   NAME "KlitfredningFlade_Foreloebig"
+   #GROUP "10"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.KLITFREDNINGFLADE_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-klitfredning.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   METADATA
+     "wms_title" "KlitfredningFlade, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Klitfredning"
+	 OUTLINECOLOR 255 170 0
+	 STYLE
+	   SYMBOL "skravering"
+	   COLOR 255 170 0  
+	   ANGLE 0
+	   SIZE 7
+	   WIDTH 0.7
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+   END # CLASS  
+ END
+
+ LAYER #Klitfredning
+   NAME "KlitfredningFlade_Gaeldende"
+   #GROUP "10"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   DATA "GEOMETRI FROM MATRIKEL_GIS.KLITFREDNINGFLADE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-klitfredning.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   METADATA
+     "wms_title" "KlitfredningFlade, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Klitfredning"
+	 OUTLINECOLOR 255 170 0
+	 STYLE
+	   SYMBOL "skravering"
+	   COLOR 255 170 0  
+	   ANGLE 0
+	   SIZE 7
+	   WIDTH 0.7
+	 END # STYLE
+   END # CLASS  
+ END
+
+
+ LAYER #Fredskov
+   NAME "FredskovFlade_Foreloebig"
+   #GROUP "13"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   ###DATA "surfaceproperty from mat.kf_temaflade_v USING UNIQUE kfid USING SRID=25832"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.FREDSKOVFLADE_F USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-fredskov.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   LABELITEM "TEMATYPE"
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 75110
+   ###CLASSITEM "featurecode" 	# aktiveres hvis fredskov skal trækkes fra mat.kf_temaflade_v
+   METADATA
+     "wms_title" "FredskovFlade, foreløbig"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Fredskov"
+     ###EXPRESSION "9064"		# aktiveres hvis fredskov skal trækkes fra mat.kf_temaflade_v
+	 OUTLINECOLOR 109 187 67
+	 STYLE
+	   SYMBOL "scattered trees"
+	   COLOR 109 187 67  
+	   #ANGLE 135
+	   #SIZE 7
+	   GAP 3
+	   #WIDTH 0.7
+	   PATTERN
+	     10 5
+	   END # PATTERN
+	 END # STYLE
+	 LABEL
+	   COLOR 109 187 67
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       PARTIALS FALSE
+	   MINDISTANCE 500 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto 
+	 END
+   END # CLASS  
+ END
+
+ LAYER #Fredskov
+   NAME "FredskovFlade_Gaeldende"
+   #GROUP "13"
+   TYPE polygon
+   INCLUDE "./MatrikelGaeldendeOgForeloebig_include.map"   
+   ###DATA "surfaceproperty from mat.kf_temaflade_v USING UNIQUE kfid USING SRID=25832"
+   DATA "GEOMETRI FROM MATRIKEL_GIS.FREDSKOVFLADE_G USING UNIQUE OBJECTID SRID 25832"
+   EXTENT 120000 5900000 1000000 6500000
+   TEMPLATE "./templates/mat_pg-fredskov.html"
+   MINSCALEDENOM  1
+   MAXSCALEDENOM  75110
+   LABELITEM "TEMATYPE"
+   LABELMINSCALEDENOM 1
+   LABELMAXSCALEDENOM 75110
+   ###CLASSITEM "featurecode" 	# aktiveres hvis fredskov skal trækkes fra mat.kf_temaflade_v
+   METADATA
+     "wms_title" "FredskovFlade, gældende"
+     "wms_srs" "EPSG:25832"
+	 "ows_include_items" "all"
+	 "gml_geometries" "GEOMETRI"
+	 "gml_surfaceproperty_type" "polygon"
+   END
+   CLASS
+     NAME "Fredskov"
+     ###EXPRESSION "9064"		# aktiveres hvis fredskov skal trækkes fra mat.kf_temaflade_v
+	 OUTLINECOLOR 109 187 67
+	 STYLE
+	   SYMBOL "scattered trees"
+	   COLOR 109 187 67  
+	   #ANGLE 135
+	   #SIZE 7
+	   GAP 3
+	   #WIDTH 0.7
+	 END # STYLE
+	 LABEL
+	   COLOR 109 187 67
+       FONT "arial-italic"
+       TYPE truetype
+       SIZE 12
+       PARTIALS FALSE
+	   MINDISTANCE 500 #pixels, for at undgå at labels gentages (sættes til fx 10k hvis man kun vil have én label)
+       MINFEATURESIZE auto 
+	 END
+   END # CLASS  
+ END
+
+END # MAP

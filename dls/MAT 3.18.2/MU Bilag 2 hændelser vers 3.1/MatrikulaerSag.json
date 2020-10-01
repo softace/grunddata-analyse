@@ -1,0 +1,25 @@
+{
+  "entityType": "MatrikulaerSag",
+  "attributes": {
+    "forretningshaendelse": "Load(forretningshaendelse)",
+	"forretningsomraade": "Load(forretningsomraade)",
+	"forretningsproces": "Load(forretningsproces)",
+	"id_namespace": "Load(id_namespace)",
+	"id_lokalId": "Load(id_lokalId)",
+	"registreringFra": "Load(registreringFra)",
+    "registreringTil": "Load(registreringTil)",
+	"registreringsaktoer": "Load(registreringsaktoer)",
+	"status": "Load(status)",
+	"virkningFra": "Load(virkningFra)",
+	"virkningTil": "Load(virkningTil)",
+	"virkningsaktoer": "Load(virkningsaktoer)",
+	"journaliseringsdato": "Load(journaliseringsdato)",
+	"kommune": "Load(kommune)",	
+	"matrikelmyndighedensJournalnummer": "Load(matrikelmyndighedensJournalnum)",
+	"rekvirentRef": "Load(rekvirentRef)",
+	"sagstitel": "Load(sagstitel)",
+	"jordstykkeLokalId": "Load(jordstykkeLokalId)",
+	"ejerlavskode": "Load(ejerlavLokalId)"
+  }
+}
+
