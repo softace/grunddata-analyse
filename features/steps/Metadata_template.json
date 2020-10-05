@@ -16,7 +16,7 @@
       "webBrugernavn": "webBrugernavn",
       "tjenesteBrugernavn": "tjenesteBrugernavn",
       "abonnementnavn": "{{abonnementnavn}}",
-      "tjenestenavn": "{{registry}}-Totaludtraek",
+      "tjenestenavn": "{{tjenestenavn}}",
       "tjenesteversion": "1",
       "oprettelsesdato": "2020-01-01T01:01:01.111+01:00",
       "senesteAbonnementRedigeringsdato": "2020-01-01T01:01:01.111+01:00",

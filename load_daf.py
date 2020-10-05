@@ -605,7 +605,11 @@ def load_data_package(database_options, data_package):
                 return dict(items())
 
             values = flatten_dict(metadata)
-            registry = metadata['AbonnementsOplysninger'][0]['tjenestenavn'][:3]
+            tjenestenavn2registry = {'DAR-Totaludtraek': 'DAR',
+                                     'BBR-Totaludtraek': 'BBR',
+                                     'MUTotalUdtraekFlad': 'MAT'
+                                     }
+            registry = tjenestenavn2registry[metadata['AbonnementsOplysninger'][0]['tjenestenavn']]
             abonnementnavn = values['AbonnementsOplysninger[0].abonnementnavn']
             deltavindue_start = values['DatafordelerUdtraekstidspunkt[0].deltavindueStart']
 

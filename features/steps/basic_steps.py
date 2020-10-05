@@ -110,7 +110,12 @@ def deltavindue_from_day(day):
 @given(u'a (?P<registry>.*?) file extract zip file with metadata for day (?P<start_day>\d+)')
 def step_impl(context, registry, start_day):
     (deltavindueStart, deltavindueSlut) = deltavindue_from_day(start_day)
+    registry2tjenestenavn = {'DAR': 'DAR-Totaludtraek',
+                             'BBR': 'BBR-Totaludtraek',
+                             'MAT' : 'MUTotalUdtraekFlad'
+                             }
     context.meta_data = {'registry': registry,
+                         'tjenestenavn': registry2tjenestenavn[registry],
                          'abonnementnavn': f'{registry}_Totaludtræk_1_abonnement',
                          'deltavindueStart': deltavindueStart,
                          'deltavindueSlut': deltavindueSlut
@@ -189,12 +194,13 @@ def step_impl(context):
         assert row['registry'] == row['file_name'][:3]
         leveranceNavn = f"{row['file_name'][:-4]}"
         abonnementNavn = leveranceNavn[:-14]
-        meta_data = {'leveranceNavn':leveranceNavn,
-                                                                                   'abonnementnavn':abonnementNavn,
-                                                                                   'registry':row['registry'],
-                                                                                   'deltavindueStart':deltavindueStart,
-                                                                                   'deltavindueSlut': deltavindueSlut
-                                                                                   }
+        meta_data = {'leveranceNavn': leveranceNavn,
+                     'abonnementnavn': abonnementNavn,
+                     'registry': row['registry'],
+                     'tjenestenavn': row['registry'] + '-Totaludtraek',
+                     'deltavindueStart': deltavindueStart,
+                     'deltavindueSlut': deltavindueSlut
+                     }
         data_file = {}
         table_name = None
         if row['registry'] == 'DAR':
