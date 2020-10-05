@@ -209,9 +209,11 @@ def update_db_row(cursor, table_name, row):
 
 SQLITE_TYPE_MAPPING = {
     'string': 'TEXT',
+    'uri': 'TEXT',
     'datetimetz': 'TEXT',  # TODO: This could be improved
     'datetime': 'TEXT',  # TODO: This could be improved
     'integer': 'INTEGER',  # This is important, so that integer primary key becomes rowid.
+    'boolean': 'BOOLEAN',
     'tsrange': None,
     'number': 'NUMERIC'  # This will ensure affinity and trigger the converter
 }
@@ -264,8 +266,10 @@ def sqlite3_create_table(table, fail):
 
 PSQL_TYPE_MAPPING = {
     'string': 'text',
+    'uri': 'text',
     'datetimetz': 'timestamp(6) with time zone',
     'integer': 'integer',
+    'boolean': 'boolean',
     'tsrange': 'tsrange',
     'number': 'double precision'  # This will ensure affinity and trigger the converter
 }
@@ -303,31 +307,40 @@ def psql_create_table(table, fail):
 
 
 def jsonschema2table(table_name, table_content):
+    print(f"Parsing schema for {table_name}")
     table = {'name': table_name,
              'columns': [],
              'primary_keys': []
              }
     for (att_name, att_content) in table_content['items']['properties'].items():
-        if att_content['type'][0] == 'string':
+        att_type = att_content['type'][0] if isinstance(att_content['type'], list) else att_content['type']
+        if att_type == 'string':
             if 'format' in att_content:
                 if att_content['format'] == 'date-time':
                     column_type = 'datetimetz'
+                elif att_content['format'] == 'uri':
+                    column_type = 'uri'
                 else:
                     raise NotImplementedError(
-                        f"Unknown attribute format '{att_content['format']}' on attribute {att_name}.")
+                        f"Unknown attribute format '{att_content['format']}' on attribute {att_name} on table {table_name}.")
             else:
                 column_type = 'string'
-        elif att_content['type'][0] == 'integer':
+        elif att_type == 'boolean':
+            column_type = 'boolean'
+        elif att_type == 'integer':
             column_type = 'integer'
-        elif att_content['type'][0] == 'number':
+        elif att_type == 'number':
             column_type = 'number'  # This will trigger the converter
         else:
-            raise NotImplementedError(f"Unknown attribute type '{att_content['type'][0]}' on attribute {att_name}.")
-        if att_content['type'][1] == 'null':
-            nullable = 'null'
+            raise NotImplementedError(f"Unknown attribute type '{att_type}' on attribute {att_name}.")
+        if isinstance(att_content['type'], list):
+            if att_content['type'][1] == 'null':
+                nullable = 'null'
+            else:
+                raise NotImplementedError(
+                    f"Unknown attribute nullification '{att_content['type'][1]}' on attribute {att_name}.")
         else:
-            raise NotImplementedError(
-                f"Unknown attribute nullification '{att_content['type'][1]}' on attribute {att_name}.")
+            nullable = 'null'
         column = {'name': att_name,
                   'type': column_type,
                   'nullable': nullable,
@@ -336,6 +349,9 @@ def jsonschema2table(table_name, table_content):
         table['columns'] += [column]
     #  Create bitemporal colums
     table['extra_columns'] = []
+    if len({'registreringFra', 'virkningFra', 'registreringTil', 'virkningTil'}
+                   .intersection(table_content['items']['properties'].keys())) != 4:
+        raise ValueError(f"one of 'registreringFra', 'virkningFra', 'registreringTil', 'virkningTil' is not in {list(table_content['items']['properties'].keys())}")
     for tid in ['registrering', 'virkning']:
         table['extra_columns'] += [{'name': f'{tid}Tid_UTC',
                                     'type': 'tsrange',
@@ -450,6 +466,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
 
 
 def initialise_registry_tables(conn, sql_create_table, registry, specification, initialise_tables):
+    print(f"Initialising {registry}")
     with open(specification["json_schema"], 'rb') as json_schema_file:
         jsonschema = json.load(json_schema_file)
     assert sorted(jsonschema['required']) == sorted(jsonschema['properties'].keys())
@@ -459,6 +476,8 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
         assert (list_name[-4:] == 'List')
         assert (table_content['type'] == 'array')
         table_name = list_name[:-4]
+        if "obsolete_entities" in specification.keys() and table_name in specification["obsolete_entities"]:
+            continue
         table_spec = jsonschema2table(table_name, table_content)
         prepare_bitemp_table(table_spec, registry, specification)
         if initialise_tables:
@@ -466,7 +485,6 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
             for sql in sqls:
                 # print(sql)
                 conn.execute(sql)
-            print(f"Table {table_spec['name']} created.")
             conn.execute("insert into registry_table ('registry', 'table_name') values (?,?)", [registry, table_name])
 #    conn.commit()
 
@@ -639,25 +657,42 @@ def load_data_package(database_options, data_package):
             data_errors = 0
             step_time = time.time()
             for prefix, event, value in parser:
-                if event == 'map_key':
+                if prefix == '' and event == 'start_map':
+                    pass  # The top level
+                elif prefix == '' and event == 'end_map':
+                    pass  # The top level
+                elif event == 'map_key':
                     if '.' in prefix:
                         db_column = value
                     else:
                         assert value[-4:] == 'List'
                         db_table_name = value[:-4]
                         step_time = time.time()
-                        print(f"Inserting into {db_table_name}")
-                if event == 'end_array':
-                    print(f"{row_inserts:>10} rows inserted into  {db_table_name}")
-                    print(f"{row_updates:>10} rows updated in     {db_table_name}")
-                    print(f"{data_errors:>10} data errors in      {db_table_name}")
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            print(f"Inserting into {db_table_name}")
+                        else:
+                            print(f"Ignoring obsolete table {db_table_name}")
+                elif event == 'start_array':
+                    pass
+                elif event == 'end_array':
+                    if db_table_name in table_names:  # Ignoring obsolete tables
+                        print(f"{ row_inserts:>10} rows inserted into  {db_table_name}")
+                        print(f"{ row_updates:>10} rows updated in     {db_table_name}")
+                        print(f"{ data_errors:>10} data errors in      {db_table_name}")
+                    else:
+                        print(f"{ignored_rows:>10} ignored rows in     {db_table_name}")
                     row_inserts = 0
                     row_updates = 0
                     data_errors = 0
+                    ignored_rows = 0
                     db_table_name = None
-                if '.' in prefix and event == 'start_map':
-                    db_row = dict(table_names[db_table_name]['row'])
-                if '.' in prefix and event == 'end_map':
+                elif '.' in prefix and event == 'start_map':
+                    if db_table_name in table_names:  # Ignoring obsolete tables
+                        db_row = dict(table_names[db_table_name]['row'])
+                elif '.' in prefix and event == 'end_map':
+                    if db_table_name not in table_names:  # Ignoring obsolete tables
+                        ignored_rows += 1
+                        continue
                     ret = insert_row(cursor, table_names[db_table_name][database_options['backend']],
                                      {**db_row, 'file_extract_id': file_extract_id})
                     db_row = None
@@ -673,9 +708,12 @@ def load_data_package(database_options, data_package):
                         print(
                             f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}."
                             f" {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
-                if event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
-                    db_row[db_column] = value
+                elif event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
+                    if db_table_name in table_names:  # Ignoring obsolete tables
+                        db_row[db_column] = value
                     db_column = None
+                else:
+                    raise NotImplementedError("What situation is this?")
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()

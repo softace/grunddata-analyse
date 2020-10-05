@@ -8,8 +8,9 @@ Feature: Loading on empty DB
       | short_name |
       | BBR        |
       | DAR        |
+      | MAT        |
     Then the database table registry_table should contain rows with the following entries and no more
-      | registry | table_name                        |
+      | registry | table_name                    |
       | BBR      | BBRSag                        |
       | BBR      | BygningEjendomsrelation       |
       | BBR      | Bygning                       |
@@ -33,6 +34,25 @@ Feature: Loading on empty DB
       | DAR      | NavngivenVejSupplerendeBynavn |
       | DAR      | Postnummer                    |
       | DAR      | SupplerendeBynavn             |
+      | MAT      | BygningPaaFremmedGrundFlade   |
+      | MAT      | BygningPaaFremmedGrundPunkt   |
+      | MAT      | Centroide                     |
+      | MAT      | Ejerlav                       |
+      | MAT      | Ejerlejlighed                 |
+      | MAT      | Ejerlejlighedslod             |
+      | MAT      | Jordstykke                    |
+      | MAT      | JordstykkeTemaflade           |
+      | MAT      | Lodflade                      |
+      | MAT      | MatrikelKommune               |
+      | MAT      | MatrikelRegion                |
+      | MAT      | MatrikelSogn                  |
+      | MAT      | Matrikelskel                  |
+      | MAT      | MatrikulaerSag                |
+      | MAT      | Nullinje                      |
+      | MAT      | OptagetVej                    |
+      | MAT      | SamletFastEjendom             |
+      | MAT      | Skelpunkt                     |
+      | MAT      | Temalinje                     |
     Given a DAR file extract zip file with metadata for day 0
     Given the file extract contains data for Postnummer with dummy data and
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |

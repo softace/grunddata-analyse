@@ -14,5 +14,35 @@
     ],
     "registreing_base_name": "registrering",
     "virkning_base_name": "virkning"
+  },
+  "MAT": {
+    "json_schema": "dls/MAT 3.18.2/MU Bilag 2b Fildownload vers 3.18.2/MATTotaludtraekDeltaDaily vers. 3.18.2/MUTotal.schema.json",
+    "obsolete_entities":
+    [
+      "Stormfald",
+      "Bygningpaafremmedgrundflade_Se",
+      "Bygningpaafremmedgrundpunkt_Se",
+      "Centroide_Sekundaerforretnings",
+      "Ejerlejlighed_Sekundaerforretn",
+      "Ejerlejlighedslod_Sekundaerfor",
+      "Jordstykke_Sekundaerforretning",
+      "Jordstykke_Stormfald",
+      "Jordstykketemaflade_Sekundaerf",
+      "Lodflade_Sekundaerforretningsh",
+      "Matrikelskel_Sekundaerforretni",
+      "Nullinje_Sekundaerforretningsh",
+      "Optagetvej_Sekundaerforretning",
+      "Optagetvej_Jordstykke",
+      "Samletfastejendom_Sekundaerfor",
+      "Samletfastejendom_Jordstykke",
+      "Skelpunkt_Sekundaerforretnings",
+      "Temalinje_Sekundaerforretnings",
+      "Temalinje_Jordstykke"
+    ],
+    "bitempral_primal_keys": [
+      "id_lokalId"
+    ],
+    "registreing_base_name": "registrering",
+    "virkning_base_name": "virkning"
   }
 }
