@@ -39,6 +39,12 @@
       "Temalinje_Sekundaerforretnings",
       "Temalinje_Jordstykke"
     ],
+    "non_temporal_entities":
+    [
+      "Optagetvej_Jordstykke",
+      "Samletfastejendom_Jordstykke",
+      "Temalinje_Jordstykke"
+    ],
     "bitempral_primal_keys": [
       "id_lokalId"
     ],
