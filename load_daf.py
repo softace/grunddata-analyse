@@ -312,7 +312,7 @@ def jsonschema2table(table_name, table_content):
              'columns': [],
              'primary_keys': []
              }
-    for (att_name, att_content) in table_content['items']['properties'].items():
+    for (att_name, att_content) in table_content.items():
         att_type = att_content['type'][0] if isinstance(att_content['type'], list) else att_content['type']
         if att_type == 'string':
             if 'format' in att_content:
@@ -350,8 +350,8 @@ def jsonschema2table(table_name, table_content):
     #  Create bitemporal colums
     table['extra_columns'] = []
     if len({'registreringFra', 'virkningFra', 'registreringTil', 'virkningTil'}
-                   .intersection(table_content['items']['properties'].keys())) != 4:
-        raise ValueError(f"one of 'registreringFra', 'virkningFra', 'registreringTil', 'virkningTil' is not in {list(table_content['items']['properties'].keys())}")
+                   .intersection(table_content.keys())) != 4:
+        raise ValueError(f"one of 'registreringFra', 'virkningFra', 'registreringTil', 'virkningTil' is not in {list(table_content.keys())}")
     for tid in ['registrering', 'virkning']:
         table['extra_columns'] += [{'name': f'{tid}Tid_UTC',
                                     'type': 'tsrange',
@@ -472,20 +472,26 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
     assert sorted(jsonschema['required']) == sorted(jsonschema['properties'].keys())
     if initialise_tables:
         conn.execute("insert into registry ('short_name') values (?)", [registry])
-    for (list_name, table_content) in jsonschema['properties'].items():
-        assert (list_name[-4:] == 'List')
-        assert (table_content['type'] == 'array')
-        table_name = list_name[:-4]
-        if "obsolete_entities" in specification.keys() and table_name in specification["obsolete_entities"]:
-            continue
-        table_spec = jsonschema2table(table_name, table_content)
+    tables = list()
+    if specification["schema_style"] == "plain":
+        for (list_name, table_content) in jsonschema['properties'].items():
+            assert (list_name[-4:] == 'List')
+            assert (table_content['type'] == 'array')
+            table_name = list_name[:-4]
+            if "obsolete_entities" in specification.keys() and table_name in specification["obsolete_entities"]:
+                continue
+            tables.append(jsonschema2table(table_name, table_content['items']['properties']))
+    else:
+        for list_name, table_name in specification["feature_entities"].items():
+            tables.append(jsonschema2table(table_name,jsonschema['properties']['features']['items']['properties']['properties']['properties']))
+    for table_spec in tables:
         prepare_bitemp_table(table_spec, registry, specification)
         if initialise_tables:
             sqls = sql_create_table(table_spec, True)
             for sql in sqls:
                 # print(sql)
                 conn.execute(sql)
-            conn.execute("insert into registry_table ('registry', 'table_name') values (?,?)", [registry, table_name])
+            conn.execute("insert into registry_table ('registry', 'table_name') values (?,?)", [registry, table_spec['name']])
 #    conn.commit()
 
 
@@ -607,7 +613,8 @@ def load_data_package(database_options, data_package):
             values = flatten_dict(metadata)
             tjenestenavn2registry = {'DAR-Totaludtraek': 'DAR',
                                      'BBR-Totaludtraek': 'BBR',
-                                     'MUTotalUdtraekFlad': 'MAT'
+                                     'MUTotalUdtraekFlad': 'MAT',
+                                     'EBREjendomsbeliggenhedSimpel': 'EBR',
                                      }
             registry = tjenestenavn2registry[metadata['AbonnementsOplysninger'][0]['tjenestenavn']]
             abonnementnavn = values['AbonnementsOplysninger[0].abonnementnavn']

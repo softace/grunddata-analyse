@@ -9,6 +9,7 @@ Feature: Loading on empty DB
       | BBR        |
       | DAR        |
       | MAT        |
+      | EBR        |
     Then the database table registry_table should contain rows with the following entries and no more
       | registry | table_name                    |
       | BBR      | BBRSag                        |
@@ -53,6 +54,7 @@ Feature: Loading on empty DB
       | MAT      | SamletFastEjendom             |
       | MAT      | Skelpunkt                     |
       | MAT      | Temalinje                     |
+      | EBR      | Ejendomsbeliggenhed           |
     Given a DAR file extract zip file with metadata for day 0
     Given the file extract contains data for Postnummer with dummy data and
       | id_lokalId | registreringFra                  | registreringTil                  | virkningFra                      | virkningTil                      |

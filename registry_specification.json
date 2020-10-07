@@ -1,6 +1,7 @@
 {
   "DAR": {
     "json_schema": "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json",
+    "schema_style" : "plain",
     "bitempral_primal_keys": [
       "id_lokalId"
     ],
@@ -9,6 +10,7 @@
   },
   "BBR": {
     "json_schema": "dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json",
+    "schema_style" : "plain",
     "bitempral_primal_keys": [
       "id_lokalId"
     ],
@@ -17,6 +19,7 @@
   },
   "MAT": {
     "json_schema": "dls/MAT 3.18.2/MU Bilag 2b Fildownload vers 3.18.2/MATTotaludtraekDeltaDaily vers. 3.18.2/MUTotal.schema.json",
+    "schema_style" : "plain",
     "obsolete_entities":
     [
       "Stormfald",
@@ -45,6 +48,25 @@
       "Samletfastejendom_Jordstykke",
       "Temalinje_Jordstykke"
     ],
+    "bitempral_primal_keys": [
+      "id_lokalId"
+    ],
+    "registreing_base_name": "registrering",
+    "virkning_base_name": "virkning"
+  },
+  "EBR": {
+    "json_schema": "dls/EBR 2.9.1/EBR Bilag 2b Fildownload vers 2.9.1/EjendomsbeliggenhedSimpel/ejendomsbeliggenhedSimpelDownload.json",
+    "schema_style" : "generic",
+    "obsolete_entities":
+    [
+      "type"
+    ],
+    "non_temporal_entities":
+    [
+    ],
+    "feature_entities": {
+      "Feature": "Ejendomsbeliggenhed"
+    },
     "bitempral_primal_keys": [
       "id_lokalId"
     ],

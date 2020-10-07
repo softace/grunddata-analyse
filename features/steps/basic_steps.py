@@ -112,7 +112,8 @@ def step_impl(context, registry, start_day):
     (deltavindueStart, deltavindueSlut) = deltavindue_from_day(start_day)
     registry2tjenestenavn = {'DAR': 'DAR-Totaludtraek',
                              'BBR': 'BBR-Totaludtraek',
-                             'MAT' : 'MUTotalUdtraekFlad'
+                             'MAT' : 'MUTotalUdtraekFlad',
+                             'EBR' : 'EBREjendomsbeliggenhedSimpel',
                              }
     context.meta_data = {'registry': registry,
                          'tjenestenavn': registry2tjenestenavn[registry],
