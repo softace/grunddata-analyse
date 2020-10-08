@@ -2,7 +2,7 @@
   "DAR": {
     "json_schema": "dls/DAR_v2.3.6_2019.08.18_DLS/DAR_v2.3.6_2019.08.19_DARTotal.schema.json",
     "schema_style" : "plain",
-    "bitempral_primal_keys": [
+    "bitemporal_primary_key": [
       "id_lokalId"
     ],
     "registreing_base_name": "registrering",
@@ -11,7 +11,7 @@
   "BBR": {
     "json_schema": "dls/BBR_v2.4.4_2019.08.13_DLS/BBR_v2.4.4_2019.08.13_BBRTotal.schema.json",
     "schema_style" : "plain",
-    "bitempral_primal_keys": [
+    "bitemporal_primary_key": [
       "id_lokalId"
     ],
     "registreing_base_name": "registrering",
@@ -48,8 +48,8 @@
       "Samletfastejendom_Jordstykke",
       "Temalinje_Jordstykke"
     ],
-    "bitempral_primal_keys": [
-      "id_lokalId"
+    "bitemporal_primary_key": [
+      "id_lokalId", "status"
     ],
     "registreing_base_name": "registrering",
     "virkning_base_name": "virkning"
@@ -67,7 +67,7 @@
     "feature_entities": {
       "Feature": "Ejendomsbeliggenhed"
     },
-    "bitempral_primal_keys": [
+    "bitemporal_primary_key": [
       "id_lokalId"
     ],
     "registreing_base_name": "registrering",

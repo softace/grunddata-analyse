@@ -28,6 +28,7 @@ def text2decimal(s):
 
 
 def insert_row(cursor, db_functions, row):
+    primary_key = db_functions['bitmporal_primary_key']+['registreringFra', 'virkningFra']
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
         timezone.utc).isoformat()
     row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
@@ -36,11 +37,11 @@ def insert_row(cursor, db_functions, row):
         timezone.utc).isoformat()
     row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(
         timezone.utc).isoformat() if row['virkningTil'] else None
-    if row['id_lokalId'] is None or row['registreringFra'] is None or row['virkningFra'] is None:
+    if not all([row[p] for p in primary_key]):
         raise ValueError(
-            "Forventet primærnøgle (id_lokalId, registreringFra, virkningFra)"
+            f"Forventet primærnøgle ({', '.join(primary_key)})"
             f" har egentlig værdier, men fandt "
-            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']})")
+            f"({', '.join([row[p] for p in primary_key])})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] <= row['registreringFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Ikke-positivt registreringsinterval',
                                       f"{row['registreringTil']} <= {row['registreringFra']}", None)
@@ -52,8 +53,8 @@ def insert_row(cursor, db_functions, row):
     check_bitemporal_entity_integrity = False
     if(len(rows)) > 1:
         raise ValueError(
-            "Fundet mere end een række for "
-            f"({row['id_lokalId']}, {row['registreringFra']}, {row['virkningFra']}).")
+            f"Fundet mere end een række for ({', '.join(primary_key)}) = "
+            f"({', '.join([row[p] for p in primary_key])}).")
     elif len(rows) == 1:
         assert sorted([x[0] for x in cursor.description]) == sorted([*row.keys(), 'update_file_extract_id'])
 
@@ -116,40 +117,41 @@ def prepare_bitemp_table(table, registry, reg_spec):
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     table_names[table_name]['registry'] = registry
 
+    bitemporal_primary_key = reg_spec['bitemporal_primary_key']
+    table_names[table_name][SQLITE]['bitmporal_primary_key'] = bitemporal_primary_key
     table_names[table_name][SQLITE]['Insert row'] = lambda cursor, row: insert_db_row(cursor, table_name, row)
 
+    primary_key = bitemporal_primary_key+['registreringFra_UTC', 'virkningFra_UTC']
     #  TODO: ensure timestamps are comparable
     def find_row_psql(cursor, row):
         cursor.execute("select * "
                        f"from {table_name} where true "
-                       f"AND id_lokalId = %(id_lokalId)s "
-                       f"AND registreringFra_UTC = %(registreringFra_UTC)s "
-                       f"AND virkningFra_UTC = %(virkningFra_UTC)s",  # TODO: ensure timestamps are comparable
-                       {k: row[k] for k in ['id_lokalId', 'registreringFra_UTC', 'virkningFra_UTC']})
+                       f"AND " +
+                       ' AND '.join([f"{k} = %({k})s" for k in primary_key])
+                       ,
+                       {k: row[k] for k in primary_key})
     table_names[table_name][POSTGRESQL]['Find row'] = find_row_psql
     table_names[table_name][SQLITE]['Find row'] = find_row_psql
 
     def update_daf_row(cursor, row):
         row['update_file_extract_id'] = row.pop('file_extract_id')
         cursor.execute(f"update {table_name} set " +
-                       ", ".join([f"{c} = %({c})s " for c in row.keys()]) +
+                       ", ".join([f" {c} = %({c})s " for c in row.keys()]) +
                        " where true "
-                       f"AND id_lokalId = %(id_lokalId)s "
-                       f"AND registreringFra_UTC = %(registreringFra_UTC)s "
-                       f"AND virkningFra_UTC = %(virkningFra_UTC)s", row)
+                       f"AND " +
+                       ' AND '.join([f" {k} = %({k})s " for k in primary_key])
+                       , row)
     # table_names[table_name][POSTGRESQL]['Update DAF row'] = update_daf_row     # FIXME: update ranges
     table_names[table_name][SQLITE]['Update DAF row'] = update_daf_row
 
-    violation_columns = [f'id_lokalId',
-                         f'registreringFra_UTC', f'registreringTil_UTC',
-                         f'virkningFra_UTC', f'virkningTil_UTC']
+    violation_columns = primary_key + ['registreringTil_UTC', 'virkningTil_UTC']
 
     # FIXME: use ranges
     def find_overlaps_sqlite(cursor, row):
-        cursor.execute(f"select id_lokalId, registreringFra_UTC, virkningFra_UTC "
+        cursor.execute(f"select {', '.join(bitemporal_primary_key)} , registreringFra_UTC, virkningFra_UTC "
                        f"from {table_name} where true "
                        # Same bitemporal primary key:
-                       f"AND id_lokalId = %(id_lokalId)s "
+                       f"AND " + ' AND '.join([f" {k} = %({k})s " for k in bitemporal_primary_key]) +
                        # Ensure another (instance) primary key:
                        f"AND (registreringFra_UTC != %(registreringFra_UTC)s OR virkningFra_UTC != %(virkningFra_UTC)s) "
                        # Ignoring/compensating for non-positive intervals:
@@ -170,24 +172,16 @@ def prepare_bitemp_table(table, registry, reg_spec):
                        f") ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
-    # FIXME: use ranges
-    def find_overlaps_psql(cursor, row):
-        cursor.execute(f"select id_lokalId, registreringFra, virkningFra "
-                       f"from {table_name} where true "
-                       f"AND id_lokalId = %(id_lokalId)s "
-                       f"AND registreringTid_UTC && tsrange(%(registreringFra_UTC)s, %(registreringTil_UTC)s, '[)')"
-                       f"AND virkningTid_UTC     && tsrange(    %(virkningFra_UTC)s,     %(virkningTil_UTC)s, '[)')",
-                       {k: row[k] for k in violation_columns})
-    table_names[table_name][POSTGRESQL]['Find overlaps'] = find_overlaps_psql
-
     def log_violation(cursor, row, violation_type, message, vio):
         if vio is None:
             vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
-        cursor.execute(f"insert into violation_log (table_name, file_extract_id, id_lokalId,"
+        cursor.execute(f"insert into violation_log (table_name, file_extract_id, {', '.join(bitemporal_primary_key)},"
                        f" registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
                        f" conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
                        f" VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
-                       (table_name, row['file_extract_id'], row['id_lokalId'], row['registreringFra_UTC'],
+                       (table_name, row['file_extract_id']) +
+                       tuple(row[p] for p in bitemporal_primary_key) +
+                       (row['registreringFra_UTC'],
                         row['virkningFra_UTC'], violation_type, message,
                         vio['registreringFra_UTC'], vio['virkningFra_UTC']))
     table_names[table_name][SQLITE]['Log violation'] = log_violation
@@ -306,7 +300,7 @@ def psql_create_table(table, fail):
     return [sql] + indexes
 
 
-def jsonschema2table(table_name, table_content):
+def jsonschema2table(table_name, table_content, temporal_primary_keys):
     print(f"Parsing schema for {table_name}")
     table = {'name': table_name,
              'columns': [],
@@ -366,7 +360,7 @@ def jsonschema2table(table_name, table_content):
                                 'type': 'integer',
                                 'nullable': 'null'
                                 }]
-    table['primary_keys'] = ['id_lokalId', 'registreringFra', 'virkningFra']
+    table['primary_keys'] = temporal_primary_keys + ['registreringFra', 'virkningFra']
     table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id']),
                              (['update_file_extract_id'], 'file_extract', ['id'])]
     return table
@@ -438,6 +432,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'file_extract_id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'status', 'type': 'string', 'nullable': 'null'},
                     {'name': 'registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'violation_type', 'type': 'string', 'nullable': 'notnull'},
@@ -480,10 +475,10 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
             table_name = list_name[:-4]
             if "obsolete_entities" in specification.keys() and table_name in specification["obsolete_entities"]:
                 continue
-            tables.append(jsonschema2table(table_name, table_content['items']['properties']))
+            tables.append(jsonschema2table(table_name, table_content['items']['properties'], specification['bitemporal_primary_key']))
     else:
         for list_name, table_name in specification["feature_entities"].items():
-            tables.append(jsonschema2table(table_name,jsonschema['properties']['features']['items']['properties']['properties']['properties']))
+            tables.append(jsonschema2table(table_name,jsonschema['properties']['features']['items']['properties']['properties']['properties'], specification['bitemporal_primary_key']))
     for table_spec in tables:
         prepare_bitemp_table(table_spec, registry, specification)
         if initialise_tables:
