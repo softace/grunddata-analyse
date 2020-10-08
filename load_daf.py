@@ -117,7 +117,7 @@ def prepare_bitemp_table(table, registry, reg_spec):
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     table_names[table_name]['registry'] = registry
 
-    bitemporal_primary_key = reg_spec['bitemporal_primary_key']
+    bitemporal_primary_key = list(set(reg_spec['bitemporal_primary_key']).intersection(set([t['name'] for t in table['columns']])))
     table_names[table_name][SQLITE]['bitmporal_primary_key'] = bitemporal_primary_key
     table_names[table_name][SQLITE]['Insert row'] = lambda cursor, row: insert_db_row(cursor, table_name, row)
 
