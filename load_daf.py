@@ -30,13 +30,13 @@ def text2decimal(s):
 def insert_row(cursor, db_functions, row):
     primary_key = db_functions['bitmporal_primary_key']+['registreringFra', 'virkningFra']
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
-        timezone.utc).isoformat()
+        timezone.utc).isoformat(timespec='microseconds')
     row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
-        timezone.utc).isoformat() if row['registreringTil'] else None
+        timezone.utc).isoformat(timespec='microseconds') if row['registreringTil'] else None
     row['virkningFra_UTC'] = dateutil.parser.isoparse(row['virkningFra']).astimezone(
-        timezone.utc).isoformat()
+        timezone.utc).isoformat(timespec='microseconds')
     row['virkningTil_UTC'] = dateutil.parser.isoparse(row['virkningTil']).astimezone(
-        timezone.utc).isoformat() if row['virkningTil'] else None
+        timezone.utc).isoformat(timespec='microseconds') if row['virkningTil'] else None
     if not all([row[p] for p in primary_key]):
         raise ValueError(
             f"Forventet primærnøgle ({', '.join(primary_key)})"
