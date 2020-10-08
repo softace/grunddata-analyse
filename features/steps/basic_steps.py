@@ -65,21 +65,24 @@ dummy_data = {
         "husnummer": "0a3f507b-380d-32b8-e044-0003ba298018",
         "bestemtFastEjendom": "2d40bbc8-90ea-4be1-b1c1-f8893133d61a"
     },
-    "Ejerlav": {
+    "Lodflade": {
         "datafordelerOpdateringstid": "2001-01-01T01:01:01.123456+01:00",
-        "objectid": None,
-        "id_namespace": "http://data.gov.dk/Matriklen/Ejerlav",
+        "objectid": 8411477,
+        "forretningshaendelse": "Afledt ændring",
+        "forretningsomraade": "52.20.05",
+        "forretningsproces": "Matrikulær sag",
+        "id_namespace": "http://data.gov.dk/Matriklen/Lodflade",
         "id_lokalId": "Guid_MAT-ZERO",
+        "paataenktHandling": "Ændring",
         "registreringFra": "2001-01-01T01:01:01.123456+01:00",
         "registreringsaktoer": "Matriklen",
         "registreringTil": None,
-        "status": "Gældende",
+        "status": "Foreløbig",
         "virkningFra": "2001-01-01T01:01:01.123456+01:00",
-        "virkningsaktoer": "Geodatastyrelsen",
+        "virkningsaktoer": "dummy",
         "virkningTil": None,
-        "ejerlavskode": None,
-        "ejerlavsnavn": None,
-        "sagLokalId": None
+        "jordstykkeLokalId": "1289174",
+        "senesteSagLokalId": "100149329"
     },
     "Stormfald": {
         "datafordelerOpdateringstid": "2001-01-01T01:01:01.123456+01:00",

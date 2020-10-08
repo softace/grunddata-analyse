@@ -49,7 +49,7 @@
       "Temalinje_Jordstykke"
     ],
     "bitemporal_primary_key": [
-      "id_lokalId", "status"
+      "id_lokalId", "status", "senesteSagLokalId"
     ],
     "registreing_base_name": "registrering",
     "virkning_base_name": "virkning"

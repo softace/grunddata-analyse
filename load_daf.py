@@ -360,7 +360,8 @@ def jsonschema2table(table_name, table_content, temporal_primary_keys):
                                 'type': 'integer',
                                 'nullable': 'null'
                                 }]
-    table['primary_keys'] = temporal_primary_keys + ['registreringFra', 'virkningFra']
+    existing_temporal_primary_keys = list(set(temporal_primary_keys).intersection(set([t['name'] for t in table['columns']])))
+    table['primary_keys'] = existing_temporal_primary_keys + ['registreringFra', 'virkningFra']
     table['foreign_keys'] = [(['file_extract_id'], 'file_extract', ['id']),
                              (['update_file_extract_id'], 'file_extract', ['id'])]
     return table
@@ -433,6 +434,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'status', 'type': 'string', 'nullable': 'null'},
+                    {'name': 'senesteSagLokalId', 'type': 'string', 'nullable': 'null'},
                     {'name': 'registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'violation_type', 'type': 'string', 'nullable': 'notnull'},
