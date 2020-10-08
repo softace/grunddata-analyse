@@ -178,7 +178,7 @@ def prepare_bitemp_table(table, registry, reg_spec):
         cursor.execute(f"insert into violation_log (table_name, file_extract_id, {', '.join(bitemporal_primary_key)},"
                        f" registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
                        f" conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
-                       f" VALUES(?, ?,  ?, ?, ?,  ?, ?, ?, ?)",
+                       f" VALUES(?, ?,  " + ("?, "*len(bitemporal_primary_key)) + "?, ?,  ?, ?, ?, ?)",
                        (table_name, row['file_extract_id']) +
                        tuple(row[p] for p in bitemporal_primary_key) +
                        (row['registreringFra_UTC'],
