@@ -104,8 +104,30 @@ dummy_data = {
         "datafordelerOpdateringstid": "2001-01-01T01:01:01.123456+01:00",
         "jordstykkeobjectid": None,
         "stormfaldobjectid": "",
+    },
+    "Ejendomsbeliggenhed": {
+        "id_namespace": "http://data.gov.dk/Ejendomsbeliggenhedsregistret",
+        "id_lokalId": "Guid_EBR-ZERO",
+        "bestemtFastEjendomBFENr": None,
+        "adresseLokalId": None,
+        "husnummerLokalId": None,
+        "betegnelse": None,
+        "ESDHReferenceAdresse": None,
+        "ESDHReferenceKommune": None,
+        "adresseManueltAngivet": False,
+        "kommuneManueltAngivet": False,
+        "kommuneinddelingKommunekode": "0360",
+        "status": "historisk",
+        "forretningshaendelse": "ejendomsforandring",
+        "forretningsomraade": "52.20.05",
+        "forretningsproces": "konverteretFraESR",
+        "virkningFra": "2001-01-01T01:01:01.123456+01:00",
+        "virkningTil": None,
+        "virkningsaktoer": "Geodatastyrelsen",
+        "registreringFra": "2001-01-01T01:01:01.123456+01:00",
+        "registreringTil": None,
+        "registreringsaktoer": "Ejendomsbeliggenhedsregister"
     }
-
 }
 
 @given('I initialize the DAF database')
@@ -147,9 +169,19 @@ def step_impl(context, registry, start_day):
 def step_impl(context, table_name):
     listName = table_name + 'List'
     for row in context.table:
-        if listName not in context.data_file.keys():
-            context.data_file[listName] = []
-        context.data_file[listName].append({**dummy_data[table_name], **dict(zip(row.headings, row.cells))})
+        if table_name == "Ejendomsbeliggenhed":
+            if 'features' not in context.data_file.keys():
+                context.data_file['type'] = 'FeatureCollection'
+                context.data_file['features'] = []
+                feature = {
+                    "type": "Feature",
+                    "properties": {**dummy_data[table_name], **dict(zip(row.headings, row.cells))}
+                }
+            context.data_file['features'].append(feature)
+        else:
+            if listName not in context.data_file.keys():
+                context.data_file[listName] = []
+            context.data_file[listName].append({**dummy_data[table_name], **dict(zip(row.headings, row.cells))})
         pass
     pass
 

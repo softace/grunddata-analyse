@@ -68,7 +68,7 @@
       "Feature": "Ejendomsbeliggenhed"
     },
     "bitemporal_primary_key": [
-      "id_lokalId"
+      "id_lokalId", "status"
     ],
     "registreing_base_name": "registrering",
     "virkning_base_name": "virkning"

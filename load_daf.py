@@ -546,11 +546,11 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     print(f"File extracts to load")
     print("\n".join(data_package))
     for dp in data_package:
-        load_data_package(database_options, dp)
+        load_data_package(database_options, registry_spec, dp)
     conn.close()
 
 
-def load_data_package(database_options, data_package):
+def load_data_package(database_options, registry_spec, data_package):
     conn = database_options['connection']
     if not data_package[-4:] == '.zip':
         raise ValueError("data_package must be a zip file and end with '.zip'")
@@ -655,73 +655,127 @@ def load_data_package(database_options, data_package):
                 insert_db_row(cursor, 'metadata', {'key': key,
                                                    'value': value,
                                                    'file_extract_id': file_extract_id})
+        plain_schema = registry_spec[registry]['schema_style'] == 'plain'
         with myzip.open(json_data_name) as data_file:
             parser = ijson.parse(data_file)
             db_table_name = None
             db_row = None
-            db_column = None
-            row_inserts = 0
-            row_updates = 0
-            data_errors = 0
+            db_column_name = None
             step_time = time.time()
-            for prefix, event, value in parser:
-                if prefix == '' and event == 'start_map':
-                    pass  # The top level
-                elif prefix == '' and event == 'end_map':
-                    pass  # The top level
-                elif event == 'map_key':
-                    if '.' in prefix:
-                        db_column = value
-                    else:
-                        assert value[-4:] == 'List'
-                        db_table_name = value[:-4]
-                        step_time = time.time()
-                        if db_table_name in table_names:  # Ignoring obsolete tables
-                            print(f"Inserting into {db_table_name}")
-                        else:
-                            print(f"Ignoring obsolete table {db_table_name}")
-                elif event == 'start_array':
-                    pass
-                elif event == 'end_array':
-                    if db_table_name in table_names:  # Ignoring obsolete tables
-                        print(f"{ row_inserts:>10} rows inserted into  {db_table_name}")
-                        print(f"{ row_updates:>10} rows updated in     {db_table_name}")
-                        print(f"{ data_errors:>10} data errors in      {db_table_name}")
-                    else:
-                        print(f"{ignored_rows:>10} ignored rows in     {db_table_name}")
-                    row_inserts = 0
-                    row_updates = 0
-                    data_errors = 0
-                    ignored_rows = 0
-                    db_table_name = None
-                elif '.' in prefix and event == 'start_map':
-                    if db_table_name in table_names:  # Ignoring obsolete tables
-                        db_row = dict(table_names[db_table_name]['row'])
-                elif '.' in prefix and event == 'end_map':
-                    if db_table_name not in table_names:  # Ignoring obsolete tables
-                        ignored_rows += 1
-                        continue
-                    ret = insert_row(cursor, table_names[db_table_name][database_options['backend']],
-                                     {**db_row, 'file_extract_id': file_extract_id})
-                    db_row = None
-                    if ret == 0:
-                        row_updates += 1
-                    elif ret == 1:
-                        row_inserts += 1
-                    else:
-                        raise NotImplementedError
-                    if (row_inserts + row_updates) % STEP_ROWS == 0:
-                        prev_step_time = step_time
-                        step_time = time.time()
-                        print(
-                            f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}."
-                            f" {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
-                elif event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
-                    if db_table_name in table_names:  # Ignoring obsolete tables
-                        db_row[db_column] = value
-                    db_column = None
+
+            def finish_row():
+                nonlocal ignored_rows, db_row, row_updates, row_inserts, step_time
+                if db_table_name not in table_names:  # Ignoring obsolete tables
+                    ignored_rows += 1
+                    return
+                ret = insert_row(cursor, table_names[db_table_name][database_options['backend']],
+                                 {**db_row, 'file_extract_id': file_extract_id})
+                db_row = None
+                if ret == 0:
+                    row_updates += 1
+                elif ret == 1:
+                    row_inserts += 1
                 else:
-                    raise NotImplementedError("What situation is this?")
+                    raise NotImplementedError
+                if (row_inserts + row_updates) % STEP_ROWS == 0:
+                    prev_step_time = step_time
+                    step_time = time.time()
+                    print(
+                        f"{(row_inserts + row_updates):>10} rows inserted/updated in {db_table_name}."
+                        f" {int(STEP_ROWS // (step_time - prev_step_time))} rows/sec")
+
+            if plain_schema:
+                for prefix, event, value in parser:
+                    if prefix == '' and event == 'start_map':
+                        pass  # The top level
+                    elif prefix == '' and event == 'end_map':
+                        pass  # The top level
+                    elif event == 'map_key':
+                        if '.' in prefix:
+                            db_column_name = value
+                        else:
+                            assert value[-4:] == 'List'
+                            db_table_name = value[:-4]
+                            step_time = time.time()
+                            if db_table_name in table_names:  # Ignoring obsolete tables
+                                print(f"Inserting into {db_table_name}")
+                            else:
+                                print(f"Ignoring obsolete table {db_table_name}")
+                    elif event == 'start_array':
+                        row_inserts = 0
+                        row_updates = 0
+                        data_errors = 0
+                        ignored_rows = 0
+                    elif event == 'end_array':
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            print(f"{ row_inserts:>10} rows inserted into  {db_table_name}")
+                            print(f"{ row_updates:>10} rows updated in     {db_table_name}")
+                            print(f"{ data_errors:>10} data errors in      {db_table_name}")
+                        else:
+                            print(f"{ignored_rows:>10} ignored rows in     {db_table_name}")
+                        db_table_name = None
+                    elif '.' in prefix and event == 'start_map':
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            db_row = dict(table_names[db_table_name]['row'])
+                    elif '.' in prefix and event == 'end_map':
+                        finish_row()
+                    elif event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            db_row[db_column_name] = value
+                        db_column_name = None
+                    else:
+                        raise NotImplementedError(f"What situation is this? prefix = '{prefix}', event = '{event}', value = '{value}'")
+            else: #  not plain_schema
+                for prefix, event, value in parser:
+                    if prefix == '' and event == 'start_map':
+                        pass  # The top level
+                    elif prefix == '' and event == 'map_key' and value == 'type':
+                        pass
+                    elif prefix == 'type' and event == 'string' and value == 'FeatureCollection':
+                        pass
+                    elif prefix == '' and event == 'map_key' and value == 'features':
+                        row_inserts = 0
+                        row_updates = 0
+                        data_errors = 0
+                        ignored_rows = 0
+                    elif prefix == 'features' and event == 'start_array':
+                        pass
+                    elif prefix == 'features.item' and event == 'start_map':
+                        pass
+                    elif prefix == 'features.item' and event == 'map_key' and value == 'type':
+                        pass
+                    elif prefix == 'features.item.type' and event == 'string':
+                        db_table_name = registry_spec[registry]['feature_entities'][value]
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            db_row = dict(table_names[db_table_name]['row'])
+                        else:
+                            ignored_rows +=1
+                    elif prefix == 'features.item' and event == 'map_key' and value == 'properties':
+                        pass
+                    elif prefix == 'features.item.properties' and event == 'start_map':
+                        pass
+                    elif prefix == 'features.item.properties' and event == 'map_key':
+                        db_column_name = value
+                    elif prefix.startswith('features.item.properties') and event in ['null', 'boolean', 'integer', 'double', 'number', 'string']:
+                        if db_table_name in table_names:  # Ignoring obsolete tables
+                            db_row[db_column_name] = value
+                        db_column_name = None
+                    elif prefix == 'features.item.properties' and event == 'end_map':
+                        finish_row()
+                        db_row = None
+                    elif prefix == 'features.item' and event == 'end_map':
+                        pass
+                    elif prefix == 'features' and event == 'end_array':
+                        #  Only handles one table.
+                        print(f"{ row_inserts:>10} rows inserted")
+                        print(f"{ row_updates:>10} rows updated")
+                        print(f"{ data_errors:>10} data errors")
+                        print(f"{ignored_rows:>10} ignored rows in")
+                        db_table_name = None
+                    elif prefix == '' and event == 'end_map':
+                        pass  # The top level
+                    else:
+                        raise NotImplementedError(f"What situation is this? prefix = '{prefix}', event = '{event}', value = '{value}'")
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'job_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     conn.commit()

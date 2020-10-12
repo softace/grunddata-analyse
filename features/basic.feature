@@ -33,3 +33,12 @@ Feature: Basic stuff
     Then the database table Lodflade should contain rows with the following entries
       | id_lokalId | registreringFra                  | registreringTil | virkningFra                      | virkningTil                      | status   |
       | guid-C-1   | 2020-01-01T01:01:01.111111+01:00 |                 | 2020-01-01T01:01:01.000000+01:00 | 2020-01-02T01:01:01.111111+01:00 | Gældende |
+
+    Given a EBR file extract zip file with metadata for day 0
+    Given the file extract contains data for Ejendomsbeliggenhed with dummy data and
+      | id_lokalId | registreringFra                  | registreringTil | virkningFra                      | virkningTil                      |
+      | guid-D-1   | 2020-01-01T01:01:01.111111+01:00 |                 | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
+    When file extract is loaded in the DAF database
+    Then the database table Ejendomsbeliggenhed should contain rows with the following entries
+      | id_lokalId | registreringFra                  | registreringTil | virkningFra                      | virkningTil                      |
+      | guid-D-1   | 2020-01-01T01:01:01.111111+01:00 |                 | 2020-01-01T01:01:01.111111+01:00 | 2020-01-02T01:01:01.111111+01:00 |
