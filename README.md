@@ -1,9 +1,24 @@
 # Introduction
 This is a small handy utility to analyze data from Datafordeleren
 
-Currently it only support DAR, BBR
+Currently it only support DAR, BBR, MAT, EBR
 
 The postgres backend is currently not working. Only sqlite backed is maintained for now.
+
+# Analysis
+From a subscription with daily delta deliveries, the utility loads the delivery files into an accumulating database.
+It validates the bitemporal validity of the data content of the delivery packages and registers occurances of violations.
+The violations is ergistered in the table `violation_log`.
+
+The following violations are registered:
+* Violation of positive time interval (on registreringstid and virkningstid).
+* Violation of bitemporal entity integrity (aka bitemporal conflict). That is violation of entity integrity fore some bitemporal time coordinates.
+* Violation of Update requirements. Only one type of update is allowed for a data-instance: Changing `registreringTil` from NULL to an actual value.
+
+Violations not implemented yet:
+* Violation of bitemporal referential integrity. That is violation of referential integrity fore some bitemporal time coordinates.
+
+
 # Getting started
 
 Initialise python venv and open a shell:
