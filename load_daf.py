@@ -512,6 +512,13 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'bitemporal_entity_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'bitemporal_entity_integrity_instances', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'bitemporal_entity_integrity_objects', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_instance_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_object_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_bitemporal_entity_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_bitemporal_entity_integrity_instances', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'total_bitemporal_entity_integrity_objects', 'type': 'integer', 'nullable': 'notnull'},
                     ],
         'extra_columns': [],
         'primary_keys': ['table_name', 'file_extract_id'],
@@ -915,24 +922,31 @@ def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
 select %(file_extract_id)s as file_extract_id,
        registry_table.registry,
        registry_table.table_name as table_name,
-       instance_count,
-       object_count,
-       COALESCE(non_positive_interval_registrering,0),
-       COALESCE(non_positive_interval_virkning,0),
-       COALESCE(bitemporal_entity_integrity_count,0),
-       COALESCE(bitemporal_entity_integrity_instances,0),
-       COALESCE(bitemporal_entity_integrity_objects,0)
+       -1 as instance_count,
+       -1 as object_count,
+       -1 as non_positive_interval_registrering,
+       -1 as non_positive_interval_virkning,
+       -1 as total_bitemporal_entity_integrity_count,
+       -1 as total_bitemporal_entity_integrity_instances,
+       -1 as total_bitemporal_entity_integrity_objects,
+       total_instance_count,
+       total_object_count,
+       COALESCE(total_non_positive_interval_registrering,0),
+       COALESCE(total_non_positive_interval_virkning,0),
+       COALESCE(total_bitemporal_entity_integrity_count,0),
+       COALESCE(total_bitemporal_entity_integrity_instances,0),
+       COALESCE(total_bitemporal_entity_integrity_objects,0)
 from registry_table
  left join
     (
          select table_name,
-                count(*)                   as bitemporal_entity_integrity_count,
-                count(distinct id_lokalId) as bitemporal_entity_integrity_objects
+                count(*)                   as total_bitemporal_entity_integrity_count,
+                count(distinct id_lokalId) as total_bitemporal_entity_integrity_objects
          from entity_integrity_violation
          group by table_name
      ) simple_stats on simple_stats.table_name = registry_table.table_name
          left join (
-    select table_name, count(*) as bitemporal_entity_integrity_instances
+    select table_name, count(*) as total_bitemporal_entity_integrity_instances
     from (
              select distinct table_name,
                              id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
@@ -948,10 +962,10 @@ left join ("""
     tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
     SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
-count(*) as instance_count,
-count(distinct id_lokalId) as object_count,
-SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
-SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
+count(*) as total_instance_count,
+count(distinct id_lokalId) as total_object_count,
+SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as total_non_positive_interval_registrering,
+SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as total_non_positive_interval_virkning
 from {t_name}
             """,tables))
     SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
