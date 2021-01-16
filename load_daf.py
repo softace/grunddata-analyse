@@ -481,10 +481,10 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
-                    # {'name': 'ent1_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent1_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
-                    # {'name': 'ent2_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'ent2_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent2_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent2_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     ],
@@ -874,14 +874,16 @@ def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
 
     for table_name in dirty_table_names:
         sql_entity = f"""
-    insert into entity_integrity_violation (table_name, id_lokalId, ent1_registreringFra_UTC, ent1_virkningFra_UTC, ent2_registreringFra_UTC, ent2_virkningFra_UTC)
+    insert into entity_integrity_violation (table_name, id_lokalId, ent1_file_extract_id, ent1_registreringFra_UTC, ent1_virkningFra_UTC, ent2_file_extract_id, ent2_registreringFra_UTC, ent2_virkningFra_UTC)
     -- Overlappende forekomster
     select '{table_name}' as table_name,
            ent1.id_lokalId,
+           COALESCE(ent1.update_file_extract_id, ent1.file_extract_id) as ent1_file_extract_id, 
            ent1.registreringFra_UTC as ent1_registreringFra_UTC,
     --       ent1.registreringTil_UTC as ent1_registreringTil_UTC,
            ent1.virkningFra_UTC as ent1_virkningFra_UTC,
     --       ent1.virkningTil_UTC as ent1_virkningTil_UTC,
+           COALESCE(ent2.update_file_extract_id, ent2.file_extract_id) as ent2_file_extract_id, 
            ent2.registreringFra_UTC as ent2_registreringFra_UTC,
     --       ent2.registreringTil_UTC as ent2_registreringTil_UTC,
            ent2.virkningFra_UTC as ent2_virkningFra_UTC
@@ -922,13 +924,13 @@ def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
 select %(file_extract_id)s as file_extract_id,
        registry_table.registry,
        registry_table.table_name as table_name,
-       -1 as instance_count,
-       -1 as object_count,
-       -1 as non_positive_interval_registrering,
-       -1 as non_positive_interval_virkning,
-       -1 as total_bitemporal_entity_integrity_count,
-       -1 as total_bitemporal_entity_integrity_instances,
-       -1 as total_bitemporal_entity_integrity_objects,
+       COALESCE(instance_count,0),
+       COALESCE(object_count,0),
+       COALESCE(non_positive_interval_registrering,0),
+       COALESCE(non_positive_interval_virkning,0),
+       COALESCE(total_bitemporal_entity_integrity_count,0),
+       COALESCE(total_bitemporal_entity_integrity_instances,0),
+       COALESCE(total_bitemporal_entity_integrity_objects,0),
        total_instance_count,
        total_object_count,
        COALESCE(total_non_positive_interval_registrering,0),
@@ -940,11 +942,48 @@ from registry_table
  left join
     (
          select table_name,
+                count(*)                   as bitemporal_entity_integrity_count,
+                count(distinct id_lokalId) as bitemporal_entity_integrity_objects
+         from entity_integrity_violation
+         where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
+         group by table_name
+     ) file_simple_stats on file_simple_stats.table_name = registry_table.table_name
+         left join (
+    select table_name, count(*) as bitemporal_entity_integrity_instances
+    from (
+             select distinct table_name,
+                             id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
+             from entity_integrity_violation
+             where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
+             union
+             select distinct table_name,
+                             id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
+             from entity_integrity_violation
+             where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
+         )
+    group by table_name
+) file_instance_stats on file_instance_stats.table_name = registry_table.table_name
+left join ("""
+    tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
+    SQL += " union ".join(map(lambda t_name: f"""
+select '{t_name}' as table_name,
+count(*) as instance_count,
+count(distinct id_lokalId) as object_count,
+SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
+SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
+from {t_name}
+where coalesce(update_file_extract_id, file_extract_id) = %(file_extract_id)s
+            """,tables))
+    SQL += """
+    ) file_table_counts on file_table_counts.table_name = registry_table.table_name 
+ left join
+    (
+         select table_name,
                 count(*)                   as total_bitemporal_entity_integrity_count,
                 count(distinct id_lokalId) as total_bitemporal_entity_integrity_objects
          from entity_integrity_violation
          group by table_name
-     ) simple_stats on simple_stats.table_name = registry_table.table_name
+     ) total_simple_stats on total_simple_stats.table_name = registry_table.table_name
          left join (
     select table_name, count(*) as total_bitemporal_entity_integrity_instances
     from (
@@ -957,7 +996,7 @@ from registry_table
              from entity_integrity_violation
          )
     group by table_name
-) instance_stats on instance_stats.table_name = registry_table.table_name
+) total_instance_stats on total_instance_stats.table_name = registry_table.table_name
 left join ("""
     tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
     SQL += " union ".join(map(lambda t_name: f"""
@@ -968,7 +1007,9 @@ SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as t
 SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as total_non_positive_interval_virkning
 from {t_name}
             """,tables))
-    SQL += ") table_counts on table_counts.table_name = registry_table.table_name "
+    SQL += """
+    ) total_table_counts on total_table_counts.table_name = registry_table.table_name 
+    """
     SQL += "where registry_table.registry = %(registry)s;"
     cursor.execute(SQL,{'file_extract_id': file_extract_id,'registry':registry})
 
