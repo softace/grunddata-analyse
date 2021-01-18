@@ -39,25 +39,17 @@ Feature: Bitemporal entity integrity
       | guid-0     | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                 | conflicting_registreringFra_UTC  | conflicting_virkningFra_UTC      |
-      | 1  | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 2  | Postnummer | guid-0     | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 3  | Postnummer | guid-0     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 4  | Postnummer | guid-0     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 5  | Postnummer | guid-0     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 6  | Postnummer | guid-0     | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 7  | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 8  | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-    And the database table entity_integrity_violation should contain rows with the following entries and no more
-      | table_name | id_lokalId | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
-      | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | Postnummer | guid-0     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+    Then the database table entity_integrity_violation should contain rows with the following entries and no more
+      | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
+      | Postnummer | guid-0                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | Postnummer | guid-0                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
     And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 2              | 2            | 0                                  | 0                              | 0                                 | 0                                     | 0                                   | 2                    | 2                  | 0                                        | 0                                    | 0                                       | 0                                           | 0                                         |
@@ -76,17 +68,13 @@ Feature: Bitemporal entity integrity
       | guid-1     | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                 | conflicting_registreringFra_UTC  | conflicting_virkningFra_UTC      |
-      | 1  | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 2  | Postnummer | guid-1     | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 3  | Postnummer | guid-1     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 4  | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-    And the database table entity_integrity_violation should contain rows with the following entries and no more
-      | table_name | id_lokalId | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
-      | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
-      | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
-      | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+    Then the database table entity_integrity_violation should contain rows with the following entries and no more
+      | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
+      | Postnummer | guid-1                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | Postnummer | guid-1                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+      | Postnummer | guid-1                 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
+      | Postnummer | guid-1                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
     And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 2              | 2            | 0                                  | 0                              | 0                                 | 0                                     | 0                                   | 2                    | 2                  | 0                                        | 0                                    | 0                                       | 0                                           | 0                                         |
@@ -106,16 +94,11 @@ Feature: Bitemporal entity integrity
       | guid-1     | 2020-01-01T01:14:01.111111+00:00 | 2020-01-01T01:16:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2000-01-01T01:16:01.111111+00:00 |
       | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                 | conflicting_registreringFra_UTC  | conflicting_virkningFra_UTC      |
-      | 1  | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 2  | Postnummer | guid-1     | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 3  | Postnummer | guid-1     | 2020-01-01T01:14:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 4  | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
-      | 5  | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier  |                                  |                                  |
-      | 6  | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Bitemporal entitets-integritet | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 |
+      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | 1  | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |                                 |                             |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
-      | table_name | id_lokalId | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
-      | Postnummer | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
+      | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
+      | Postnummer | guid-1                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
     And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 2              | 2            | 0                                  | 0                              | 0                                 | 0                                     | 0                                   | 2                    | 2                  | 0                                        | 0                                    | 0                                       | 0                                           | 0                                         |
@@ -169,7 +152,7 @@ Feature: Bitemporal entity integrity
     Then the database table violation_log should contain rows with the following entries and no more
       | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
-      | table_name | id_lokalId | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
+      | table_name | bitemporal_primary_key | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
     And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 2              | 2            | 0                                  | 0                              | 0                                 | 0                                     | 0                                   | 2                    | 2                  | 0                                        | 0                                    | 0                                       | 0                                           | 0                                         |
@@ -196,7 +179,7 @@ Feature: Bitemporal entity integrity
     Then the database table violation_log should contain rows with the following entries and no more
       | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
-      | table_name | id_lokalId | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
+      | table_name | bitemporal_primary_key | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
     And the database table status_report should contain rows with the following entries
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 2              | 2            | 0                                  | 0                              | 0                                 | 0                                     | 0                                   | 2                    | 2                  | 0                                        | 0                                    | 0                                       | 0                                           | 0                                         |

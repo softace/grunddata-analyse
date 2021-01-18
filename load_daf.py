@@ -27,8 +27,8 @@ def text2decimal(s):
     return decimal.Decimal(s.decode('ascii'))
 
 
-def insert_row(cursor, db_functions, row):
-    primary_key = db_functions['bitmporal_primary_key']+['registreringFra', 'virkningFra']
+def insert_row(cursor, db_functions, bitemporal_primary_key, row):
+    primary_key = bitemporal_primary_key+['registreringFra', 'virkningFra']
     row['registreringFra_UTC'] = dateutil.parser.isoparse(row['registreringFra']).astimezone(
         timezone.utc).isoformat(timespec='microseconds')
     row['registreringTil_UTC'] = dateutil.parser.isoparse(row['registreringTil']).astimezone(
@@ -81,16 +81,11 @@ def insert_row(cursor, db_functions, row):
                                           ','.join([f"'{v}'" for (n, v) in invalid_update_cols]) +
                                           ")",
                                           None)
-            if set([n for (n,v) in invalid_update_cols]).intersection(['registreringTil', 'virkningTil']) is not set():
-                check_bitemporal_entity_integrity = True
         db_functions['Update DAF row'](cursor, row)
         result = 0
     else:
-        check_bitemporal_entity_integrity = True
         db_functions['Insert row'](cursor, row)
         result = 1
-    if check_bitemporal_entity_integrity:
-        update_data_integrity(cursor, db_functions, row)
     return result
 
 
@@ -113,12 +108,13 @@ def prepare_bitemp_table(table, registry, reg_spec):
     column_names = [c['name'] for c in table['columns']]
     extra_column_names = [c['name'] for c in table['extra_columns']]
     table_names[table_name] = {POSTGRESQL: {},
-                               SQLITE: {}}
+                               SQLITE: {},
+                               None: {}}
     table_names[table_name]['row'] = dict(zip(column_names, [None] * len(column_names)))
     table_names[table_name]['registry'] = registry
 
-    bitemporal_primary_key = list(set(reg_spec['bitemporal_primary_key']).intersection(set([t['name'] for t in table['columns']])))
-    table_names[table_name][SQLITE]['bitmporal_primary_key'] = bitemporal_primary_key
+    bitemporal_primary_key = sorted(list(set(reg_spec['bitemporal_primary_key']).intersection(set([t['name'] for t in table['columns']]))))
+    table_names[table_name][None]['bitemporal_primary_key'] = bitemporal_primary_key
     table_names[table_name][SQLITE]['Insert row'] = lambda cursor, row: insert_db_row(cursor, table_name, row)
 
     primary_key = bitemporal_primary_key+['registreringFra_UTC', 'virkningFra_UTC']
@@ -187,26 +183,6 @@ def prepare_bitemp_table(table, registry, reg_spec):
     table_names[table_name][SQLITE]['Log violation'] = log_violation
     table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
-    def clear_dataintegrity_violation(cursor, row):
-        cursor.execute("delete from entity_integrity_violation"
-                       f" where table_name = '{table_name}' AND id_lokalId = %(id_lokalId)s"
-                       " AND ((ent1_registreringFra_UTC = %(registreringFra_UTC)s AND ent1_virkningFra_UTC = %(virkningFra_UTC)s) OR"
-                       "      (ent2_registreringFra_UTC = %(registreringFra_UTC)s AND ent2_virkningFra_UTC = %(virkningFra_UTC)s)) ",
-                       row)
-    table_names[table_name][SQLITE]['Clear entity integrity violation'] = clear_dataintegrity_violation
-    table_names[table_name][POSTGRESQL]['Clear entity integrity violation'] = clear_dataintegrity_violation
-
-    def register_dataintegrity_violation(cursor, row, vio):
-        ent1 = min(row, vio, key = lambda x: x['registreringFra_UTC']+x['virkningFra_UTC'])
-        ent2 = max(row, vio, key = lambda x: x['registreringFra_UTC']+x['virkningFra_UTC'])
-        cursor.execute("insert into entity_integrity_violation (table_name, id_lokalId,"
-                       " ent1_registreringFra_UTC, ent1_virkningFra_UTC,"
-                       " ent2_registreringFra_UTC, ent2_virkningFra_UTC) "
-                       " VALUES(?, ?,  ?, ?, ?,  ?)",
-                       (table_name, ent1['id_lokalId'], ent1['registreringFra_UTC'], ent1['virkningFra_UTC'],
-                        ent2['registreringFra_UTC'], ent2['virkningFra_UTC']))
-    table_names[table_name][SQLITE]['Register entity integrity violation'] = register_dataintegrity_violation
-    table_names[table_name][POSTGRESQL]['Register entity integrity violation'] = register_dataintegrity_violation
 
 def insert_db_row(cursor, table_name, row):
     return cursor.execute(f" INSERT into {table_name} ({', '.join(row.keys())})"
@@ -480,7 +456,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'name': 'entity_integrity_violation',
         'columns': [{'name': 'id', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
-                    {'name': 'id_lokalId', 'type': 'string', 'nullable': 'notnull'},
+                    {'name': 'bitemporal_primary_key', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_file_extract_id', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_registreringFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'ent1_virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
@@ -491,11 +467,11 @@ def initialise_db(conn, sql_create_table, initialise_tables):
         'extra_columns': [],
         'primary_keys': ['id'],
         'indexes': [['table_name'],
-                    ['table_name', 'id_lokalId'],
-                    ['table_name', 'id_lokalId', 'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC'],
-                    ['table_name', 'id_lokalId', 'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']
+                    ['table_name', 'bitemporal_primary_key'],
+                    ['table_name', 'bitemporal_primary_key', 'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC'],
+                    ['table_name', 'bitemporal_primary_key', 'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']
                     ],
-        'uniques': [['table_name', 'id_lokalId',
+        'uniques': [['table_name', 'bitemporal_primary_key',
                    'ent1_registreringFra_UTC', 'ent1_virkningFra_UTC',
                    'ent2_registreringFra_UTC', 'ent2_virkningFra_UTC']],
     })
@@ -555,7 +531,7 @@ def initialise_registry_tables(conn, sql_create_table, registry, specification, 
             table_name = list_name[:-4]
             if "obsolete_entities" in specification.keys() and table_name in specification["obsolete_entities"]:
                 continue
-            tables.append(jsonschema2table(table_name, table_content['items']['properties'], specification['bitemporal_primary_key']))
+            tables.append(jsonschema2table(table_name, table_content['items']['properties'], sorted(specification['bitemporal_primary_key'])))
     else:
         for list_name, table_name in specification["feature_entities"].items():
             tables.append(jsonschema2table(table_name,jsonschema['properties']['features']['items']['properties']['properties']['properties'], specification['bitemporal_primary_key']))
@@ -627,6 +603,53 @@ def main(initialise: ("Initialise (DROP and CREATE) statistics tables", 'flag', 
     for dp in data_package:
         load_data_package(database_options, registry_spec, dp)
     conn.close()
+
+
+def update_entity_integrity(cursor, bitemporal_primary_key, table_name):
+    print("Updating entity integrity violations")
+    cursor.execute(f"delete from entity_integrity_violation where table_name = '{table_name}';")
+    sql_entity = f"""
+    insert into entity_integrity_violation (table_name, bitemporal_primary_key, ent1_file_extract_id, ent1_registreringFra_UTC, ent1_virkningFra_UTC, ent2_file_extract_id, ent2_registreringFra_UTC, ent2_virkningFra_UTC)
+    -- Overlappende forekomster
+    select '{table_name}' as table_name,
+           {"||':'||".join([f"ent1.{k}" for k in bitemporal_primary_key])},
+           COALESCE(ent1.update_file_extract_id, ent1.file_extract_id) as ent1_file_extract_id, 
+           ent1.registreringFra_UTC as ent1_registreringFra_UTC,
+    --       ent1.registreringTil_UTC as ent1_registreringTil_UTC,
+           ent1.virkningFra_UTC as ent1_virkningFra_UTC,
+    --       ent1.virkningTil_UTC as ent1_virkningTil_UTC,
+           COALESCE(ent2.update_file_extract_id, ent2.file_extract_id) as ent2_file_extract_id, 
+           ent2.registreringFra_UTC as ent2_registreringFra_UTC,
+    --       ent2.registreringTil_UTC as ent2_registreringTil_UTC,
+           ent2.virkningFra_UTC as ent2_virkningFra_UTC
+    --       ent2.virkningTil_UTC as ent2_virkningTil_UTC
+    from {table_name} ent1
+    -- Same bitemporal primary key:
+    join {table_name} ent2 on {' AND '.join([f" ent1.{k} = ent2.{k} " for k in bitemporal_primary_key])}
+    -- Ensure another (instance) primary key:
+    AND (ent1.registreringFra_UTC != ent2.registreringFra_UTC OR ent1.virkningFra_UTC != ent2.virkningFra_UTC)
+    -- Ignoring/compensating for non-positive intervals:
+    AND (ent1.registreringFra_UTC < ent1.registreringTil_UTC OR ent1.registreringTil_UTC is NULL)
+    AND (ent2.registreringFra_UTC < ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL)
+    AND (ent1.virkningFra_UTC < ent1.virkningTil_UTC OR ent1.virkningTil_UTC is NULL)
+    AND (ent2.virkningFra_UTC < ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL)
+    -- order
+    -- and ( ent1.file_extract_id < ent2.file_extract_id OR (ent1.file_extract_id = ent2.file_extract_id AND ((ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC))))
+    and (ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC)
+    -- The actual bitemporal intersection:
+                           AND ((       ent1.registreringFra_UTC   <= ent2.registreringFra_UTC
+                                 AND (ent2.registreringFra_UTC <    ent1.registreringTil_UTC   OR   ent1.registreringTil_UTC is NULL))
+                             OR (     ent2.registreringFra_UTC <=   ent1.registreringFra_UTC
+                                 AND (  ent1.registreringFra_UTC   <  ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL))
+                               )
+                           AND ((       ent1.virkningFra_UTC   <= ent2.virkningFra_UTC
+                                 AND (ent2.virkningFra_UTC <    ent1.virkningTil_UTC   OR   ent1.virkningTil_UTC is NULL))
+                             OR (     ent2.virkningFra_UTC <=   ent1.virkningFra_UTC
+                                 AND (  ent1.virkningFra_UTC   <  ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL))
+                               )
+    """
+    cursor.execute(sql_entity)
+
 
 
 def load_data_package(database_options, registry_spec, data_package):
@@ -750,6 +773,7 @@ def load_data_package(database_options, registry_spec, data_package):
                     ignored_rows += 1
                     return
                 ret = insert_row(cursor, table_names[db_table_name][database_options['backend']],
+                                 table_names[db_table_name][None]['bitemporal_primary_key'],
                                  {**db_row, 'file_extract_id': file_extract_id})
                 db_row = None
                 if ret == 0:
@@ -793,6 +817,7 @@ def load_data_package(database_options, registry_spec, data_package):
                             print(f"{ row_inserts:>10} rows inserted into  {db_table_name}")
                             print(f"{ row_updates:>10} rows updated in     {db_table_name}")
                             print(f"{ data_errors:>10} data errors in      {db_table_name}")
+                            update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
                         else:
                             print(f"{ignored_rows:>10} ignored rows in     {db_table_name}")
                         db_table_name = None
@@ -853,6 +878,7 @@ def load_data_package(database_options, registry_spec, data_package):
                         print(f"{ row_updates:>10} rows updated")
                         print(f"{ data_errors:>10} data errors")
                         print(f"{ignored_rows:>10} ignored rows in")
+                        update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
                         db_table_name = None
                     elif prefix == '' and event == 'end_map':
                         pass  # The top level
@@ -860,61 +886,13 @@ def load_data_package(database_options, registry_spec, data_package):
                         raise NotImplementedError
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'load_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
-        create_status_report(cursor, file_extract_id, registry, dirty_table_names)
+        create_status_report(cursor, file_extract_id, registry)
         update_db_row(cursor, 'file_extract',
                       {'id': file_extract_id, 'stats_end': datetime.datetime.now(datetime.timezone.utc).isoformat()})
     print("Done...")
     conn.commit()
 
-def create_status_report(cursor, file_extract_id, registry, dirty_table_names):
-    print("Updating entity integrity status...")
-    cursor.execute("delete from entity_integrity_violation where table_name in (" +
-                   ",".join([f"'{t}'" for t in dirty_table_names]) +
-                   ");")
-
-    for table_name in dirty_table_names:
-        sql_entity = f"""
-    insert into entity_integrity_violation (table_name, id_lokalId, ent1_file_extract_id, ent1_registreringFra_UTC, ent1_virkningFra_UTC, ent2_file_extract_id, ent2_registreringFra_UTC, ent2_virkningFra_UTC)
-    -- Overlappende forekomster
-    select '{table_name}' as table_name,
-           ent1.id_lokalId,
-           COALESCE(ent1.update_file_extract_id, ent1.file_extract_id) as ent1_file_extract_id, 
-           ent1.registreringFra_UTC as ent1_registreringFra_UTC,
-    --       ent1.registreringTil_UTC as ent1_registreringTil_UTC,
-           ent1.virkningFra_UTC as ent1_virkningFra_UTC,
-    --       ent1.virkningTil_UTC as ent1_virkningTil_UTC,
-           COALESCE(ent2.update_file_extract_id, ent2.file_extract_id) as ent2_file_extract_id, 
-           ent2.registreringFra_UTC as ent2_registreringFra_UTC,
-    --       ent2.registreringTil_UTC as ent2_registreringTil_UTC,
-           ent2.virkningFra_UTC as ent2_virkningFra_UTC
-    --       ent2.virkningTil_UTC as ent2_virkningTil_UTC
-    from {table_name} ent1
-    -- Same bitemporal primary key:
-    join {table_name} ent2 on ent1.id_lokalId = ent2.id_lokalId
-    -- Ensure another (instance) primary key:
-    AND (ent1.registreringFra_UTC != ent2.registreringFra_UTC OR ent1.virkningFra_UTC != ent2.virkningFra_UTC)
-    -- Ignoring/compensating for non-positive intervals:
-    AND (ent1.registreringFra_UTC < ent1.registreringTil_UTC OR ent1.registreringTil_UTC is NULL)
-    AND (ent2.registreringFra_UTC < ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL)
-    AND (ent1.virkningFra_UTC < ent1.virkningTil_UTC OR ent1.virkningTil_UTC is NULL)
-    AND (ent2.virkningFra_UTC < ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL)
-    -- order
-    -- and ( ent1.file_extract_id < ent2.file_extract_id OR (ent1.file_extract_id = ent2.file_extract_id AND ((ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC))))
-    and (ent1.registreringFra_UTC || ent1.virkningFra_UTC) < (ent2.registreringFra_UTC || ent2.virkningFra_UTC)
-    -- The actual bitemporal intersection:
-                           AND ((       ent1.registreringFra_UTC   <= ent2.registreringFra_UTC
-                                 AND (ent2.registreringFra_UTC <    ent1.registreringTil_UTC   OR   ent1.registreringTil_UTC is NULL))
-                             OR (     ent2.registreringFra_UTC <=   ent1.registreringFra_UTC
-                                 AND (  ent1.registreringFra_UTC   <  ent2.registreringTil_UTC OR ent2.registreringTil_UTC is NULL))
-                               )
-                           AND ((       ent1.virkningFra_UTC   <= ent2.virkningFra_UTC
-                                 AND (ent2.virkningFra_UTC <    ent1.virkningTil_UTC   OR   ent1.virkningTil_UTC is NULL))
-                             OR (     ent2.virkningFra_UTC <=   ent1.virkningFra_UTC
-                                 AND (  ent1.virkningFra_UTC   <  ent2.virkningTil_UTC OR ent2.virkningTil_UTC is NULL))
-                               )
-    """
-        cursor.execute(sql_entity)
-
+def create_status_report(cursor, file_extract_id, registry):
     print("Creating status report...")
     SQL = f"""
         insert into status_report
@@ -942,8 +920,8 @@ from registry_table
  left join
     (
          select table_name,
-                count(*)                   as bitemporal_entity_integrity_count,
-                count(distinct id_lokalId) as bitemporal_entity_integrity_objects
+                count(*)                               as bitemporal_entity_integrity_count,
+                count(distinct bitemporal_primary_key) as bitemporal_entity_integrity_objects
          from entity_integrity_violation
          where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
          group by table_name
@@ -952,12 +930,12 @@ from registry_table
     select table_name, count(*) as bitemporal_entity_integrity_instances
     from (
              select distinct table_name,
-                             id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
+                             bitemporal_primary_key || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
              from entity_integrity_violation
              where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
              union
              select distinct table_name,
-                             id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
+                             bitemporal_primary_key || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
              from entity_integrity_violation
              where ent1_file_extract_id = %(file_extract_id)s OR ent2_file_extract_id = %(file_extract_id)s
          )
@@ -968,7 +946,7 @@ left join ("""
     SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
 count(*) as instance_count,
-count(distinct id_lokalId) as object_count,
+count(distinct {"||':'||".join([k for k in table_names[t_name][None]['bitemporal_primary_key']])}) as object_count,
 SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
 SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
 from {t_name}
@@ -979,8 +957,8 @@ where coalesce(update_file_extract_id, file_extract_id) = %(file_extract_id)s
  left join
     (
          select table_name,
-                count(*)                   as total_bitemporal_entity_integrity_count,
-                count(distinct id_lokalId) as total_bitemporal_entity_integrity_objects
+                count(*)                               as total_bitemporal_entity_integrity_count,
+                count(distinct bitemporal_primary_key) as total_bitemporal_entity_integrity_objects
          from entity_integrity_violation
          group by table_name
      ) total_simple_stats on total_simple_stats.table_name = registry_table.table_name
@@ -988,11 +966,11 @@ where coalesce(update_file_extract_id, file_extract_id) = %(file_extract_id)s
     select table_name, count(*) as total_bitemporal_entity_integrity_instances
     from (
              select distinct table_name,
-                             id_lokalId || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
+                             bitemporal_primary_key || ent1_registreringFra_UTC || ent1_virkningFra_UTC as primary_key
              from entity_integrity_violation
              union
              select distinct table_name,
-                             id_lokalId || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
+                             bitemporal_primary_key || ent2_registreringFra_UTC || ent2_virkningFra_UTC as primary_key
              from entity_integrity_violation
          )
     group by table_name
@@ -1002,7 +980,7 @@ left join ("""
     SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
 count(*) as total_instance_count,
-count(distinct id_lokalId) as total_object_count,
+count(distinct {"||':'||".join([k for k in table_names[t_name][None]['bitemporal_primary_key']])}) as total_object_count,
 SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as total_non_positive_interval_registrering,
 SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as total_non_positive_interval_virkning
 from {t_name}
