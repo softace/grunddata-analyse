@@ -32,7 +32,7 @@ Feature: Bitemporal data integrity with composite bitemporalprimary key
       | guid-0     | senesteSagLokalId | Gældende | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | senesteSagLokalId | status | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | senesteSagLokalId | status | registreringFra_UTC | virkningFra_UTC | violation_type |
     Then the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key            | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Lodflade   | guid-0:senesteSagLokalId:Gældende | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
@@ -61,7 +61,7 @@ Feature: Bitemporal data integrity with composite bitemporalprimary key
       | guid-1     | senesteSagLokalId | Gældende | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | status | senesteSagLokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | status | senesteSagLokalId | registreringFra_UTC | virkningFra_UTC | violation_type |
     Then the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key            | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Lodflade   | guid-1:senesteSagLokalId:Gældende | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
@@ -89,8 +89,8 @@ Feature: Bitemporal data integrity with composite bitemporalprimary key
       | guid-1     | senesteSagLokalId | Gældende  | 2020-01-01T01:14:01.111111+00:00 | 2020-01-01T01:16:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2000-01-01T01:16:01.111111+00:00 |
       | guid-1     | senesteSagLokalId | Gældende  | 2020-01-01T01:11:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | senesteSagLokalId | status   | registreringFra_UTC              | virkningFra_UTC                  | violation_type                | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
-      | 1  | Lodflade   | guid-1     | senesteSagLokalId | Gældende | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |                                 |                             |
+      | id | table_name | id_lokalId | senesteSagLokalId | status   | registreringFra_UTC              | virkningFra_UTC                  | violation_type                |
+      | 1  | Lodflade   | guid-1     | senesteSagLokalId | Gældende | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key            | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Lodflade   | guid-1:senesteSagLokalId:Gældende | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |

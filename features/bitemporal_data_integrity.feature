@@ -39,7 +39,7 @@ Feature: Bitemporal entity integrity
       | guid-0     | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type |
     Then the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Postnummer | guid-0                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
@@ -68,7 +68,7 @@ Feature: Bitemporal entity integrity
       | guid-1     | 2020-01-01T03:11:01.111111+02:00 | 2020-01-01T03:13:01.111111+02:00 | 2000-01-01T03:13:01.111111+02:00 | 2000-01-01T03:14:01.111111+02:00 |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type |
     Then the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Postnummer | guid-1                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
@@ -94,8 +94,8 @@ Feature: Bitemporal entity integrity
       | guid-1     | 2020-01-01T01:14:01.111111+00:00 | 2020-01-01T01:16:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 | 2000-01-01T01:16:01.111111+00:00 |
       | guid-1     | 2020-01-01T01:11:01.111111+00:00 | 2020-01-01T01:13:01.111111+00:00 | 2000-01-01T01:13:01.111111+00:00 | 2000-01-01T01:14:01.111111+00:00 |
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
-      | 1  | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |                                 |                             |
+      | id | table_name | id_lokalId | registreringFra_UTC              | virkningFra_UTC                  | violation_type                |
+      | 1  | Postnummer | guid-1     | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 | Ugyldig opdatering af værdier |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key | ent1_registreringFra_UTC         | ent1_virkningFra_UTC             | ent2_registreringFra_UTC         | ent2_virkningFra_UTC             |
       | Postnummer | guid-1                 | 2020-01-01T01:11:01.111111+00:00 | 2000-01-01T01:11:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |
@@ -150,7 +150,7 @@ Feature: Bitemporal entity integrity
       | guid-14    | 2020-01-01T01:04:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:04:01.111111+00:00 |                                  |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
     And the database table status_report should contain rows with the following entries
@@ -177,7 +177,7 @@ Feature: Bitemporal entity integrity
       | guid-11    | 2020-01-01T01:04:01.111111+00:00 | 2020-01-01T01:12:01.111111+00:00 | 2000-01-01T01:12:01.111111+00:00 |                                  |
     When file extract is loaded in the DAF database
     Then the database table violation_log should contain rows with the following entries and no more
-      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type | conflicting_registreringFra_UTC | conflicting_virkningFra_UTC |
+      | id | table_name | id_lokalId | registreringFra_UTC | virkningFra_UTC | violation_type |
     And the database table entity_integrity_violation should contain rows with the following entries and no more
       | table_name | bitemporal_primary_key | ent1_registreringFra_UTC | ent1_virkningFra_UTC | ent2_registreringFra_UTC | ent2_virkningFra_UTC |
     And the database table status_report should contain rows with the following entries

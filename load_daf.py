@@ -44,10 +44,10 @@ def insert_row(cursor, db_functions, bitemporal_primary_key, row):
             f"({', '.join([row[p] for p in primary_key])})")
     if row['registreringTil_UTC'] and row['registreringTil_UTC'] <= row['registreringFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Ikke-positivt registreringsinterval',
-                                      f"{row['registreringTil']} <= {row['registreringFra']}", None)
+                                      f"{row['registreringTil']} <= {row['registreringFra']}")
     if row['virkningTil_UTC'] and row['virkningTil_UTC'] <= row['virkningFra_UTC']:
         db_functions['Log violation'](cursor, row, 'Ikke-positivt virkningsinterval',
-                                      f"{row['virkningTil']} <= {row['virkningFra']}", None)
+                                      f"{row['virkningTil']} <= {row['virkningFra']}")
     db_functions['Find row'](cursor, row)
     rows = cursor.fetchall()
     check_bitemporal_entity_integrity = False
@@ -79,28 +79,13 @@ def insert_row(cursor, db_functions, bitemporal_primary_key, row):
                                           f"({','.join([n for (n,v) in invalid_update_cols])}) opdateret."
                                           " Tidligere værdi(er): (" +
                                           ','.join([f"'{v}'" for (n, v) in invalid_update_cols]) +
-                                          ")",
-                                          None)
+                                          ")")
         db_functions['Update DAF row'](cursor, row)
         result = 0
     else:
         db_functions['Insert row'](cursor, row)
         result = 1
     return result
-
-
-def update_data_integrity(cursor, db_functions, row):
-    # db_functions['Clear entity integrity violation'](cursor, row)
-    db_functions['Find overlaps'](cursor, row)
-    violations = cursor.fetchall()
-    if len(violations) > 0:
-        violation_columns = [des[0] for des in cursor.description]
-        if 'file_extract_id' not in row.keys():
-            row['file_extract_id'] = row['update_file_extract_id']
-        for v in violations:
-            db_functions['Log violation'](cursor, row, "Bitemporal entitets-integritet", 'Se bitemporalitet',
-                                          dict(zip(violation_columns, v)))
-            # db_functions['Register entity integrity violation'](cursor, row, dict(zip(violation_columns, v)))
 
 
 def prepare_bitemp_table(table, registry, reg_spec):
@@ -168,18 +153,14 @@ def prepare_bitemp_table(table, registry, reg_spec):
                        f") ", {k: row[k] for k in violation_columns})
     table_names[table_name][SQLITE]['Find overlaps'] = find_overlaps_sqlite
 
-    def log_violation(cursor, row, violation_type, message, vio):
-        if vio is None:
-            vio = {'registreringFra_UTC': None, 'virkningFra_UTC': None}
+    def log_violation(cursor, row, violation_type, message):
         cursor.execute(f"insert into violation_log (table_name, file_extract_id, {', '.join(bitemporal_primary_key)},"
-                       f" registreringFra_UTC, virkningFra_UTC, violation_type, violation_text,"
-                       f" conflicting_registreringFra_UTC, conflicting_virkningFra_UTC) "
-                       f" VALUES(?, ?,  " + ("?, "*len(bitemporal_primary_key)) + "?, ?,  ?, ?, ?, ?)",
+                       f" registreringFra_UTC, virkningFra_UTC, violation_type, violation_text)"
+                       f" VALUES(?, ?,  " + ("?, "*len(bitemporal_primary_key)) + "?, ?,  ?, ?)",
                        (table_name, row['file_extract_id']) +
                        tuple(row[p] for p in bitemporal_primary_key) +
                        (row['registreringFra_UTC'],
-                        row['virkningFra_UTC'], violation_type, message,
-                        vio['registreringFra_UTC'], vio['virkningFra_UTC']))
+                        row['virkningFra_UTC'], violation_type, message))
     table_names[table_name][SQLITE]['Log violation'] = log_violation
     table_names[table_name][POSTGRESQL]['Log violation'] = log_violation
 
@@ -444,8 +425,6 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'virkningFra_UTC', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'violation_type', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'violation_text', 'type': 'string', 'nullable': 'notnull'},
-                    {'name': 'conflicting_registreringFra_UTC', 'type': 'string', 'nullable': 'null'},
-                    {'name': 'conflicting_virkningFra_UTC', 'type': 'string', 'nullable': 'null'},
                     ],
         'extra_columns': [],
         'primary_keys': ['id'],
