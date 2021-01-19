@@ -797,7 +797,8 @@ def load_data_package(database_options, registry_spec, data_package):
                             print(f"{ row_inserts:>10} rows inserted into  {db_table_name}")
                             print(f"{ row_updates:>10} rows updated in     {db_table_name}")
                             print(f"{ data_errors:>10} data errors in      {db_table_name}")
-                            update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
+                            if row_inserts + row_updates > 0:
+                                update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
                         else:
                             print(f"{ignored_rows:>10} ignored rows in     {db_table_name}")
                         db_table_name = None
@@ -858,7 +859,8 @@ def load_data_package(database_options, registry_spec, data_package):
                         print(f"{ row_updates:>10} rows updated")
                         print(f"{ data_errors:>10} data errors")
                         print(f"{ignored_rows:>10} ignored rows in")
-                        update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
+                        if row_inserts + row_updates > 0:
+                            update_entity_integrity(cursor, table_names[db_table_name][None]['bitemporal_primary_key'], db_table_name)
                         db_table_name = None
                     elif prefix == '' and event == 'end_map':
                         pass  # The top level
