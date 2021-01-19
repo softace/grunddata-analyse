@@ -45,7 +45,7 @@ Feature: Bitemporal intervals
       | file_extract_id | table_name | instance_count | object_count | non_positive_interval_registrering | non_positive_interval_virkning | bitemporal_entity_integrity_count | bitemporal_entity_integrity_instances | bitemporal_entity_integrity_objects | total_instance_count | total_object_count | total_non_positive_interval_registrering | total_non_positive_interval_virkning | total_bitemporal_entity_integrity_count | total_bitemporal_entity_integrity_instances | total_bitemporal_entity_integrity_objects |
       | 1               | Postnummer | 3              | 2            | 2                                  | 0                              | 0                                 | 0                                     | 0                                   | 3                    | 2                  | 2                                        | 0                                    | 0                                       | 0                                           | 0                                         |
 
-  Scenario: Updates affects counting
+  Scenario: Invalid updates affects counting
     Given a DAR file extract zip file with metadata for day 0
     And the file extract contains data for Postnummer with dummy data and
       | id_lokalId | registreringFra                  | registreringTil | virkningFra                      | virkningTil                      |
