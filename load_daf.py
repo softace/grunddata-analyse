@@ -462,6 +462,7 @@ def initialise_db(conn, sql_create_table, initialise_tables):
                     {'name': 'table_name', 'type': 'string', 'nullable': 'notnull'},
                     {'name': 'instance_count', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'object_count', 'type': 'integer', 'nullable': 'notnull'},
+                    {'name': 'invalid_update_count', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_registrering', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'non_positive_interval_virkning', 'type': 'integer', 'nullable': 'notnull'},
                     {'name': 'bitemporal_entity_integrity_count', 'type': 'integer', 'nullable': 'notnull'},
@@ -883,6 +884,7 @@ select %(file_extract_id)s as file_extract_id,
        registry_table.table_name as table_name,
        COALESCE(instance_count,0),
        COALESCE(object_count,0),
+       COALESCE(invalid_update_count,0),
        COALESCE(non_positive_interval_registrering,0),
        COALESCE(non_positive_interval_virkning,0),
        COALESCE(total_bitemporal_entity_integrity_count,0),
@@ -920,6 +922,10 @@ from registry_table
          )
     group by table_name
 ) file_instance_stats on file_instance_stats.table_name = registry_table.table_name
+left join (select file_extract_id, table_name, count(*) as invalid_update_count from violation_log where violation_type ='Ugyldig opdatering af værdier')
+          invalid_updates 
+         on invalid_updates.table_name = registry_table.table_name
+         and  invalid_updates.file_extract_id = %(file_extract_id)s
 left join ("""
     tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
     SQL += " union ".join(map(lambda t_name: f"""
