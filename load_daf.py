@@ -922,18 +922,22 @@ from registry_table
          )
     group by table_name
 ) file_instance_stats on file_instance_stats.table_name = registry_table.table_name
-left join (select file_extract_id, table_name, count(*) as invalid_update_count from violation_log where violation_type ='Ugyldig opdatering af værdier')
-          invalid_updates 
-         on invalid_updates.table_name = registry_table.table_name
-         and  invalid_updates.file_extract_id = %(file_extract_id)s
+left join (select file_extract_id, table_name, 
+                  count(*) as invalid_update_count,
+                  SUM(case when violation_type ='Ugyldig opdatering af værdier' THEN 1 ELSE 0 END) as invalid_update_count,
+                  SUM(case when violation_type ='Ikke-positivt registreringsinterval' THEN 1 ELSE 0 END) as non_positive_interval_registrering,
+                  SUM(case when violation_type ='Ikke-positivt virkningsinterval' THEN 1 ELSE 0 END) as non_positive_interval_virkning
+                  from violation_log
+                  where violation_log.file_extract_id = %(file_extract_id)s)
+          violation_counts 
+         on violation_counts.table_name = registry_table.table_name
+         and  violation_counts.file_extract_id = %(file_extract_id)s
 left join ("""
     tables = [n for n in table_names.keys() if table_names[n]['registry'] == registry]
     SQL += " union ".join(map(lambda t_name: f"""
 select '{t_name}' as table_name,
 count(*) as instance_count,
-count(distinct {"||':'||".join([k for k in table_names[t_name][None]['bitemporal_primary_key']])}) as object_count,
-SUM(case when registreringTil_UTC <= registreringFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_registrering,
-SUM(case when virkningTil_UTC <= virkningFra_UTC THEN 1 ELSE 0 END) as non_positive_interval_virkning
+count(distinct {"||':'||".join([k for k in table_names[t_name][None]['bitemporal_primary_key']])}) as object_count
 from {t_name}
 where coalesce(update_file_extract_id, file_extract_id) = %(file_extract_id)s
             """,tables))
