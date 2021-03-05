@@ -28,9 +28,22 @@ pipenv install
 pipenv shell
 ```
 
-# Sample run
+# Sample runs
+
+Get help
 ```shell script
-python load_daf.py -i -b sqlite DAR_Totaludtraek_1_0_1_abonnement_20200626040000.zip
+python load_daf.py -h
+```
+
+Create database for analysis
+```shell script
+python load_daf.py -i -b sqlite -d minDAF
+```
+
+Analyse one (DAR) file on database 'minDAF'.
+This assumes that you have fetched a data package for your subscription from the datafordeler FTP server
+```shell script
+python load_daf.py -b sqlite -d minDAF DAR_Totaludtraek_1_0_1_abonnement_20200626040000.zip
 ```
 
 # Development
